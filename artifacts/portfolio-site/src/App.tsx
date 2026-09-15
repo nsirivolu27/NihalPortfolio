@@ -18,7 +18,7 @@ import {
   MoveDown,
   X,
 } from 'lucide-react';
-import { navItems, notes, portfolioProfile, projects, strengths } from '@/lib/portfolio-data';
+import { capabilityIndex, navItems, notes, portfolioProfile, projects, strengths } from '@/lib/portfolio-data';
 import {
   Route,
   Switch,
@@ -212,6 +212,32 @@ function Home() {
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section id="capabilities" className="capability-section">
+        <div className="mx-auto max-w-[1440px] px-5 py-28 sm:px-8 lg:px-12 lg:py-40">
+          <div className="reveal grid gap-8 lg:grid-cols-[.7fr_1.3fr] lg:gap-24">
+            <div>
+              <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-accent">02 / Capability index</p>
+              <h2 className="mt-5 max-w-[440px] font-display text-6xl leading-[.88] tracking-[-.04em] sm:text-8xl">Useful<br /><em>range.</em></h2>
+            </div>
+            <div className="flex items-end">
+              <p className="max-w-[520px] text-sm leading-relaxed text-muted-foreground">A strong portfolio does more than list tools. It shows how knowledge moves from question to decision to something another person can use.</p>
+            </div>
+          </div>
+          <div className="capability-list mt-16">
+            {capabilityIndex.map((capability, index) => (
+              <article key={capability.number} className={`capability-row reveal reveal-delay-${index + 1}`}>
+                <span className="capability-row__number font-mono-ui">{capability.number}</span>
+                <div>
+                  <h3 className="font-display text-4xl leading-none tracking-[-.03em] sm:text-5xl">{capability.title}</h3>
+                  <p className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">{capability.copy}</p>
+                </div>
+                <span className="capability-row__proof font-mono-ui">{capability.proof}</span>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
