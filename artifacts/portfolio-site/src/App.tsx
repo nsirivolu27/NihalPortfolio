@@ -13,6 +13,7 @@ import {
   CircleArrowOutUpRight,
   Download,
   Github,
+  Linkedin,
   Mail,
   Menu,
   MoveDown,
@@ -127,7 +128,7 @@ function Home() {
               {portfolioProfile.availability}
             </div>
             <h1 className="reveal reveal-delay-1 mt-8 max-w-[900px] font-display text-[clamp(4.5rem,11vw,10.75rem)] leading-[.82] tracking-[-.055em]">
-              Good work<br /><em className="text-accent">needs</em> room.
+              Vision systems<br /><em className="text-accent">that</em> ship.
             </h1>
             <div className="reveal reveal-delay-2 mt-10 flex max-w-[680px] flex-col gap-8 sm:flex-row sm:items-end">
               <p data-testid="text-hero-intro" className="max-w-[380px] text-lg leading-[1.35] text-muted-foreground sm:text-xl">{portfolioProfile.intro}</p>
@@ -147,8 +148,8 @@ function Home() {
                 </div>
                 <div>
                   <div className="mb-4 h-px w-12 bg-secondary" />
-                  <p className="max-w-[200px] font-display text-4xl leading-[.95]">A real photo can live here later.</p>
-                  <p className="mt-4 max-w-[230px] text-xs leading-relaxed text-primary-foreground/65">For now, a quiet placeholder for the person behind the work.</p>
+                  <p className="max-w-[200px] font-display text-4xl leading-[.95]">Applied ML, practical engineering.</p>
+                  <p className="mt-4 max-w-[230px] text-xs leading-relaxed text-primary-foreground/65">A portrait will replace this placeholder soon.</p>
                 </div>
               </div>
               <span className="signal-stamp">Replace with photo</span>
@@ -163,14 +164,14 @@ function Home() {
 
       <div className="overflow-hidden border-y border-primary bg-primary py-3 text-primary-foreground">
         <div className="marquee-track flex w-max items-center gap-8 whitespace-nowrap font-mono-ui text-[10px] font-bold uppercase tracking-[.2em]">
-          {[...Array(2)].flatMap((_, copyIndex) => ['Product thinking', 'Clear systems', 'Useful software', 'Human-scale work'].map((label, index) => <span key={`${copyIndex}-${index}`} className="flex items-center gap-8"><span>{label}</span><span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-secondary" /></span>))}
+          {[...Array(2)].flatMap((_, copyIndex) => ['Computer vision', 'ML infrastructure', 'Applied research', 'Cloud pipelines'].map((label, index) => <span key={`${copyIndex}-${index}`} className="flex items-center gap-8"><span>{label}</span><span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-secondary" /></span>))}
         </div>
       </div>
 
       <section className="manifesto-band" aria-label="Portfolio statement">
         <div className="manifesto-band__inner">
           <span className="font-mono-ui text-[10px] uppercase tracking-[.16em]">A small belief</span>
-          <p className="font-display text-4xl leading-[.9] tracking-[-.03em] sm:text-6xl">The best work leaves a little more possibility behind.</p>
+          <p className="font-display text-4xl leading-[.9] tracking-[-.03em] sm:text-6xl">A model earns trust when a person can check its work.</p>
           <span className="manifesto-band__mark" aria-hidden="true">↘</span>
         </div>
       </section>
@@ -179,16 +180,16 @@ function Home() {
         <div className="reveal mb-16 flex flex-col justify-between gap-7 md:flex-row md:items-end">
           <div>
             <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-accent">01 / Selected work</p>
-            <h2 className="mt-5 max-w-[600px] font-display text-6xl leading-[.88] tracking-[-.04em] sm:text-8xl">The work,<br /><em>in progress.</em></h2>
+            <h2 className="mt-5 max-w-[600px] font-display text-6xl leading-[.88] tracking-[-.04em] sm:text-8xl">Selected<br /><em>work.</em></h2>
           </div>
-          <p className="max-w-[300px] text-sm leading-relaxed text-muted-foreground">Starter content lives here until the real case studies arrive. The structure is ready for stories with more texture.</p>
+          <p className="max-w-[300px] text-sm leading-relaxed text-muted-foreground">Three projects that show the range: protocol infrastructure, multimodal medical imaging, and tracking in imagery most models never see.</p>
         </div>
         <div className="grid gap-5 lg:grid-cols-12">
           {projects.map((project, index) => (
             <article key={project.id} data-testid={`card-project-${project.id}`} className={`project-card reveal reveal-delay-${index + 1} group ${index === 0 ? 'lg:col-span-7' : index === 1 ? 'lg:col-span-5' : 'lg:col-span-6 lg:col-start-4'}`}>
               <div className={`project-visual relative flex aspect-[1.2/1] flex-col justify-between overflow-hidden border border-primary/15 p-6 sm:p-8 ${project.accent === 'lime' ? 'bg-secondary text-primary' : project.accent === 'tomato' ? 'bg-accent text-accent-foreground' : 'bg-[#d6ab62] text-primary'}`}>
                 <div className="flex items-start justify-between">
-                  <span className="font-mono-ui text-[10px] font-bold uppercase tracking-[.15em] opacity-65">Starter content / {project.index}</span>
+                  <span className="font-mono-ui text-[10px] font-bold uppercase tracking-[.15em] opacity-65">Project / {project.index}</span>
                   <ArrowUpRight size={20} className="project-arrow" />
                 </div>
                 <div className="relative">
@@ -219,11 +220,11 @@ function Home() {
         <div className="mx-auto max-w-[1440px] px-5 py-28 sm:px-8 lg:px-12 lg:py-40">
           <div className="reveal grid gap-8 lg:grid-cols-[.7fr_1.3fr] lg:gap-24">
             <div>
-              <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-accent">02 / Capability index</p>
-              <h2 className="mt-5 max-w-[440px] font-display text-6xl leading-[.88] tracking-[-.04em] sm:text-8xl">Useful<br /><em>range.</em></h2>
+              <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-accent">02 / Skills</p>
+              <h2 className="mt-5 max-w-[440px] font-display text-6xl leading-[.88] tracking-[-.04em] sm:text-8xl">Technical<br /><em>range.</em></h2>
             </div>
             <div className="flex items-end">
-              <p className="max-w-[520px] text-sm leading-relaxed text-muted-foreground">A strong portfolio does more than list tools. It shows how knowledge moves from question to decision to something another person can use.</p>
+              <p className="max-w-[520px] text-sm leading-relaxed text-muted-foreground">Tools matter less than what they are pointed at. These are the four areas where I have shipped something a team relied on.</p>
             </div>
           </div>
           <div className="capability-list mt-16">
@@ -244,7 +245,7 @@ function Home() {
       <section id="practice" className="bg-primary text-primary-foreground">
         <div className="mx-auto grid max-w-[1440px] gap-14 px-5 py-28 sm:px-8 lg:grid-cols-[.85fr_1.15fr] lg:gap-28 lg:px-12 lg:py-40">
           <div className="reveal">
-            <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-secondary">02 / How I work</p>
+            <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-secondary">03 / How I work</p>
             <h2 className="mt-5 max-w-[420px] font-display text-6xl leading-[.88] tracking-[-.04em] sm:text-8xl">A practice,<br /><em>not a pitch.</em></h2>
             <p className="mt-8 max-w-[320px] text-sm leading-relaxed text-primary-foreground/60">{portfolioProfile.statement}</p>
           </div>
@@ -259,7 +260,7 @@ function Home() {
               </div>
             ))}
             <div className="reveal flex items-center gap-3 border-t border-primary-foreground/20 pt-7 font-mono-ui text-[10px] uppercase tracking-[.14em] text-primary-foreground/55">
-              <span className="h-2 w-2 rounded-full bg-secondary" /> Available for thoughtful collaborations
+              <span className="h-2 w-2 rounded-full bg-secondary" /> Open to 2027 new grad software roles
             </div>
           </div>
         </div>
@@ -268,10 +269,10 @@ function Home() {
       <section id="notes" className="mx-auto max-w-[1440px] px-5 py-28 sm:px-8 lg:px-12 lg:py-40">
         <div className="reveal flex flex-col justify-between gap-7 md:flex-row md:items-end">
           <div>
-            <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-accent">03 / Notes to self</p>
-            <h2 className="mt-5 font-display text-6xl leading-[.88] tracking-[-.04em] sm:text-8xl">Thinking<br /><em>out loud.</em></h2>
+            <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-accent">04 / Experience</p>
+            <h2 className="mt-5 font-display text-6xl leading-[.88] tracking-[-.04em] sm:text-8xl">Where I<br /><em>have worked.</em></h2>
           </div>
-          <p className="max-w-[280px] text-sm leading-relaxed text-muted-foreground">A small corner for unfinished thoughts. No hot takes required.</p>
+          <p className="max-w-[280px] text-sm leading-relaxed text-muted-foreground">Three roles so far, each one shipping something other people had to rely on.</p>
         </div>
         <div className="mt-16 grid border-t border-border md:grid-cols-3">
           {notes.map((note, index) => (
@@ -282,7 +283,7 @@ function Home() {
               </div>
               <h3 className="mt-10 max-w-[240px] font-display text-4xl leading-[.95]">{note.title}</h3>
               <p className="mt-5 max-w-[290px] text-sm leading-relaxed text-muted-foreground">{note.copy}</p>
-              <div className="mt-8 flex items-center gap-2 font-mono-ui text-[9px] uppercase tracking-[.12em] text-muted-foreground"><span className="h-px w-6 bg-border" /> Drafting room</div>
+              <div className="mt-8 flex items-center gap-2 font-mono-ui text-[9px] uppercase tracking-[.12em] text-muted-foreground"><span className="h-px w-6 bg-border" /> Role summary</div>
             </article>
           ))}
         </div>
@@ -291,17 +292,17 @@ function Home() {
       <section id="about" className="border-y border-border bg-[#e6d7ba]">
         <div className="mx-auto grid max-w-[1440px] gap-14 px-5 py-28 sm:px-8 lg:grid-cols-[.7fr_1.3fr] lg:gap-24 lg:px-12 lg:py-36">
           <div className="reveal">
-            <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-accent">04 / A little context</p>
+            <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-accent">05 / A little context</p>
             <div className="mt-8 flex h-24 w-24 items-center justify-center rounded-full border border-primary bg-secondary font-display text-4xl">{portfolioProfile.monogram}</div>
           </div>
           <div className="reveal reveal-delay-1">
-            <p className="max-w-[800px] font-display text-5xl leading-[.92] tracking-[-.04em] sm:text-7xl">I care about the moment an idea stops being abstract and starts being useful.</p>
+            <p className="max-w-[800px] font-display text-5xl leading-[.92] tracking-[-.04em] sm:text-7xl">I like the moment a model stops being a notebook experiment and becomes something a team depends on.</p>
             <div className="mt-12 grid gap-7 border-t border-primary/20 pt-7 sm:grid-cols-2">
-              <p className="text-sm leading-relaxed text-primary/70">This is the space for the human version of the bio: a few specifics, a point of view, and the things that make the work feel like it came from a person.</p>
+              <p className="text-sm leading-relaxed text-primary/70">I study Computational Modeling and Data Analytics at Virginia Tech, graduating in May 2027. Most of my time goes to computer vision and the engineering around it, and the rest to fantasy football arguments I am usually right about.</p>
               <div className="space-y-4 font-mono-ui text-[10px] uppercase tracking-[.12em] text-primary/65">
-                <p><span className="text-accent">Currently:</span> collecting the right details</p>
-                <p><span className="text-accent">Usually:</span> asking one more question</p>
-                <p><span className="text-accent">Believes:</span> clarity is a creative act</p>
+                <p><span className="text-accent">Currently:</span> AI/ML engineering intern at Edrevel AI</p>
+                <p><span className="text-accent">Studying:</span> CMDA at Virginia Tech, May 2027</p>
+                <p><span className="text-accent">Certified:</span> AWS Solutions Architect Associate</p>
               </div>
             </div>
           </div>
@@ -312,10 +313,10 @@ function Home() {
         <div className="mx-auto max-w-[1440px] px-5 py-28 sm:px-8 lg:px-12 lg:py-40">
           <div className="reveal grid gap-12 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
-              <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] opacity-60">05 / Make contact</p>
+              <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] opacity-60">06 / Make contact</p>
               <h2 className="mt-6 max-w-[850px] font-display text-[clamp(4rem,9vw,9rem)] leading-[.8] tracking-[-.06em]">Have a good<br /><em>question?</em></h2>
             </div>
-            <p className="max-w-[260px] text-sm leading-relaxed opacity-70">A hello, a half-formed idea, or a project that needs a calm second brain.</p>
+            <p className="max-w-[260px] text-sm leading-relaxed opacity-70">A hello, a role you think I would fit, or a project that needs another set of hands.</p>
           </div>
           <div className="reveal reveal-delay-1 mt-16 flex flex-col gap-4 border-t border-accent-foreground/25 pt-6 sm:flex-row sm:items-center">
             <button type="button" onClick={copyEmail} data-testid="button-copy-email" className="magnetic-link inline-flex items-center gap-3 text-left font-mono-ui text-xs font-bold uppercase tracking-[.1em]">
@@ -337,6 +338,9 @@ function Home() {
             ) : (
               <button type="button" onClick={() => setResumeOpen(true)} data-testid="button-github-slot" className="inline-flex items-center gap-2 text-primary-foreground/65 transition hover:text-secondary"><Github size={14} /> GitHub slot</button>
             )}
+            {portfolioProfile.linkedinUrl ? (
+              <a href={portfolioProfile.linkedinUrl} target="_blank" rel="noreferrer" data-testid="link-linkedin-profile" className="inline-flex items-center gap-2 text-primary-foreground/65 transition hover:text-secondary"><Linkedin size={14} /> LinkedIn</a>
+            ) : null}
             <a href="#top" data-testid="link-back-top" className="inline-flex items-center gap-2 text-secondary">Back to top <ArrowUp size={14} /></a>
           </div>
         </div>
@@ -348,11 +352,11 @@ function Home() {
             <div className="flex items-start justify-between">
               <div>
                 <p className="font-mono-ui text-[10px] uppercase tracking-[.16em] text-accent">Resume</p>
-                <h2 id="resume-dialog-title" className="mt-3 font-display text-5xl leading-none">Details,<br /><em>soon.</em></h2>
+                <h2 id="resume-dialog-title" className="mt-3 font-display text-5xl leading-none">Resume,<br /><em>on request.</em></h2>
               </div>
               <button type="button" onClick={() => setResumeOpen(false)} data-testid="button-close-resume" className="flex h-9 w-9 items-center justify-center border border-border"><X size={16} /></button>
             </div>
-            <p className="mt-7 text-sm leading-relaxed text-muted-foreground">The resume PDF is intentionally waiting for the real work history. In the meantime, start with a conversation and I will share the right context.</p>
+            <p className="mt-7 text-sm leading-relaxed text-muted-foreground">Happy to send the current PDF straight over. Email me and I will reply with the latest version.</p>
             {portfolioProfile.resumeUrl ? (
               <a href={portfolioProfile.resumeUrl} target="_blank" rel="noreferrer" onClick={() => setResumeOpen(false)} data-testid="link-resume-download" className="mt-7 flex items-center justify-between bg-primary px-4 py-3 text-xs font-bold uppercase tracking-[.1em] text-primary-foreground">Open resume <Download size={16} /></a>
             ) : (

@@ -1,62 +1,63 @@
 export const portfolioProfile = {
-  name: 'Your Name',
-  monogram: 'YN',
-  role: 'Independent technologist',
-  location: 'Based wherever the interesting problems are.',
+  name: 'Nihal Sirivolu',
+  monogram: 'NS',
+  role: 'AI/ML engineering intern and CMDA student at Virginia Tech',
+  location: 'Blacksburg, VA',
   intro:
-    'I make digital products clearer, more useful, and a little more human.',
+    'I build computer vision and machine learning systems that hold up outside a notebook: video pipelines, model serving, and the plumbing around them.',
   statement:
-    'A thoughtful builder for the space between a sharp idea and a thing people can actually use.',
-  availability: 'Open to select collaborations',
-  email: 'hello@yourname.example',
-  resumeLabel: 'Resume PDF — coming soon',
-  githubLabel: 'GitHub profile — link pending',
+    'Applied ML with an engineering spine. A model is only useful when its output can be traced, reviewed, and trusted by the person downstream.',
+  availability: 'Open to 2027 new grad software roles',
+  email: 'sirivolun@gmail.com',
+  resumeLabel: 'Resume available on request',
+  githubLabel: 'github.com/nsirivolu27',
   resumeUrl: '',
-  githubUrl: '',
-  photoStatus: 'Portrait photo — coming soon',
+  githubUrl: 'https://github.com/nsirivolu27',
+  linkedinUrl: 'https://www.linkedin.com/in/nihalsirivolu',
+  photoStatus: 'Portrait photo coming soon',
 };
 
 export const navItems = [
-  { label: 'Work', href: '#work' },
-  { label: 'Capabilities', href: '#capabilities' },
+  { label: 'Projects', href: '#work' },
+  { label: 'Skills', href: '#capabilities' },
   { label: 'Practice', href: '#practice' },
-  { label: 'Notes', href: '#notes' },
+  { label: 'Experience', href: '#notes' },
   { label: 'About', href: '#about' },
 ];
 
 export const projects = [
   {
-    id: 'project-one',
+    id: 'lnkz',
     index: '01',
-    title: 'Project name goes here',
-    type: 'Product / direction',
+    title: 'LNKZ MCP Server',
+    type: 'Open source / MCP infrastructure',
     description:
-      'A concise description will live here once the project details are ready. Use this space for the problem, the point of view, and the part you shaped.',
-    tags: ['Strategy', 'Interface', 'Build'],
+      'An MCP server for personal AI workflows, exposing 24+ tools for conversation import, search, and secure handoffs so compatible LLM clients can reuse context across sessions. Deployed with Docker, GitHub Actions, and AWS CDK over App Runner and private RDS Postgres.',
+    tags: ['MCP', 'Node.js', 'AWS CDK'],
     accent: 'lime',
-    githubUrl: '',
+    githubUrl: 'https://github.com/nsirivolu27/LNKZ',
     demoUrl: '',
   },
   {
-    id: 'project-two',
+    id: 'rsna-knee',
     index: '02',
-    title: 'Another good idea',
-    type: 'Tool / experiment',
+    title: 'RSNA Knee Abnormality Detection',
+    type: 'Kaggle / multimodal ML',
     description:
-      'A starter project card with room for a strong image, a crisp outcome, and just enough context to invite a deeper conversation.',
-    tags: ['Systems', 'Prototype', 'Research'],
+      'A multimodal pipeline for knee MRI abnormality classification that pairs DICOM preprocessing and image augmentation with multilingual radiology report normalization. Image only, text only, and combined baselines were compared under cross validation, reaching 78% accuracy.',
+    tags: ['PyTorch', 'DICOM', 'NLP'],
     accent: 'tomato',
-    githubUrl: '',
+    githubUrl: 'https://github.com/nsirivolu27/rsna-knee-abnormality-detection',
     demoUrl: '',
   },
   {
-    id: 'project-three',
+    id: 'hyperspectral-tracking',
     index: '03',
-    title: 'Something worth sharing',
-    type: 'Open-ended / in progress',
+    title: 'Hyperspectral Object Tracking',
+    type: 'Research / competition',
     description:
-      'Replace this starter content with a project that says something true about how you think, not only what you shipped.',
-    tags: ['Writing', 'Making', 'Learning'],
+      'An entry in the Hyperspectral Object Tracking Challenge 2026, merged with an undergraduate independent research project at Virginia Tech toward a single competition submission and a paper.',
+    tags: ['Computer vision', 'Hyperspectral', 'Tracking'],
     accent: 'ochre',
     githubUrl: '',
     demoUrl: '',
@@ -64,40 +65,67 @@ export const projects = [
 ];
 
 export const strengths = [
-  { number: '01', title: 'Make the complex legible', copy: 'Turning dense systems, ambiguous asks, and competing needs into a clear next move.' },
-  { number: '02', title: 'Stay close to the material', copy: 'Design, code, research, and language all belong in the same working session.' },
-  { number: '03', title: 'Leave things better', copy: 'Useful artifacts, generous handoffs, and systems that keep working after launch.' },
+  {
+    number: '01',
+    title: 'Auditable by default',
+    copy: 'Detections ship with bounding boxes, timestamps, scene assignments, and confidence metadata, so a reviewer can retrace any decision the model made.',
+  },
+  {
+    number: '02',
+    title: 'Automate the tedious parts',
+    copy: 'Model evaluations and test failures open and update their own Jira issues with evidence attached, which keeps traceability intact without anyone filing tickets by hand.',
+  },
+  {
+    number: '03',
+    title: 'Test what ships',
+    copy: 'Production data contracts, documentation, and a suite of 600+ automated checks, because a pipeline nobody trusts is a pipeline nobody uses.',
+  },
 ];
 
 export const capabilityIndex = [
   {
     number: '01',
-    title: 'Frame the problem',
-    copy: 'Turn a loose brief, noisy system, or unfamiliar domain into a sharper question and a useful direction.',
-    proof: 'Research / strategy / writing',
+    title: 'Computer vision',
+    copy: 'Open vocabulary detection, persistent tracking, segmentation, and keyframe extraction across video, plus DICOM and hyperspectral imagery outside the usual RGB comfort zone.',
+    proof: 'PyTorch / OpenCV / YOLO / SAM-2 / MediaPipe',
   },
   {
     number: '02',
-    title: 'Think in systems',
-    copy: 'See the relationships between people, data, interfaces, and the rules that make a product hold together.',
-    proof: 'Architecture / workflows / interaction',
+    title: 'Backend and serving',
+    copy: 'Wrapping inference in APIs that other teams can actually call, with containers, storage, and reviewer workflows around them.',
+    proof: 'FastAPI / Docker / AWS / PostgreSQL',
   },
   {
     number: '03',
-    title: 'Make the thing',
-    copy: 'Move comfortably from concept to prototype to working software, keeping the important details intact.',
-    proof: 'Prototyping / code / iteration',
+    title: 'Data and modeling',
+    copy: 'Ingestion, cleaning, and the statistics underneath: cross validation, class imbalance, threshold calibration, and dashboards people read without a translator.',
+    proof: 'Python / R / SQL / Pandas / Power BI',
   },
   {
     number: '04',
-    title: 'Explain the why',
-    copy: 'Make complex work legible to the people who need to use it, fund it, review it, or build on it next.',
-    proof: 'Communication / documentation / handoff',
+    title: 'Mobile and wearables',
+    copy: 'Android apps that capture images, take voice input, and speak back, including camera streaming from Ray-Ban Meta smart glasses.',
+    proof: 'Kotlin / Jetpack Compose / Meta MWDAT',
   },
 ];
 
 export const notes = [
-  { number: '01', kind: 'Note / coming soon', title: 'A small theory of useful friction', copy: 'A place for working notes, field observations, and ideas still becoming sentences.' },
-  { number: '02', kind: 'Field note / coming soon', title: 'What a good tool makes possible', copy: 'Short essays will appear here when there is something worth adding to the room.' },
-  { number: '03', kind: 'Reading list / coming soon', title: 'Things I keep returning to', copy: 'References, questions, and rabbit holes — collected without pretending to be definitive.' },
+  {
+    number: '01',
+    kind: 'Edrevel AI / Jun 2026 to now',
+    title: 'AI/ML Engineering Intern',
+    copy: 'End to end computer vision pipeline for a workforce training compliance platform, extracting objects, people, hand interactions, and task evidence from video, served through FastAPI, Docker, and AWS.',
+  },
+  {
+    number: '02',
+    kind: 'IDPro, Virginia Tech / Aug 2026 to now',
+    title: 'AI Tourism Research',
+    copy: 'An Android app for AI powered tourism in Kotlin and Jetpack Compose, integrating Ray-Ban Meta smart glasses for camera streaming and photo capture, with spoken responses from cloud AI services.',
+  },
+  {
+    number: '03',
+    kind: '4SightAI / Jun to Aug 2025',
+    title: 'Automation and Cloud Engineering Intern',
+    copy: 'Real time ingestion services for health, exercise, and business data behind two AI copilot platforms, cutting processing latency by 45%, plus Lambda, S3, and DynamoDB workflows with vector retrieval.',
+  },
 ];
