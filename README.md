@@ -44,9 +44,9 @@ Resume and all public projects lead the navigation and homepage. The background 
 
 ## Investing: percentage-only snapshots and owner sync
 
-The owner narrowed publication to gain/loss percentages. The screenshot supplied October 22, 2026 contains unrealized +127.58%, realized +7.43%, and day change -3.18%. Its valuation date is unknown, so the page labels the supplied date and never calls it today's performance. No account email, holdings, balances, dollar amounts, or screenshot assets are stored. Returns are not summed or annualized.
+The owner narrowed publication to gain/loss percentages. The signed-in Yahoo summary was captured and synced on October 22, 2026 at 8:57:40 PM EDT: unrealized +127.58%, realized +7.43%, and day change -3.18%. The live parser, owner preview/publish form, public API, page reload and Refresh snapshot were verified against this capture. The same sanitized capture is saved as the static fallback. The date is a capture timestamp, not a claimed return period. No account email, holdings, balances, dollar amounts, or screenshot assets are stored. Returns are not summed or annualized.
 
-Yahoo manually tracked portfolios have no documented public portfolio API available to this implementation. This is an **owner-triggered browser capture**, not Yahoo OAuth or a continuous account connection. No private Yahoo endpoints, passwords, or cookies are used. Actual signed-in Yahoo capture still needs validation with the owner's browser; markup changes fail closed instead of guessing. A local paste fallback handles browsers that block bookmarklets.
+Yahoo manually tracked portfolios have no documented public portfolio API available to this implementation. This is an **owner-triggered browser capture**, not Yahoo OAuth or a continuous account connection. No private Yahoo endpoints, passwords, or cookies are used. The parser was verified against the owner's signed-in Yahoo page. Markup changes fail closed instead of guessing. Bookmark drag/drop and execution inside Yahoo remain browser-dependent; the real-data test used the same parser and the owner form directly. A local paste fallback handles browsers that block bookmarklets.
 
 Local setup (after `npm run build`):
 
@@ -65,7 +65,7 @@ For production, run the built Express server alongside the frontend and route `/
 - `PORTFOLIO_ORIGIN`: the exact public HTTPS origin (no path or trailing slash).
 - `PORT`: API listen port; optional `HOST` defaults to `0.0.0.0`.
 
-Use one API writer process for the file-backed store. Production hosting without durable storage needs a persistent store before enabling sync. Never put the owner key in a Vite environment variable or commit `.local`. A static-only deployment continues to show the saved screenshot snapshot and cannot accept updates.
+Use one API writer process for the file-backed store. Production hosting without durable storage needs a persistent store before enabling sync. Never put the owner key in a Vite environment variable or commit `.local`. A static-only deployment continues to show the last saved capture and cannot accept updates.
 
 `npm test` checks extraction, fail-closed privacy boundaries, bookmark execution and public content. After building, `npm run test:api` exercises real HTTP authorization, strict schemas, freshness, persistence, rejected-write preservation and restart behavior with disposable synthetic data.
 
