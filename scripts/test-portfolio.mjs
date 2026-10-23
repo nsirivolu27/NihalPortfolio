@@ -18,6 +18,14 @@ const test = (name, fn) => {
 };
 const summary =
   "All Portfolio Holdings\n$999.00\nDay Change\n-$1.00 (-3.18%)\nUnrealized Gain/Loss\n+$2.00 (+127.58%)\nRealized Gain/Loss\n+$3.00 (+7.43%)";
+test("GitHub refresh preserves archived status and valid push dates without inventing missing dates", () => {
+  const repo = { name: "Magentic.AI", owner: { login: "nsirivolu27" }, private: false, html_url: "https://github.com/nsirivolu27/Magentic.AI", archived: true, pushed_at: "2026-10-23T00:00:00Z" };
+  const [result] = normalizeRepositories([repo]);
+  assert.equal(result.archived, true);
+  assert.equal(result.pushedAt, repo.pushed_at);
+  assert.equal(normalizeRepositories([{ ...repo, pushed_at: null }])[0].pushedAt, undefined);
+  assert.equal(normalizeRepositories([{ ...repo, pushed_at: "not a date" }])[0].pushedAt, undefined);
+});
 test("Yahoo summary exports only three percentages, never amounts", () => {
   assert.deepEqual(extractYahooPercentages(summary), {
     unrealized: 127.58,

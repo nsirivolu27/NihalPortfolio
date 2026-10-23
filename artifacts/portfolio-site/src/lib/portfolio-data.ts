@@ -21,6 +21,7 @@ export const portfolioProfile = {
 export const navItems = [
   { label: 'Resume', href: portfolioProfile.resumeUrl },
   { label: 'Projects', href: '#work' },
+  { label: 'Featured', href: 'featured' },
   { label: 'Skills', href: '#capabilities' },
   { label: 'Experience', href: '#notes' },
   { label: 'About', href: '#about' },

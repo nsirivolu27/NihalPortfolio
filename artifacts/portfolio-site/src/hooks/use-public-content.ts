@@ -28,7 +28,10 @@ export function useRepositories() {
     },
     initialData: savedRepos,
     initialDataUpdatedAt: Date.parse(savedRepos.updatedAt),
-    staleTime: 10 * 60 * 1000,
+    staleTime: 5 * 60 * 1000,
+    refetchInterval: 5 * 60 * 1000,
+    refetchIntervalInBackground: false,
+    refetchOnWindowFocus: true,
     retry: false,
   });
 }

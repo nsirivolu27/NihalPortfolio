@@ -49,6 +49,7 @@ export function PageShell({
               Resume ↗
             </a>
             <Link href="/projects">Projects</Link>
+            <Link href="/featured">Featured</Link>
             <Link href="/">Experience & about</Link>
             <Link href="/writing">Writing</Link>
             <Link href="/investing">Investing</Link>

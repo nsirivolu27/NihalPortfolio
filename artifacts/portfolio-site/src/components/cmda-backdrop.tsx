@@ -1,5 +1,8 @@
+import { ProjectScene, type SceneState } from "./project-scene";
+
 /** Decorative computing/economics diagrams; no live market or account data. */
-export function CmdaBackdrop() {
+export function CmdaBackdrop({ scene = null }: { scene?: SceneState | null }) {
+  if (scene) return <div className="cmda-backdrop featured-ambient" data-theme={scene.theme} aria-hidden="true"><ProjectScene {...scene} /></div>;
   return (
     <div className="cmda-backdrop" aria-hidden="true">
       <svg viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice">

@@ -42,6 +42,7 @@ export function RepositoryGrid({ items }: { items: Repository[] }) {
           >
             Explore {repo.name}
           </a>
+          {repo.pushedAt && <p className="mt-4 text-xs text-muted-foreground">Last push <time dateTime={repo.pushedAt}>{new Date(repo.pushedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</time></p>}
         </article>
       ))}
     </div>

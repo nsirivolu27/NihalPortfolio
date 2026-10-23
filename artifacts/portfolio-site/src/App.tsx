@@ -8,12 +8,15 @@ import Projects from '@/pages/projects';
 import Writing from '@/pages/writing';
 import Investing from '@/pages/investing';
 import InvestingSync from '@/pages/investing-sync';
+import Featured from '@/pages/featured';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useRepositories } from '@/hooks/use-public-content';
 import { RepositoryGrid } from '@/components/repository-grid';
 import { SourceStatus } from '@/components/page-shell';
 import { education, technicalSkills } from '@/lib/portfolio-data';
 import { CmdaBackdrop, ModelSketch } from '@/components/cmda-backdrop';
+import { FeaturedProjects } from '@/components/featured-projects';
+import type { SceneState } from '@/components/project-scene';
 import {
   ArrowDown,
   ArrowUp,
@@ -62,6 +65,7 @@ function useReveal() {
 function Home() {
   const pageRef = useReveal();
   const repositories = useRepositories();
+  const [featuredScene, setFeaturedScene] = useState<SceneState | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -87,7 +91,7 @@ function Home() {
 
   return (
     <main ref={pageRef} className="portfolio-shell min-h-[100dvh] bg-background text-foreground grain">
-      <CmdaBackdrop />
+      <CmdaBackdrop scene={featuredScene} />
       <a href="#top" className="skip-link">Skip to content</a>
       <header className="fixed left-0 right-0 top-0 z-30 border-b border-border/80 bg-background/90 backdrop-blur-md">
         <div className="mx-auto flex h-[4.5rem] max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12">
@@ -177,6 +181,8 @@ function Home() {
           {[...Array(2)].flatMap((_, copyIndex) => ['Computational modeling', 'Data analytics', 'Statistical thinking', 'Applied machine learning'].map((label, index) => <span key={`${copyIndex}-${index}`} className="flex items-center gap-8"><span>{label}</span><span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-secondary" /></span>))}
         </div>
       </div>
+
+      <FeaturedProjects items={repositories.data.items} onSceneChange={setFeaturedScene} />
 
       <section id="work" className="page-width py-24 sm:py-32">
         <div className="mb-12 flex flex-col justify-between gap-7 md:flex-row md:items-end">
@@ -368,6 +374,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/projects" component={Projects} />
+        <Route path="/featured" component={Featured} />
         <Route path="/writing" component={Writing} />
         <Route path="/investing" component={Investing} />
         <Route path="/investing/sync" component={InvestingSync} />

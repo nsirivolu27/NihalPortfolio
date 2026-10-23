@@ -5,6 +5,7 @@ export type Repository = {
   language: string;
   archived: boolean;
   fork: boolean;
+  pushedAt?: string;
 };
 
 export type BlogPost = { title: string; url: string; published: string };
@@ -41,6 +42,9 @@ export function normalizeRepositories(value: unknown): Repository[] {
           typeof repo.language === "string" ? repo.language : "Not specified",
         archived: repo.archived === true,
         fork: repo.fork === true,
+        ...(typeof repo.pushed_at === "string" && Number.isFinite(Date.parse(repo.pushed_at))
+          ? { pushedAt: repo.pushed_at }
+          : {}),
       };
     })
     .sort((a, b) => a.name.localeCompare(b.name));
