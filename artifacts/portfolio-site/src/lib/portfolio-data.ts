@@ -4,7 +4,7 @@ export const portfolioProfile = {
   role: 'AI/ML engineer and CMDA student at Virginia Tech',
   location: 'Blacksburg, VA',
   intro:
-    'I build computer vision and machine learning systems that hold up outside a notebook: video pipelines, model serving, and the plumbing around them.',
+    'I study Computational Modeling and Data Analytics at Virginia Tech. My work brings together mathematics, statistics, and computing to understand complex systems and solve practical problems.',
   statement:
     'Applied ML with an engineering spine. A model is only useful when its output can be traced, reviewed, and trusted by the person downstream.',
   availability: 'Open to 2027 new grad software roles',

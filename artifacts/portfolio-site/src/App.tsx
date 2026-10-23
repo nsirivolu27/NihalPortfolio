@@ -440,8 +440,8 @@ function Home() {
           </div>
           <div className="reveal reveal-delay-1">
             <p className="max-w-[800px] font-display text-5xl leading-[.92] tracking-[-.04em] sm:text-7xl">
-              I like the moment a model stops being a notebook experiment and
-              becomes something a team depends on.
+              I’m interested in how data and mathematical models can explain
+              complex systems and inform better decisions.
             </p>
             <div className="mt-12 grid gap-7 border-t border-primary/20 pt-7 sm:grid-cols-2">
               <p className="text-sm leading-relaxed text-primary/70">
