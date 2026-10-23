@@ -4,6 +4,11 @@ import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
+import Projects from '@/pages/projects';
+import Writing from '@/pages/writing';
+import Investing from '@/pages/investing';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { education } from '@/lib/portfolio-data';
 import {
   ArrowDown,
   ArrowUp,
@@ -76,6 +81,7 @@ function Home() {
 
   return (
     <main ref={pageRef} className="portfolio-shell min-h-[100dvh] bg-background text-foreground grain">
+      <a href="#top" className="skip-link">Skip to content</a>
       <header className="fixed left-0 right-0 top-0 z-30 border-b border-border/80 bg-background/90 backdrop-blur-md">
         <div className="mx-auto flex h-[4.5rem] max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12">
           <a href="#top" data-testid="link-home" className="group flex items-center gap-3">
@@ -149,10 +155,10 @@ function Home() {
                 <div>
                   <div className="mb-4 h-px w-12 bg-secondary" />
                   <p className="max-w-[200px] font-display text-4xl leading-[.95]">Applied ML, practical engineering.</p>
-                  <p className="mt-4 max-w-[230px] text-xs leading-relaxed text-primary-foreground/65">A portrait will replace this placeholder soon.</p>
+                  <p className="mt-4 max-w-[230px] text-xs leading-relaxed text-primary-foreground/65">Virginia Tech · Class of 2027<br />Engineer. Researcher. Writer.<br />Curious about what comes next.</p>
                 </div>
               </div>
-              <span className="signal-stamp">Replace with photo</span>
+              <span className="signal-stamp">Always building / Always learning</span>
             </div>
           </div>
         </div>
@@ -187,7 +193,7 @@ function Home() {
         <div className="grid gap-5 lg:grid-cols-12">
           {projects.map((project, index) => (
             <article key={project.id} data-testid={`card-project-${project.id}`} className={`project-card reveal reveal-delay-${index + 1} group ${index === 0 ? 'lg:col-span-7' : index === 1 ? 'lg:col-span-5' : 'lg:col-span-6 lg:col-start-4'}`}>
-              <div className={`project-visual relative flex aspect-[1.2/1] flex-col justify-between overflow-hidden border border-primary/15 p-6 sm:p-8 ${project.accent === 'lime' ? 'bg-secondary text-primary' : project.accent === 'tomato' ? 'bg-accent text-accent-foreground' : 'bg-[#d6ab62] text-primary'}`}>
+              <div className={`project-visual relative flex aspect-[1.2/1] flex-col justify-between overflow-hidden border border-primary/15 p-6 sm:p-8 ${project.accent === 'lime' ? 'bg-secondary text-primary' : project.accent === 'tomato' ? 'bg-accent text-accent-foreground' : 'tint-ochre'}`}>
                 <div className="flex items-start justify-between">
                   <span className="font-mono-ui text-[10px] font-bold uppercase tracking-[.15em] opacity-65">Project / {project.index}</span>
                   <ArrowUpRight size={20} className="project-arrow" />
@@ -208,13 +214,15 @@ function Home() {
                   <a href={project.demoUrl} target="_blank" rel="noreferrer" data-testid={`link-project-demo-${project.id}`} className="inline-flex items-center gap-1 font-mono-ui text-[9px] font-bold uppercase tracking-[.1em] text-primary transition-colors hover:text-accent">Live demo <ArrowUpRight size={12} /></a>
                 ) : null}
                 {!project.githubUrl && !project.demoUrl ? (
-                  <span data-testid={`status-project-links-${project.id}`} className="font-mono-ui text-[9px] uppercase tracking-[.1em] text-muted-foreground/70">Links pending</span>
+                  <span data-testid={`status-project-links-${project.id}`} className="font-mono-ui text-[9px] uppercase tracking-[.1em] text-muted-foreground/70">Research in progress · No public repository</span>
                 ) : null}
               </div>
             </article>
           ))}
         </div>
       </section>
+
+      <div className="page-width pb-20"><a href="projects" className="action-link">Explore the complete GitHub archive <ArrowUpRight size={18} /></a></div>
 
       <section id="capabilities" className="capability-section">
         <div className="mx-auto max-w-[1440px] px-5 py-28 sm:px-8 lg:px-12 lg:py-40">
@@ -283,13 +291,14 @@ function Home() {
               </div>
               <h3 className="mt-10 max-w-[240px] font-display text-4xl leading-[.95]">{note.title}</h3>
               <p className="mt-5 max-w-[290px] text-sm leading-relaxed text-muted-foreground">{note.copy}</p>
-              <div className="mt-8 flex items-center gap-2 font-mono-ui text-[9px] uppercase tracking-[.12em] text-muted-foreground"><span className="h-px w-6 bg-border" /> Role summary</div>
+              <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">{note.highlights.map((highlight) => <li key={highlight} className="border-l border-accent pl-3">{highlight}</li>)}</ul>
+              <div className="mt-8 font-mono-ui text-[9px] uppercase tracking-[.12em] text-muted-foreground">{note.location}</div>
             </article>
           ))}
         </div>
       </section>
 
-      <section id="about" className="border-y border-border bg-[#e6d7ba]">
+      <section id="about" className="border-y border-border tint-sand">
         <div className="mx-auto grid max-w-[1440px] gap-14 px-5 py-28 sm:px-8 lg:grid-cols-[.7fr_1.3fr] lg:gap-24 lg:px-12 lg:py-36">
           <div className="reveal">
             <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-accent">05 / A little context</p>
@@ -300,14 +309,24 @@ function Home() {
             <div className="mt-12 grid gap-7 border-t border-primary/20 pt-7 sm:grid-cols-2">
               <p className="text-sm leading-relaxed text-primary/70">I study Computational Modeling and Data Analytics at Virginia Tech, graduating in May 2027. Most of my time goes to computer vision and the engineering around it, and the rest to fantasy football arguments I am usually right about.</p>
               <div className="space-y-4 font-mono-ui text-[10px] uppercase tracking-[.12em] text-primary/65">
-                <p><span className="text-accent">Currently:</span> AI/ML engineering intern at Edrevel AI</p>
+                <p><span className="text-accent">Currently:</span> AI Tourism research at Virginia Tech</p>
                 <p><span className="text-accent">Studying:</span> CMDA at Virginia Tech, May 2027</p>
-                <p><span className="text-accent">Certified:</span> AWS Solutions Architect Associate</p>
+                <p><span className="text-accent">Certified:</span> AWS Solutions Architect Associate & Cloud Practitioner</p>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      <section className="page-width py-24" aria-labelledby="education-title">
+        <p className="font-mono-ui text-xs uppercase tracking-wider text-accent">Education & foundations</p>
+        <h2 id="education-title" className="mt-5 font-display text-5xl">Virginia Tech.</h2>
+        <p className="mt-5 text-lg">{education.degree}</p>
+        <p className="mt-2 text-sm text-muted-foreground">{education.school} · {education.date}</p>
+        <div className="mt-10 grid gap-10 md:grid-cols-2"><div><h3 className="font-semibold">Coursework</h3><ul className="mt-4 flex flex-wrap gap-2">{education.coursework.map((course) => <li key={course} className="border border-border px-3 py-2 text-xs text-muted-foreground">{course}</li>)}</ul></div><div><h3 className="font-semibold">Certifications</h3><ul className="mt-4 space-y-3 text-sm text-muted-foreground">{education.certifications.map((certification) => <li key={certification}>{certification}</li>)}</ul><a href={portfolioProfile.linkedinUrl} target="_blank" rel="noreferrer" className="action-link mt-6">View LinkedIn profile <ArrowUpRight size={16} /></a></div></div>
+      </section>
+
+      <section className="border-t border-border bg-card" aria-labelledby="beyond-title"><div className="page-width py-24"><p className="font-mono-ui text-xs uppercase tracking-wider text-accent">Beyond the code</p><h2 id="beyond-title" className="mt-5 font-display text-5xl sm:text-7xl">A few other things<br /><em>I think about.</em></h2><div className="mt-12 grid gap-6 md:grid-cols-2"><a href="writing" className="archive-card group"><span className="font-mono-ui text-xs uppercase tracking-wider text-accent">Writing / 01</span><h3 className="mt-6 font-display text-4xl">Nihal’s Blog About Stuff <ArrowUpRight className="inline" size={24} /></h3><p className="mt-5 text-sm leading-relaxed text-muted-foreground">Companies, technology, hydrogen energy, and the questions behind the headlines. Read the original essays.</p></a><a href="investing" className="archive-card group"><span className="font-mono-ui text-xs uppercase tracking-wider text-accent">Markets / 02</span><h3 className="mt-6 font-display text-4xl">The investing portfolio <ArrowUpRight className="inline" size={24} /></h3><p className="mt-5 text-sm leading-relaxed text-muted-foreground">A separate space for my holdings, allocation, and performance, with dated snapshots from Yahoo Finance.</p></a></div></div></section>
 
       <section id="contact" className="bg-accent text-accent-foreground">
         <div className="mx-auto max-w-[1440px] px-5 py-28 sm:px-8 lg:px-12 lg:py-40">
@@ -346,26 +365,23 @@ function Home() {
         </div>
       </footer>
 
-      {resumeOpen && (
-        <div role="dialog" aria-modal="true" aria-labelledby="resume-dialog-title" onMouseDown={(event) => { if (event.target === event.currentTarget) setResumeOpen(false); }} className="fixed inset-0 z-50 flex items-center justify-center bg-primary/60 p-5 backdrop-blur-sm">
-          <div className="w-full max-w-[440px] border border-border bg-background p-7 shadow-2xl sm:p-9">
+      <Dialog open={resumeOpen} onOpenChange={setResumeOpen}>
+          <DialogContent className="w-full max-w-[440px] border border-border bg-background p-7 shadow-2xl sm:p-9">
             <div className="flex items-start justify-between">
               <div>
                 <p className="font-mono-ui text-[10px] uppercase tracking-[.16em] text-accent">Resume</p>
-                <h2 id="resume-dialog-title" className="mt-3 font-display text-5xl leading-none">Resume,<br /><em>on request.</em></h2>
+                <DialogTitle className="mt-3 font-display text-5xl leading-none">The resume.<br /><em>Ready to read.</em></DialogTitle>
               </div>
-              <button type="button" onClick={() => setResumeOpen(false)} data-testid="button-close-resume" className="flex h-9 w-9 items-center justify-center border border-border"><X size={16} /></button>
             </div>
-            <p className="mt-7 text-sm leading-relaxed text-muted-foreground">Happy to send the current PDF straight over. Email me and I will reply with the latest version.</p>
+            <DialogDescription className="mt-7 text-sm leading-relaxed text-muted-foreground">Experience, research, projects, technical skills, and certifications in one downloadable PDF.</DialogDescription>
             {portfolioProfile.resumeUrl ? (
               <a href={portfolioProfile.resumeUrl} target="_blank" rel="noreferrer" onClick={() => setResumeOpen(false)} data-testid="link-resume-download" className="mt-7 flex items-center justify-between bg-primary px-4 py-3 text-xs font-bold uppercase tracking-[.1em] text-primary-foreground">Open resume <Download size={16} /></a>
             ) : (
               <a href={`mailto:${portfolioProfile.email}`} onClick={() => setResumeOpen(false)} data-testid="link-resume-contact" className="mt-7 flex items-center justify-between bg-primary px-4 py-3 text-xs font-bold uppercase tracking-[.1em] text-primary-foreground">Ask for the current version <ArrowUpRight size={16} /></a>
             )}
             <p className="mt-4 font-mono-ui text-[9px] uppercase tracking-[.12em] text-muted-foreground">{portfolioProfile.resumeLabel}</p>
-          </div>
-        </div>
-      )}
+          </DialogContent>
+      </Dialog>
     </main>
   );
 }
@@ -377,6 +393,9 @@ function Router() {
     <RoutedErrorBoundary>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/projects" component={Projects} />
+        <Route path="/writing" component={Writing} />
+        <Route path="/investing" component={Investing} />
         <Route component={NotFound} />
       </Switch>
     </RoutedErrorBoundary>

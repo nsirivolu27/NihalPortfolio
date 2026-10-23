@@ -47,3 +47,8 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Private financial exports are never source assets.
+quotes*.csv
+*.yahoo.csv
+blog-source.json
