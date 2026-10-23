@@ -1,138 +1,78 @@
-export type Holding = {
-  symbol: string;
-  quantity: number;
-  price: number;
-  costPerShare: number | null;
-};
 export type InvestingSnapshot = {
-  asOf: string | null;
-  currency: string;
-  holdings: Holding[];
+  capturedAt: string;
+  source: "screenshot" | "browser-sync";
+  unrealized: number;
+  realized: number;
+  dayChange: number;
 };
 
-// Yahoo exports quoted fields, including commas and escaped quotes in notes.
-export function parseCsv(text: string): string[][] {
-  const rows: string[][] = [];
-  let row: string[] = [],
-    field = "",
-    quoted = false,
-    closed = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (quoted) {
-      if (c === '"' && text[i + 1] === '"') {
-        field += '"';
-        i++;
-      } else if (c === '"') {
-        quoted = false;
-        closed = true;
-      } else field += c;
-    } else if (c === '"' && field === "" && !closed) quoted = true;
-    else if (c === "," || c === "\n" || c === "\r") {
-      row.push(field.trim());
-      field = "";
-      closed = false;
-      if (c !== ",") {
-        if (row.some(Boolean)) rows.push(row);
-        row = [];
-        if (c === "\r" && text[i + 1] === "\n") i++;
-      }
-    } else {
-      if (closed && c.trim())
-        throw new Error("Unexpected text after a quoted CSV field");
-      if (c === '"') throw new Error("Unexpected quote in CSV field");
-      field += c;
-    }
+export function validateSnapshot(value: unknown): InvestingSnapshot {
+  if (!value || typeof value !== "object" || Array.isArray(value))
+    throw new Error("Invalid snapshot.");
+  const data = value as Record<string, unknown>;
+  const keys = ["capturedAt", "source", "unrealized", "realized", "dayChange"];
+  if (
+    Object.keys(data).length !== keys.length ||
+    Object.keys(data).some((key) => !keys.includes(key))
+  )
+    throw new Error("Only gain/loss percentages may be shared.");
+  if (
+    typeof data.capturedAt !== "string" ||
+    !Number.isFinite(Date.parse(data.capturedAt))
+  )
+    throw new Error("A valid capture date is required.");
+  if (data.source !== "screenshot" && data.source !== "browser-sync")
+    throw new Error("Unknown source.");
+  for (const key of ["unrealized", "realized", "dayChange"]) {
+    if (
+      typeof data[key] !== "number" ||
+      !Number.isFinite(data[key]) ||
+      Math.abs(data[key]) > 1e7
+    )
+      throw new Error("Invalid percentage.");
   }
-  if (quoted) throw new Error("Unclosed quote in CSV");
-  row.push(field.trim());
-  if (row.some(Boolean)) rows.push(row);
-  return rows;
+  return data as InvestingSnapshot;
 }
 
-export function parseYahooHoldings(csv: string): Holding[] {
-  const [headers, ...rows] = parseCsv(csv.replace(/^\uFEFF/, ""));
-  if (!headers || rows.length === 0)
-    throw new Error("The export has no holdings");
-  const normalized = headers.map((header) =>
-    header.toLowerCase().replace(/[^a-z]/g, ""),
-  );
-  const column = (...names: string[]) =>
-    normalized.findIndex((header) => names.includes(header));
-  const symbolIndex = column("symbol", "ticker");
-  const quantityIndex = column("quantity", "shares");
-  const priceIndex = column("currentprice", "lastprice", "price");
-  const costIndex = column("purchaseprice", "costpershare");
-  const currencyIndex = column("currency");
-  if ([symbolIndex, quantityIndex, priceIndex].some((index) => index < 0)) {
-    throw new Error(
-      "Export must include Symbol, Quantity, and Current Price columns",
+// Self-contained so the bookmark can run this parser on the visible Yahoo page.
+export function extractYahooPercentages(text: string) {
+  const normalized = text.replace(/\u2212/g, "-").replace(/\u00a0/g, " ");
+  const read = (label: string) => {
+    const pattern = new RegExp(
+      `(?:^|\\n)\\s*${label}\\s*\\n\\s*[+-]?\\$?[\\d,.]+\\s*\\(\\s*([+-]?[\\d,.]+)\\s*%\\s*\\)`,
+      "gi",
     );
-  }
-  const number = (value: string | undefined, label: string) => {
-    const cleaned = (value ?? "").trim().replace(/[$,]/g, "");
-    if (!/^\d+(\.\d+)?$/.test(cleaned) || !Number.isFinite(Number(cleaned))) {
-      throw new Error(`${label} must be a nonnegative number`);
-    }
-    return Number(cleaned);
-  };
-  const lots = new Map<string, Holding>();
-  for (const [index, row] of rows.entries()) {
-    if (row.length !== headers.length)
-      throw new Error(`CSV row ${index + 2} has the wrong number of columns`);
-    const symbol = row[symbolIndex].toUpperCase();
-    if (!/^[A-Z0-9^][A-Z0-9.^=/-]{0,24}$/.test(symbol))
-      throw new Error(`Invalid symbol on row ${index + 2}`);
-    if (currencyIndex >= 0 && row[currencyIndex].toUpperCase() !== "USD") {
+    const matches = [...normalized.matchAll(pattern)];
+    if (matches.length !== 1)
       throw new Error(
-        "Only USD-priced exports are supported; convert foreign currency before importing",
+        `Open the All Portfolio Holdings summary. Could not uniquely read ${label}.`,
       );
-    }
-    const quantity = number(row[quantityIndex], `${symbol} quantity`);
-    if (quantity === 0) continue;
-    const price = number(row[priceIndex], `${symbol} current price`);
-    const rawCost = costIndex < 0 ? "" : row[costIndex];
-    const costPerShare =
-      !rawCost || /^(n\/a|--|-)$/i.test(rawCost)
-        ? null
-        : number(rawCost, `${symbol} purchase price`);
-    const existing = lots.get(symbol);
-    if (existing) {
-      if (existing.price !== price)
-        throw new Error(
-          `Conflicting current prices for ${symbol}; use one valuation time`,
-        );
-      existing.costPerShare =
-        existing.costPerShare === null || costPerShare === null
-          ? null
-          : (existing.costPerShare * existing.quantity +
-              costPerShare * quantity) /
-            (existing.quantity + quantity);
-      existing.quantity += quantity;
-    } else lots.set(symbol, { symbol, quantity, price, costPerShare });
-  }
-  if (!lots.size) throw new Error("No positive holdings found");
-  return [...lots.values()].sort((a, b) => a.symbol.localeCompare(b.symbol));
+    const value = Number(matches[0][1].replace(/,/g, ""));
+    if (!Number.isFinite(value))
+      throw new Error(`Invalid ${label} percentage.`);
+    return value;
+  };
+  return {
+    unrealized: read("Unrealized Gain/Loss"),
+    realized: read("Realized Gain/Loss"),
+    dayChange: read("Day Change"),
+  };
 }
 
-export function summarizeHoldings(holdings: Holding[]) {
-  const marketValue = holdings.reduce(
-    (sum, item) => sum + item.quantity * item.price,
-    0,
-  );
-  const completeCost =
-    holdings.length > 0 && holdings.every((item) => item.costPerShare !== null);
-  const cost = completeCost
-    ? holdings.reduce(
-        (sum, item) => sum + item.quantity * item.costPerShare!,
-        0,
-      )
-    : null;
-  const gain = cost === null ? null : marketValue - cost;
-  return {
-    marketValue,
-    cost,
-    gain,
-    returnPercent: cost === null || cost === 0 ? null : (gain! / cost) * 100,
-  };
+export function formatPercent(value: number) {
+  return `${value > 0 ? "+" : ""}${value.toFixed(2)}%`;
+}
+
+export function buildYahooBookmark(destination: string) {
+  const url = new URL(destination);
+  if (
+    url.protocol !== "https:" &&
+    !(
+      url.protocol === "http:" &&
+      ["localhost", "127.0.0.1"].includes(url.hostname)
+    )
+  )
+    throw new Error("Use HTTPS or a local preview.");
+  // A URL fragment never sends the captured data to the server in a request URL.
+  return `javascript:(()=>{try{if(location.hostname!=="finance.yahoo.com"||!location.pathname.startsWith("/portfolios"))throw Error("Open your Yahoo Finance portfolio summary first.");const read=${extractYahooPercentages.toString()};const snapshot={...read(document.body.innerText),capturedAt:new Date().toISOString(),source:"browser-sync"};window.open(${JSON.stringify(url.href)}+"#snapshot="+encodeURIComponent(JSON.stringify(snapshot)),"_blank","noopener,noreferrer");}catch(e){alert(e.message)}})()`;
 }

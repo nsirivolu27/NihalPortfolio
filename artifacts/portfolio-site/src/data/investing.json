@@ -1,1 +1,7 @@
-{"asOf":null,"currency":"USD","holdings":[]}
+{
+  "capturedAt": "2026-10-22",
+  "source": "screenshot",
+  "unrealized": 127.58,
+  "realized": 7.43,
+  "dayChange": -3.18
+}

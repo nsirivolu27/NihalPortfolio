@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import {
-  parseCsv,
-  parseYahooHoldings,
-  summarizeHoldings,
+  extractYahooPercentages,
+  validateSnapshot,
+  buildYahooBookmark,
 } from "../artifacts/portfolio-site/src/lib/core/investing.ts";
 import {
   normalizeBlog,
@@ -16,96 +16,92 @@ const test = (name, fn) => {
   passed++;
   console.log(`  ok  ${name}`);
 };
-const header = "Symbol,Current Price,Purchase Price,Quantity,Comment";
-
-test("quoted commas, multiline notes, CRLF and escaped quotes retain column boundaries", () => {
-  assert.deepEqual(parseCsv('a,b\r\n"hello,\nworld","say ""hi"""\r\n'), [
-    ["a", "b"],
-    ["hello,\nworld", 'say "hi"'],
-  ]);
-});
-test("duplicate lots combine quantities and weighted purchase costs", () => {
-  const holdings = parseYahooHoldings(
-    `${header}\nAAPL,200,100,2,"long, term"\nAAPL,200,150,2,test`,
-  );
-  assert.deepEqual(holdings, [
-    { symbol: "AAPL", quantity: 4, price: 200, costPerShare: 125 },
-  ]);
-  assert.deepEqual(summarizeHoldings(holdings), {
-    marketValue: 800,
-    cost: 500,
-    gain: 300,
-    returnPercent: 60,
+const summary =
+  "All Portfolio Holdings\n$999.00\nDay Change\n-$1.00 (-3.18%)\nUnrealized Gain/Loss\n+$2.00 (+127.58%)\nRealized Gain/Loss\n+$3.00 (+7.43%)";
+test("Yahoo summary exports only three percentages, never amounts", () => {
+  assert.deepEqual(extractYahooPercentages(summary), {
+    unrealized: 127.58,
+    realized: 7.43,
+    dayChange: -3.18,
   });
 });
-test("fractional holdings and quoted currency values parse without rounding quantities", () => {
-  const [holding] = parseYahooHoldings(
-    `${header}\nBRK-B,"$1,200.50",1000,0.25,note`,
-  );
-  assert.equal(holding.quantity * holding.price, 300.125);
-});
-test("missing cost basis never becomes a fabricated zero-cost gain", () => {
-  const holdings = parseYahooHoldings(
-    `${header}\nAAPL,200,,2,x\nAAPL,200,100,1,y`,
-  );
-  assert.equal(summarizeHoldings(holdings).gain, null);
-  assert.equal(summarizeHoldings(holdings).marketValue, 600);
-});
-test("zero-cost holdings have a dollar gain but no infinite percentage", () => {
+test("Unicode minus and nonbreaking spaces preserve a loss", () => {
   assert.equal(
-    summarizeHoldings([
-      { symbol: "A", price: 100, quantity: 1, costPerShare: 0 },
-    ]).returnPercent,
-    null,
+    extractYahooPercentages(
+      summary.replaceAll("-", "−").replaceAll(" ", "\u00a0"),
+    ).dayChange,
+    -3.18,
   );
 });
-test("zero-quantity sold positions are omitted", () => {
-  assert.equal(
-    parseYahooHoldings(`${header}\nAAPL,200,100,0,x\nMSFT,400,300,2,y`).length,
-    1,
+test("ambiguous repeated summaries and missing metrics fail closed", () => {
+  assert.throws(() => extractYahooPercentages(summary + "\n" + summary));
+  assert.throws(() =>
+    extractYahooPercentages(
+      summary.replace("Realized Gain/Loss", "Unavailable"),
+    ),
+  );
+  assert.throws(() =>
+    extractYahooPercentages("Unrealized Gain/Loss\n+$2.00 (+127.58%)"),
   );
 });
-test("mixed currency exports cannot silently produce USD totals", () => {
-  assert.throws(
-    () =>
-      parseYahooHoldings("Symbol,Current Price,Quantity,Currency\nA,100,1,EUR"),
-    /USD/,
+const snapshot = {
+  capturedAt: "2026-10-22",
+  source: "screenshot",
+  unrealized: 127.58,
+  realized: 7.43,
+  dayChange: -3.18,
+};
+test("public boundary rejects monetary/account fields and malformed numbers", () => {
+  assert.deepEqual(validateSnapshot(snapshot), snapshot);
+  for (const extra of ["holdings", "balance", "email", "token", "dollarGain"])
+    assert.throws(() => validateSnapshot({ ...snapshot, [extra]: "private" }));
+  for (const value of [null, "7.43", Infinity, NaN])
+    assert.throws(() => validateSnapshot({ ...snapshot, realized: value }));
+  assert.throws(() =>
+    validateSnapshot({ ...snapshot, capturedAt: "yesterday" }),
   );
 });
-test("watchlists without share counts are not treated as owned holdings", () => {
-  assert.throws(
-    () => parseYahooHoldings("Symbol,Current Price\nA,100"),
-    /Quantity/,
+test("bookmark only permits HTTPS or local preview destinations", () => {
+  assert.ok(
+    buildYahooBookmark("https://example.com/investing/sync").startsWith(
+      "javascript:",
+    ),
   );
-  assert.throws(() => parseYahooHoldings(`${header}\nA,100,50,,x`), /quantity/);
+  assert.throws(() => buildYahooBookmark("http://example.com/investing/sync"));
 });
-test("missing quotes, negative quantities, and malformed values fail instead of understating totals", () => {
-  for (const row of [
-    "A,N/A,100,1,x",
-    "A,200,100,-1,x",
-    "A,200oops,100,1,x",
-    "A,200,100,1,x,extra",
-  ]) {
-    assert.throws(() => parseYahooHoldings(`${header}\n${row}`));
-  }
-});
-test("conflicting current prices cannot be combined", () => {
-  assert.throws(
-    () => parseYahooHoldings(`${header}\nA,200,100,1,x\nA,201,100,1,y`),
-    /Conflicting/,
+test("bookmark executes its self-contained parser and opens percentage-only preview", () => {
+  const script = buildYahooBookmark(
+    "http://127.0.0.1:4174/investing/sync",
+  ).slice("javascript:".length);
+  let opened;
+  const run = new Function("location", "document", "window", "alert", script);
+  run(
+    { hostname: "finance.yahoo.com", pathname: "/portfolios/" },
+    { body: { innerText: summary } },
+    {
+      open: (url) => {
+        opened = url;
+      },
+    },
+    (message) => {
+      throw new Error(message);
+    },
   );
-});
-test("broken quoting is rejected", () => {
-  assert.throws(() => parseCsv('"unfinished'), /Unclosed/);
-  assert.throws(() => parseCsv('"done"oops'), /Unexpected/);
-});
-test("empty portfolios have no gain or invented percentage", () => {
-  assert.deepEqual(summarizeHoldings([]), {
-    marketValue: 0,
-    cost: null,
-    gain: null,
-    returnPercent: null,
-  });
+  const data = JSON.parse(
+    new URLSearchParams(new URL(opened).hash.slice(1)).get("snapshot"),
+  );
+  assert.equal(validateSnapshot(data).unrealized, 127.58);
+  assert.ok(!opened.includes("999"));
+  let warning;
+  run(
+    { hostname: "evil.example", pathname: "/portfolios/" },
+    {},
+    {},
+    (message) => {
+      warning = message;
+    },
+  );
+  assert.match(warning, /Yahoo/);
 });
 const repo = {
   name: "Example",

@@ -6,10 +6,11 @@
     "preinstall": "node scripts/check-package-manager.mjs",
     "test": "node --experimental-strip-types scripts/test-portfolio.mjs",
     "sync:content": "node --experimental-strip-types scripts/sync-public-content.mjs",
-    "import:yahoo": "node --experimental-strip-types scripts/import-yahoo.mjs",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
-    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
+    "start:investing": "node scripts/start-investing.mjs",
+    "test:api": "node scripts/test-investing-api.mjs"
   },
   "private": true,
   "dependencies": {

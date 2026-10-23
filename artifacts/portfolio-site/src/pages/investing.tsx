@@ -1,170 +1,146 @@
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { ArrowUpRight } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 import snapshotData from "@/data/investing.json";
-import {
-  summarizeHoldings,
-  type InvestingSnapshot,
-} from "@/lib/core/investing";
+import { formatPercent, validateSnapshot } from "@/lib/core/investing";
+import { useBlog } from "@/hooks/use-public-content";
+import { blogNotes } from "@/lib/portfolio-data";
 
 export default function Investing() {
-  const snapshot: InvestingSnapshot = snapshotData;
-  const summary = summarizeHoldings(snapshot.holdings);
-  const money = (value: number | null) =>
-    value === null
-      ? "Not available"
-      : new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: snapshot.currency,
-        }).format(value);
+  const blog = useBlog();
+  const query = useQuery({
+    queryKey: ["investing"],
+    queryFn: async () => {
+      const response = await fetch(`${import.meta.env.BASE_URL}api/investing`, {
+        signal: AbortSignal.timeout(8000),
+        cache: "no-store",
+      });
+      if (!response.ok) throw new Error("Sync unavailable");
+      return validateSnapshot(await response.json());
+    },
+    retry: false,
+    refetchOnWindowFocus: true,
+  });
+  const snapshot = query.data ?? validateSnapshot(snapshotData);
+  const date =
+    snapshot.capturedAt.length === 10
+      ? `${snapshot.capturedAt}T12:00:00`
+      : snapshot.capturedAt;
+  const essays = blog.data.items.filter((post) =>
+    post.url.endsWith("/canoo-buy-now.html"),
+  );
   return (
     <PageShell
-      title="The investing portfolio."
-      eyebrow="Markets / A separate kind of portfolio"
-      intro="A transparent view of my holdings, allocation, and unrealized performance, alongside the curiosity about companies and technology that started my blog."
+      title="Investing & analysis."
+      eyebrow="Markets / Ideas and outcomes"
+      intro="My stock analysis and the gain/loss percentages from my manually tracked Yahoo Finance portfolio."
     >
-      {!snapshot.holdings.length ? (
-        <section className="border border-border bg-card p-8 sm:p-12">
-          <p className="font-mono-ui text-xs uppercase tracking-wider text-accent">
-            Awaiting first portfolio snapshot
-          </p>
-          <h2 className="mt-5 font-display text-4xl sm:text-5xl">
-            The numbers belong here.
-            <br />
-            They’re not published yet.
+      <section aria-labelledby="performance-title">
+        <div className="mb-7 flex flex-wrap items-end justify-between gap-5">
+          <h2 id="performance-title" className="font-display text-4xl">
+            Portfolio snapshot.
           </h2>
-          <p className="mt-6 max-w-2xl text-muted-foreground leading-relaxed">
-            My holdings, dollar amounts, and performance will appear here once
-            the first Yahoo Finance export is added. There are no sample
-            investments or simulated returns on this page.
-          </p>
-          <Link href="/writing" className="action-link mt-8">
-            Read my market essays <ArrowUpRight size={16} />
-          </Link>
-        </section>
-      ) : (
-        <>
-          <p className="mb-8 text-sm text-muted-foreground">
-            Yahoo Finance export · Valued as of{" "}
-            <time dateTime={snapshot.asOf!}>
-              {new Date(snapshot.asOf!).toLocaleString("en-US", {
-                timeZone: "America/New_York",
-                timeZoneName: "short",
-              })}
-            </time>{" "}
-            · {snapshot.currency} · Snapshot, not live prices
-          </p>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              ["Market value", money(summary.marketValue)],
-              ["Cost basis", money(summary.cost)],
-              ["Unrealized gain / loss", money(summary.gain)],
-              [
-                "Unrealized return",
-                summary.returnPercent === null
-                  ? "Not available"
-                  : `${summary.returnPercent.toFixed(2)}%`,
-              ],
-            ].map(([label, value]) => (
-              <div key={label} className="border border-border bg-card p-6">
-                <p className="text-xs text-muted-foreground">{label}</p>
-                <p className="mt-4 font-display text-3xl">{value}</p>
-              </div>
-            ))}
-          </div>
-          <div
-            className="mt-12 overflow-x-auto border border-border"
-            role="region"
-            aria-label="Holdings table"
-            tabIndex={0}
+          <button
+            className="action-link"
+            disabled={query.isFetching}
+            onClick={() => void query.refetch()}
           >
-            <table className="holdings-table">
-              <caption className="p-5 text-left font-display text-3xl">
-                Holdings & allocation
-              </caption>
-              <thead>
-                <tr>
-                  {[
-                    "Holding",
-                    "Shares",
-                    "Price",
-                    "Value",
-                    "Allocation",
-                    "Unrealized gain / loss",
-                  ].map((label) => (
-                    <th scope="col" key={label}>
-                      {label}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {snapshot.holdings.map((holding) => {
-                  const value = holding.quantity * holding.price;
-                  const allocation =
-                    summary.marketValue > 0
-                      ? (value / summary.marketValue) * 100
-                      : 0;
-                  return (
-                    <tr key={holding.symbol}>
-                      <th scope="row">
-                        <a
-                          href={`https://finance.yahoo.com/quote/${encodeURIComponent(holding.symbol)}/`}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          {holding.symbol} ↗
-                        </a>
-                      </th>
-                      <td>
-                        {holding.quantity.toLocaleString("en-US", {
-                          maximumFractionDigits: 8,
-                        })}
-                      </td>
-                      <td>{money(holding.price)}</td>
-                      <td>{money(value)}</td>
-                      <td>
-                        <div>{allocation.toFixed(1)}%</div>
-                        <div className="mt-2 h-1 w-24 bg-muted">
-                          <div
-                            className="h-full bg-accent"
-                            style={{ width: `${allocation}%` }}
-                          />
-                        </div>
-                      </td>
-                      <td>
-                        {money(
-                          holding.costPerShare === null
-                            ? null
-                            : value - holding.quantity * holding.costPerShare,
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-            Unrealized return compares the current value of open holdings with
-            their purchase cost. It excludes sold positions, dividends, fees,
-            taxes, deposits, and withdrawals; it is not a total or annualized
-            account return. Missing purchase costs are shown as unavailable.
-          </p>
-        </>
-      )}
+            {query.isFetching ? "Checking…" : "Refresh snapshot"}
+          </button>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {[
+            ["Unrealized gain / loss", snapshot.unrealized],
+            ["Realized gain / loss", snapshot.realized],
+            ["Day change", snapshot.dayChange],
+          ].map(([label, value]) => (
+            <div key={label} className="archive-card">
+              <p className="font-mono-ui text-xs text-muted-foreground">
+                {label}
+              </p>
+              <p
+                className={`mt-6 font-display text-5xl ${Number(value) < 0 ? "text-accent" : "text-foreground"}`}
+              >
+                {formatPercent(Number(value))}
+              </p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-6 text-sm text-muted-foreground" role="status">
+          {snapshot.source === "screenshot"
+            ? "Screenshot supplied"
+            : "Synced from Yahoo Finance"}{" "}
+          <time dateTime={snapshot.capturedAt}>
+            {new Date(date).toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </time>
+          .
+          {snapshot.source === "screenshot"
+            ? " The screenshot’s valuation date was not provided."
+            : ` Captured ${new Date(date).toLocaleTimeString("en-US", { timeZoneName: "short" })}.`}
+          {query.isError
+            ? " Live refresh unavailable; showing the last available snapshot."
+            : ""}
+        </p>
+        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+          Percentages are shown separately, as reported by Yahoo. They are not
+          added together or presented as an annualized return. Day change refers
+          to the captured snapshot, not necessarily today.
+        </p>
+      </section>
+      <section
+        className="mt-20 border-t border-border pt-12"
+        aria-labelledby="analysis-title"
+      >
+        <p className="font-mono-ui text-xs uppercase tracking-wider text-accent">
+          Research notes / From the blog
+        </p>
+        <h2 id="analysis-title" className="mt-4 font-display text-5xl">
+          Stock analysis.
+        </h2>
+        <div className="mt-8 grid gap-5">
+          {essays.map((post) => (
+            <article key={post.url} className="archive-card">
+              <p className="font-mono-ui text-xs text-muted-foreground">
+                <time dateTime={post.published}>
+                  {new Date(post.published).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </time>
+              </p>
+              <h3 className="mt-4 font-display text-4xl">{post.title}</h3>
+              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                {blogNotes[post.url]}
+              </p>
+              <a
+                href={post.url}
+                target="_blank"
+                rel="noreferrer"
+                className="action-link mt-6"
+              >
+                Read the original analysis <ArrowUpRight size={16} />
+              </a>
+            </article>
+          ))}
+        </div>
+        <p className="mt-5 text-xs text-muted-foreground">
+          Original publication dates are preserved. These essays reflect my
+          thinking at the time, rather than a current recommendation.
+        </p>
+      </section>
       <div className="mt-12 flex flex-wrap gap-6 text-sm">
         <Link href="/writing" className="action-link">
-          Writing on companies & technology <ArrowUpRight size={16} />
+          More writing <ArrowUpRight size={16} />
         </Link>
-        <a
-          href="https://finance.yahoo.com/portfolios/"
-          target="_blank"
-          rel="noreferrer"
-          className="action-link"
-        >
-          Yahoo Finance <ArrowUpRight size={16} />
-        </a>
+        <Link href="/investing/sync" className="action-link">
+          Owner sync <ArrowUpRight size={16} />
+        </Link>
       </div>
     </PageShell>
   );

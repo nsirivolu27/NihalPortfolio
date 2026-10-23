@@ -2,6 +2,7 @@ import { type ReactNode, useEffect } from "react";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { portfolioProfile } from "@/lib/portfolio-data";
+import { CmdaBackdrop } from "./cmda-backdrop";
 
 export function PageShell({
   title,
@@ -24,6 +25,7 @@ export function PageShell({
   }, [title]);
   return (
     <div className="portfolio-shell min-h-screen bg-background text-foreground">
+      <CmdaBackdrop />
       <a href="#page-content" className="skip-link">
         Skip to content
       </a>
@@ -39,10 +41,6 @@ export function PageShell({
             aria-label="Main navigation"
             className="flex flex-wrap gap-x-6 gap-y-3 text-sm"
           >
-            <Link href="/">Home</Link>
-            <Link href="/projects">Projects</Link>
-            <Link href="/writing">Writing</Link>
-            <Link href="/investing">Investing</Link>
             <a
               href={portfolioProfile.resumeUrl}
               target="_blank"
@@ -50,6 +48,10 @@ export function PageShell({
             >
               Resume ↗
             </a>
+            <Link href="/projects">Projects</Link>
+            <Link href="/">Experience & about</Link>
+            <Link href="/writing">Writing</Link>
+            <Link href="/investing">Investing</Link>
           </nav>
         </div>
       </header>
@@ -109,7 +111,7 @@ export function SourceStatus({
           ? "Checking for updates…"
           : isError
             ? "Live refresh unavailable. Showing saved content."
-            : "Public source connected."}{" "}
+            : "Public source snapshot."}{" "}
         Updated{" "}
         {new Date(updatedAt).toLocaleDateString("en-US", {
           month: "short",

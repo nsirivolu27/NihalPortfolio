@@ -7,8 +7,13 @@ import NotFound from '@/pages/not-found';
 import Projects from '@/pages/projects';
 import Writing from '@/pages/writing';
 import Investing from '@/pages/investing';
+import InvestingSync from '@/pages/investing-sync';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { education } from '@/lib/portfolio-data';
+import { useRepositories } from '@/hooks/use-public-content';
+import { RepositoryGrid } from '@/components/repository-grid';
+import { SourceStatus } from '@/components/page-shell';
+import { education, technicalSkills } from '@/lib/portfolio-data';
+import { CmdaBackdrop, ModelSketch } from '@/components/cmda-backdrop';
 import {
   ArrowDown,
   ArrowUp,
@@ -24,7 +29,7 @@ import {
   MoveDown,
   X,
 } from 'lucide-react';
-import { capabilityIndex, navItems, notes, portfolioProfile, projects, strengths } from '@/lib/portfolio-data';
+import { capabilityIndex, navItems, notes, portfolioProfile, strengths } from '@/lib/portfolio-data';
 import {
   Route,
   Switch,
@@ -56,6 +61,7 @@ function useReveal() {
 
 function Home() {
   const pageRef = useReveal();
+  const repositories = useRepositories();
   const [menuOpen, setMenuOpen] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -81,6 +87,7 @@ function Home() {
 
   return (
     <main ref={pageRef} className="portfolio-shell min-h-[100dvh] bg-background text-foreground grain">
+      <CmdaBackdrop />
       <a href="#top" className="skip-link">Skip to content</a>
       <header className="fixed left-0 right-0 top-0 z-30 border-b border-border/80 bg-background/90 backdrop-blur-md">
         <div className="mx-auto flex h-[4.5rem] max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12">
@@ -134,27 +141,24 @@ function Home() {
               {portfolioProfile.availability}
             </div>
             <h1 className="reveal reveal-delay-1 mt-8 max-w-[900px] font-display text-[clamp(4.5rem,11vw,10.75rem)] leading-[.82] tracking-[-.055em]">
-              Vision systems<br /><em className="text-accent">that</em> ship.
+              Data to models.<br /><em className="text-accent">Models</em> to impact.
             </h1>
             <div className="reveal reveal-delay-2 mt-10 flex max-w-[680px] flex-col gap-8 sm:flex-row sm:items-end">
               <p data-testid="text-hero-intro" className="max-w-[380px] text-lg leading-[1.35] text-muted-foreground sm:text-xl">{portfolioProfile.intro}</p>
-              <a href="#work" data-testid="link-scroll-work" className="magnetic-link inline-flex w-fit items-center gap-2 border-b border-primary pb-2 text-[12px] font-bold uppercase tracking-[.13em]">See selected work <ArrowDown size={14} /></a>
+              <div className="flex shrink-0 flex-col gap-5"><a href={portfolioProfile.resumeUrl} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-3 bg-primary px-5 py-3 text-sm font-bold text-primary-foreground">Read my resume <Download size={16} /></a><a href="#work" data-testid="link-scroll-work" className="magnetic-link inline-flex w-fit items-center gap-2 border-b border-primary pb-2 text-[12px] font-bold uppercase tracking-[.13em]">Explore projects <ArrowDown size={14} /></a></div>
             </div>
           </div>
           <div className="reveal reveal-delay-3 lg:pb-1">
             <div className="portrait-slot aspect-[4/5] max-w-[330px] ml-auto p-6 sm:p-8">
-              <div className="portrait-orbit portrait-orbit--outer" />
-              <div className="portrait-orbit portrait-orbit--inner" />
-              <span className="portrait-orbit__dot portrait-orbit__dot--one" />
-              <span className="portrait-orbit__dot portrait-orbit__dot--two" />
               <div className="relative z-10 flex h-full flex-col justify-between">
                 <div className="flex items-start justify-between">
-                  <span className="font-mono-ui text-[10px] uppercase tracking-[.16em] text-primary-foreground/65">{portfolioProfile.photoStatus}</span>
+                  <span className="font-mono-ui text-[10px] uppercase tracking-[.16em] text-primary-foreground/65">CMDA / Virginia Tech</span>
                   <CircleArrowOutUpRight size={18} strokeWidth={1.5} className="text-secondary" />
                 </div>
+                <ModelSketch />
                 <div>
                   <div className="mb-4 h-px w-12 bg-secondary" />
-                  <p className="max-w-[200px] font-display text-4xl leading-[.95]">Applied ML, practical engineering.</p>
+                  <p className="max-w-[230px] font-display text-4xl leading-[.95]">Observe.<br />Model. Validate.</p>
                   <p className="mt-4 max-w-[230px] text-xs leading-relaxed text-primary-foreground/65">Virginia Tech · Class of 2027<br />Engineer. Researcher. Writer.<br />Curious about what comes next.</p>
                 </div>
               </div>
@@ -170,9 +174,19 @@ function Home() {
 
       <div className="overflow-hidden border-y border-primary bg-primary py-3 text-primary-foreground">
         <div className="marquee-track flex w-max items-center gap-8 whitespace-nowrap font-mono-ui text-[10px] font-bold uppercase tracking-[.2em]">
-          {[...Array(2)].flatMap((_, copyIndex) => ['Computer vision', 'ML infrastructure', 'Applied research', 'Cloud pipelines'].map((label, index) => <span key={`${copyIndex}-${index}`} className="flex items-center gap-8"><span>{label}</span><span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-secondary" /></span>))}
+          {[...Array(2)].flatMap((_, copyIndex) => ['Computational modeling', 'Data analytics', 'Statistical thinking', 'Applied machine learning'].map((label, index) => <span key={`${copyIndex}-${index}`} className="flex items-center gap-8"><span>{label}</span><span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-secondary" /></span>))}
         </div>
       </div>
+
+      <section id="work" className="page-width py-24 sm:py-32">
+        <div className="mb-12 flex flex-col justify-between gap-7 md:flex-row md:items-end">
+          <div><p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-accent">01 / Public GitHub projects</p><h2 className="mt-5 font-display text-6xl leading-[.88] tracking-[-.04em] sm:text-8xl">Everything<br /><em>I’m building.</em></h2></div>
+          <p className="max-w-[340px] text-sm leading-relaxed text-muted-foreground">All {repositories.data.items.length} public repositories, with names and descriptions directly from GitHub. Archived projects keep their history.</p>
+        </div>
+        <SourceStatus updatedAt={repositories.data.updatedAt} isError={repositories.isError} isFetching={repositories.isFetching} retry={() => void repositories.refetch()} />
+        <RepositoryGrid items={repositories.data.items} />
+        <a href="projects" className="action-link mt-10">Search and filter all projects <ArrowUpRight size={18} /></a>
+      </section>
 
       <section className="manifesto-band" aria-label="Portfolio statement">
         <div className="manifesto-band__inner">
@@ -181,48 +195,6 @@ function Home() {
           <span className="manifesto-band__mark" aria-hidden="true">↘</span>
         </div>
       </section>
-
-      <section id="work" className="mx-auto max-w-[1440px] px-5 py-28 sm:px-8 lg:px-12 lg:py-40">
-        <div className="reveal mb-16 flex flex-col justify-between gap-7 md:flex-row md:items-end">
-          <div>
-            <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-accent">01 / Selected work</p>
-            <h2 className="mt-5 max-w-[600px] font-display text-6xl leading-[.88] tracking-[-.04em] sm:text-8xl">Selected<br /><em>work.</em></h2>
-          </div>
-          <p className="max-w-[300px] text-sm leading-relaxed text-muted-foreground">Three projects that show the range: protocol infrastructure, multimodal medical imaging, and tracking in imagery most models never see.</p>
-        </div>
-        <div className="grid gap-5 lg:grid-cols-12">
-          {projects.map((project, index) => (
-            <article key={project.id} data-testid={`card-project-${project.id}`} className={`project-card reveal reveal-delay-${index + 1} group ${index === 0 ? 'lg:col-span-7' : index === 1 ? 'lg:col-span-5' : 'lg:col-span-6 lg:col-start-4'}`}>
-              <div className={`project-visual relative flex aspect-[1.2/1] flex-col justify-between overflow-hidden border border-primary/15 p-6 sm:p-8 ${project.accent === 'lime' ? 'bg-secondary text-primary' : project.accent === 'tomato' ? 'bg-accent text-accent-foreground' : 'tint-ochre'}`}>
-                <div className="flex items-start justify-between">
-                  <span className="font-mono-ui text-[10px] font-bold uppercase tracking-[.15em] opacity-65">Project / {project.index}</span>
-                  <ArrowUpRight size={20} className="project-arrow" />
-                </div>
-                <div className="relative">
-                  <div className="absolute -bottom-8 right-0 h-32 w-32 rounded-full border border-current opacity-25" />
-                  <p className="relative max-w-[360px] font-display text-5xl leading-[.86] tracking-[-.04em] sm:text-7xl">{project.title}</p>
-                  <p className="relative mt-5 max-w-[350px] text-sm leading-relaxed opacity-70">{project.description}</p>
-                </div>
-              </div>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-x border-b border-border px-5 py-4">
-                <span className="mr-auto font-mono-ui text-[10px] uppercase tracking-[.13em] text-muted-foreground">{project.type}</span>
-                {project.tags.map((tag) => <span key={tag} className="font-mono-ui text-[9px] uppercase tracking-[.1em] text-muted-foreground">#{tag}</span>)}
-                {project.githubUrl ? (
-                  <a href={project.githubUrl} target="_blank" rel="noreferrer" data-testid={`link-project-github-${project.id}`} className="ml-2 inline-flex items-center gap-1 font-mono-ui text-[9px] font-bold uppercase tracking-[.1em] text-primary transition-colors hover:text-accent">GitHub <ArrowUpRight size={12} /></a>
-                ) : null}
-                {project.demoUrl ? (
-                  <a href={project.demoUrl} target="_blank" rel="noreferrer" data-testid={`link-project-demo-${project.id}`} className="inline-flex items-center gap-1 font-mono-ui text-[9px] font-bold uppercase tracking-[.1em] text-primary transition-colors hover:text-accent">Live demo <ArrowUpRight size={12} /></a>
-                ) : null}
-                {!project.githubUrl && !project.demoUrl ? (
-                  <span data-testid={`status-project-links-${project.id}`} className="font-mono-ui text-[9px] uppercase tracking-[.1em] text-muted-foreground/70">Research in progress · No public repository</span>
-                ) : null}
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <div className="page-width pb-20"><a href="projects" className="action-link">Explore the complete GitHub archive <ArrowUpRight size={18} /></a></div>
 
       <section id="capabilities" className="capability-section">
         <div className="mx-auto max-w-[1440px] px-5 py-28 sm:px-8 lg:px-12 lg:py-40">
@@ -249,6 +221,8 @@ function Home() {
           </div>
         </div>
       </section>
+
+      <section className="page-width py-16" aria-label="Technical skills"><div className="grid gap-8 sm:grid-cols-2">{technicalSkills.map(group => <div key={group.label}><h2 className="font-mono-ui text-xs uppercase tracking-wider text-accent">{group.label}</h2><p className="mt-4 text-sm leading-relaxed text-muted-foreground">{group.items}</p></div>)}</div></section>
 
       <section id="practice" className="bg-primary text-primary-foreground">
         <div className="mx-auto grid max-w-[1440px] gap-14 px-5 py-28 sm:px-8 lg:grid-cols-[.85fr_1.15fr] lg:gap-28 lg:px-12 lg:py-40">
@@ -326,7 +300,7 @@ function Home() {
         <div className="mt-10 grid gap-10 md:grid-cols-2"><div><h3 className="font-semibold">Coursework</h3><ul className="mt-4 flex flex-wrap gap-2">{education.coursework.map((course) => <li key={course} className="border border-border px-3 py-2 text-xs text-muted-foreground">{course}</li>)}</ul></div><div><h3 className="font-semibold">Certifications</h3><ul className="mt-4 space-y-3 text-sm text-muted-foreground">{education.certifications.map((certification) => <li key={certification}>{certification}</li>)}</ul><a href={portfolioProfile.linkedinUrl} target="_blank" rel="noreferrer" className="action-link mt-6">View LinkedIn profile <ArrowUpRight size={16} /></a></div></div>
       </section>
 
-      <section className="border-t border-border bg-card" aria-labelledby="beyond-title"><div className="page-width py-24"><p className="font-mono-ui text-xs uppercase tracking-wider text-accent">Beyond the code</p><h2 id="beyond-title" className="mt-5 font-display text-5xl sm:text-7xl">A few other things<br /><em>I think about.</em></h2><div className="mt-12 grid gap-6 md:grid-cols-2"><a href="writing" className="archive-card group"><span className="font-mono-ui text-xs uppercase tracking-wider text-accent">Writing / 01</span><h3 className="mt-6 font-display text-4xl">Nihal’s Blog About Stuff <ArrowUpRight className="inline" size={24} /></h3><p className="mt-5 text-sm leading-relaxed text-muted-foreground">Companies, technology, hydrogen energy, and the questions behind the headlines. Read the original essays.</p></a><a href="investing" className="archive-card group"><span className="font-mono-ui text-xs uppercase tracking-wider text-accent">Markets / 02</span><h3 className="mt-6 font-display text-4xl">The investing portfolio <ArrowUpRight className="inline" size={24} /></h3><p className="mt-5 text-sm leading-relaxed text-muted-foreground">A separate space for my holdings, allocation, and performance, with dated snapshots from Yahoo Finance.</p></a></div></div></section>
+      <section className="border-t border-border bg-card" aria-labelledby="beyond-title"><div className="page-width py-24"><p className="font-mono-ui text-xs uppercase tracking-wider text-accent">Beyond the code</p><h2 id="beyond-title" className="mt-5 font-display text-5xl sm:text-7xl">A few other things<br /><em>I think about.</em></h2><div className="mt-12 grid gap-6 md:grid-cols-2"><a href="writing" className="archive-card group"><span className="font-mono-ui text-xs uppercase tracking-wider text-accent">Writing / 01</span><h3 className="mt-6 font-display text-4xl">Nihal’s Blog About Stuff <ArrowUpRight className="inline" size={24} /></h3><p className="mt-5 text-sm leading-relaxed text-muted-foreground">Technology, hydrogen energy, and the questions behind the headlines. Read the original essays.</p></a><a href="investing" className="archive-card group"><span className="font-mono-ui text-xs uppercase tracking-wider text-accent">Markets / 02</span><h3 className="mt-6 font-display text-4xl">The investing portfolio <ArrowUpRight className="inline" size={24} /></h3><p className="mt-5 text-sm leading-relaxed text-muted-foreground">Stock analysis and dated gain/loss percentages from my manually tracked Yahoo Finance portfolio.</p></a></div></div></section>
 
       <section id="contact" className="bg-accent text-accent-foreground">
         <div className="mx-auto max-w-[1440px] px-5 py-28 sm:px-8 lg:px-12 lg:py-40">
@@ -396,6 +370,7 @@ function Router() {
         <Route path="/projects" component={Projects} />
         <Route path="/writing" component={Writing} />
         <Route path="/investing" component={Investing} />
+        <Route path="/investing/sync" component={InvestingSync} />
         <Route component={NotFound} />
       </Switch>
     </RoutedErrorBoundary>

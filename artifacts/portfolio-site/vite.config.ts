@@ -65,6 +65,7 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
+    proxy: { '/api/investing': 'http://127.0.0.1:4175' },
     port,
     strictPort: true,
     host: '0.0.0.0',

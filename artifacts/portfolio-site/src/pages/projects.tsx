@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import { ArrowUpRight, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { PageShell, SourceStatus } from "@/components/page-shell";
 import { useRepositories } from "@/hooks/use-public-content";
-import { repositoryNotes } from "@/lib/portfolio-data";
+import { RepositoryGrid } from "@/components/repository-grid";
 
 export default function Projects() {
   const query = useRepositories();
@@ -13,10 +13,9 @@ export default function Projects() {
   const filtered = useMemo(
     () =>
       items.filter((repo) => {
-        const details = repositoryNotes[repo.name];
         return (
           (language === "All" || repo.language === language) &&
-          `${repo.name} ${repo.description} ${details?.description ?? ""}`
+          `${repo.name} ${repo.description} ${repo.language}`
             .toLowerCase()
             .includes(search.toLowerCase().trim())
         );
@@ -27,7 +26,7 @@ export default function Projects() {
     <PageShell
       title="Things I’ve built."
       eyebrow="The project archive"
-      intro="From computer vision and AI infrastructure to wearables, renovation tools, and fantasy football. Every public repository, with room for the experiments too."
+      intro="From computer vision and AI infrastructure to wearables, renovation tools, and fantasy football. Every public repository, using its name and description directly from GitHub."
     >
       <SourceStatus
         updatedAt={query.data.updatedAt}
@@ -65,46 +64,7 @@ export default function Projects() {
       <p className="mb-6 text-sm text-muted-foreground" aria-live="polite">
         {filtered.length} of {items.length} public repositories
       </p>
-      <div className="grid gap-5 md:grid-cols-2">
-        {filtered.map((repo) => (
-          <article key={repo.name} className="archive-card">
-            <div className="flex flex-wrap items-center justify-between gap-3 font-mono-ui text-[10px] uppercase tracking-wider text-muted-foreground">
-              <span>{repo.language}</span>
-              <span>
-                {repo.archived
-                  ? "Archived"
-                  : repo.fork
-                    ? "Fork"
-                    : (repositoryNotes[repo.name]?.status ?? "Public project")}
-              </span>
-            </div>
-            <h2 className="mt-8 break-words font-display text-4xl">
-              <a
-                href={repo.url}
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-accent"
-              >
-                {repositoryNotes[repo.name]?.title ?? repo.name}{" "}
-                <ArrowUpRight className="inline" size={22} />
-              </a>
-            </h2>
-            <p className="mt-5 flex-1 text-sm leading-relaxed text-muted-foreground">
-              {repositoryNotes[repo.name]?.description ||
-                repo.description ||
-                "Source code and project details on GitHub."}
-            </p>
-            <a
-              className="mt-8 text-sm underline underline-offset-4"
-              href={repo.url}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Explore {repo.name}
-            </a>
-          </article>
-        ))}
-      </div>
+      <RepositoryGrid items={filtered} />
       {!filtered.length && (
         <div className="border border-border p-10 text-center">
           <p>No projects match those filters.</p>

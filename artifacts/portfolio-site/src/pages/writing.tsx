@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { ArrowUpRight } from "lucide-react";
 import { PageShell, SourceStatus } from "@/components/page-shell";
 import { useBlog } from "@/hooks/use-public-content";
@@ -5,11 +6,12 @@ import { blogNotes, portfolioProfile } from "@/lib/portfolio-data";
 
 export default function Writing() {
   const query = useBlog();
+  const posts = query.data.items.filter(post => !post.url.endsWith("/canoo-buy-now.html"));
   return (
     <PageShell
       title="Nihal’s Blog About Stuff."
       eyebrow="Writing / Curiosity in public"
-      intro="A place for the questions that stick with me. Essays on companies, emerging technology, energy, and the markets around them—starting with my original writing from 2022."
+      intro="A place for the questions that stick with me. Essays on emerging technology and energy, starting with my original writing from 2022. Stock analysis lives on the Investing page."
     >
       <div className="mb-10 flex flex-wrap gap-5 text-sm">
         <a
@@ -29,6 +31,7 @@ export default function Writing() {
           Subscribe via RSS <ArrowUpRight size={16} />
         </a>
       </div>
+      <Link href="/investing" className="action-link mb-10">Read my stock analysis <ArrowUpRight size={16} /></Link>
       <SourceStatus
         updatedAt={query.data.updatedAt}
         isError={query.isError}
@@ -36,7 +39,7 @@ export default function Writing() {
         retry={() => void query.refetch()}
       />
       <div className="border-t border-border">
-        {query.data.items.map((post, index) => (
+        {posts.map((post, index) => (
           <article
             key={post.url}
             className="grid gap-6 border-b border-border py-10 sm:grid-cols-[150px_1fr_auto]"
@@ -82,7 +85,7 @@ export default function Writing() {
           </article>
         ))}
       </div>
-      {!query.data.items.length && (
+      {!posts.length && (
         <p className="py-10">Visit the blog to explore the latest posts.</p>
       )}
       <p className="mt-8 max-w-2xl text-xs leading-relaxed text-muted-foreground">
