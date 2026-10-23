@@ -8,7 +8,7 @@
   },
   "scripts": {
     "preinstall": "node scripts/check-package-manager.mjs",
-    "test": "node --experimental-strip-types scripts/test-portfolio.mjs",
+    "test": "node --experimental-strip-types scripts/test-portfolio.mjs && node --experimental-strip-types scripts/test-blog-feed.mjs",
     "sync:content": "node --experimental-strip-types scripts/sync-public-content.mjs",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",

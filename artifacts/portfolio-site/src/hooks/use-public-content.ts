@@ -43,7 +43,7 @@ export function useBlog() {
       const items = [];
       for (let start = 1; ; start += 100) {
         const batch = await get(
-          `https://nihalsblogaboutstuff.blogspot.com/feeds/posts/default?alt=json&max-results=100&start-index=${start}`,
+          `/api/blog?start=${start}`,
           signal,
         );
         const posts = normalizeBlog(batch);
@@ -54,7 +54,10 @@ export function useBlog() {
     },
     initialData: savedBlog,
     initialDataUpdatedAt: Date.parse(savedBlog.updatedAt),
-    staleTime: 10 * 60 * 1000,
+    staleTime: 5 * 60 * 1000,
+    refetchInterval: 5 * 60 * 1000,
+    refetchIntervalInBackground: false,
+    refetchOnWindowFocus: true,
     retry: false,
   });
 }
