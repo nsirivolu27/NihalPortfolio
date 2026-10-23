@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "node scripts/build-vercel.mjs",
+  "outputDirectory": "artifacts/portfolio-site/dist/public",
+  "rewrites": [
+    { "source": "/featured", "destination": "/index.html" },
+    { "source": "/projects", "destination": "/index.html" },
+    { "source": "/certifications", "destination": "/index.html" },
+    { "source": "/writing", "destination": "/index.html" },
+    { "source": "/investing", "destination": "/index.html" },
+    { "source": "/investing/sync", "destination": "/index.html" }
+  ]
+}

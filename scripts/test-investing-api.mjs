@@ -26,24 +26,35 @@ const start = async () => {
       ),
     ],
     {
-      stdio: "ignore",
+      stdio: ["ignore", "pipe", "pipe"],
       env: {
         ...process.env,
+        NODE_ENV: "production",
         PORT: String(port),
         HOST: "127.0.0.1",
+        DATABASE_URL: "",
         INVESTING_DATA_FILE: file,
         INVESTING_SYNC_TOKEN: token,
         PORTFOLIO_ORIGIN: base,
       },
     },
   );
-  for (let i = 0; i < 50; i++) {
+  let output = "";
+  child.stdout.on("data", (chunk) => {
+    output += chunk.toString();
+  });
+  child.stderr.on("data", (chunk) => {
+    output += chunk.toString();
+  });
+  for (let i = 0; i < 300; i++) {
+    if (child.exitCode !== null)
+      throw new Error(`API exited before listening: ${output}`);
     try {
       if ((await fetch(`${base}/api/healthz`)).ok) return;
     } catch {}
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
-  throw new Error("API did not start; run npm run build first.");
+  throw new Error(`API did not start within 30 seconds: ${output}`);
 };
 const stop = async () => {
   if (child && child.exitCode === null)

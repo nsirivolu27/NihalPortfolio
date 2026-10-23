@@ -47,6 +47,8 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+.vercel/
+.env*.local
 
 # Private financial exports are never source assets.
 quotes*.csv

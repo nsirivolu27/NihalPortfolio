@@ -8,7 +8,7 @@ import {
 // The daily LinkedIn check publishes this public snapshot. No LinkedIn credentials reach the site.
 const feedUrl =
   import.meta.env.VITE_CERTIFICATIONS_FEED_URL ||
-  "https://raw.githubusercontent.com/nsirivolu27/NihalPortfolio/codex/complete-portfolio/artifacts/portfolio-site/public/certifications.json";
+  "https://raw.githubusercontent.com/nsirivolu27/NihalPortfolio/main/artifacts/portfolio-site/public/certifications.json";
 
 export function useCertifications() {
   const client = useQueryClient();

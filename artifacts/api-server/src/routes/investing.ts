@@ -1,8 +1,11 @@
 import { Router, type IRouter } from "express";
-import { createHash, randomUUID, timingSafeEqual } from "node:crypto";
-import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
-import { dirname } from "node:path";
+import { createHash, timingSafeEqual } from "node:crypto";
 import { InvestingSnapshot } from "@workspace/api-zod";
+import {
+  investingStoreConfigured,
+  readInvestingSnapshot,
+  saveInvestingSnapshot,
+} from "../lib/investing-store";
 
 const router: IRouter = Router();
 const digest = (value: string) => createHash("sha256").update(value).digest();
@@ -10,31 +13,26 @@ let writing = false;
 
 router.get("/investing", async (_req, res) => {
   res.set("Cache-Control", "no-store");
-  const file = process.env["INVESTING_DATA_FILE"];
-  if (!file) {
+  if (!investingStoreConfigured()) {
     res.status(503).json({ error: "Sync is not configured." });
     return;
   }
   try {
-    const snapshot = InvestingSnapshot.parse(
-      JSON.parse(await readFile(file, "utf8")),
-    );
+    const snapshot = await readInvestingSnapshot();
+    if (!snapshot) throw new Error("No snapshot");
     res.json(snapshot);
   } catch {
-    res
-      .status(503)
-      .json({
-        error: "No synced snapshot is available. Keep the saved snapshot.",
-      });
+    res.status(503).json({
+      error: "No synced snapshot is available. Keep the saved snapshot.",
+    });
   }
 });
 
 router.post("/investing", async (req, res) => {
   res.set("Cache-Control", "no-store");
   const key = process.env["INVESTING_SYNC_TOKEN"];
-  const file = process.env["INVESTING_DATA_FILE"];
   const origin = process.env["PORTFOLIO_ORIGIN"];
-  if (!key || key.length < 32 || !file || !origin) {
+  if (!key || key.length < 32 || !investingStoreConfigured() || !origin) {
     res.status(503).json({ error: "Owner sync is not configured." });
     return;
   }
@@ -49,11 +47,9 @@ router.post("/investing", async (req, res) => {
   }
   const parsed = InvestingSnapshot.safeParse(req.body);
   if (!parsed.success) {
-    res
-      .status(400)
-      .json({
-        error: "Only a dated snapshot of three percentages is accepted.",
-      });
+    res.status(400).json({
+      error: "Only a dated snapshot of three percentages is accepted.",
+    });
     return;
   }
   const captured = Date.parse(parsed.data.capturedAt);
@@ -72,29 +68,12 @@ router.post("/investing", async (req, res) => {
   }
   writing = true;
   try {
-    let previous: { capturedAt: string } | undefined;
-    try {
-      previous = InvestingSnapshot.parse(
-        JSON.parse(await readFile(file, "utf8")),
-      );
-    } catch (error) {
-      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
-    }
-    if (previous && Date.parse(previous.capturedAt) >= captured) {
-      res
-        .status(409)
-        .json({
-          error: "A newer or identical snapshot has already been saved.",
-        });
+    if (!(await saveInvestingSnapshot(parsed.data))) {
+      res.status(409).json({
+        error: "A newer or identical snapshot has already been saved.",
+      });
       return;
     }
-    await mkdir(dirname(file), { recursive: true });
-    const temp = `${file}.${randomUUID()}.tmp`;
-    await writeFile(temp, JSON.stringify(parsed.data, null, 2) + "\n", {
-      mode: 0o600,
-      flag: "wx",
-    });
-    await rename(temp, file);
     res.json(parsed.data);
   } catch {
     res

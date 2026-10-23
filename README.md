@@ -24,7 +24,7 @@ $env:BASE_PATH = '/'
 npm run build
 ```
 
-Build output: `artifacts/portfolio-site/dist/public`. Existing hosting must rewrite `/certifications`, `/featured`, `/projects`, `/writing`, `/investing`, and `/investing/sync` to `index.html` for direct navigation. Set `BASE_PATH` to the deployed prefix with a trailing slash if hosting under a subdirectory. The static portfolio works with saved snapshots. Dynamic investing sync requires the Express API and a persistent data file; no database is required.
+Build output: `artifacts/portfolio-site/dist/public`. Existing hosting must rewrite `/certifications`, `/featured`, `/projects`, `/writing`, `/investing`, and `/investing/sync` to `index.html` for direct navigation. Set `BASE_PATH` to the deployed prefix with a trailing slash if hosting under a subdirectory. The static portfolio works with saved snapshots. Dynamic investing sync requires the Express API and durable storage: a local persistent file or PostgreSQL on serverless hosting.
 
 ## Content and provenance
 
@@ -50,7 +50,7 @@ Resume and all public projects lead the navigation and homepage. The background 
 
 The homepage summary and `/certifications` use the complete LinkedIn certifications list captured through the signed-in browser on October 22, 2026: ten completed credentials and one explicitly in-progress AWS Machine Learning Engineer credential. Issuers are AWS, Anthropic and Google. Public issuer verification URLs and listed issue/expiration months are retained; private profile analytics, session credentials and signed LinkedIn redirect parameters are excluded. Expired credentials are labeled by month, and in-progress entries are never treated as earned.
 
-`artifacts/portfolio-site/public/certifications.json` is the single snapshot. The frontend bundles it as fallback and refreshes a validated public GitHub copy every five minutes while visible. Invalid responses or older CDN copies preserve the last good snapshot. `VITE_CERTIFICATIONS_FEED_URL` can override the feed; the current default points to this file on `nsirivolu27/NihalPortfolio`, branch `codex/complete-portfolio`. Move that setting to the permanent branch before deleting this working branch. A snapshot push updates the existing website feed without rebuilding the frontend, subject to GitHub caching and availability.
+`artifacts/portfolio-site/public/certifications.json` is the single snapshot. The frontend bundles it as fallback and refreshes a validated public GitHub copy every five minutes while visible. Invalid responses or older CDN copies preserve the last good snapshot. `VITE_CERTIFICATIONS_FEED_URL` can override the feed; the default points to this file on `nsirivolu27/NihalPortfolio`, branch `main`. A snapshot push updates the existing website feed without rebuilding the frontend, subject to GitHub caching and availability.
 
 The desktop heartbeat `sync-linkedin-certifications` checks LinkedIn daily at 9 AM in the app's local timezone, updates only the sanitized snapshot, runs validation and pushes it to the feed branch. It stays quiet when credentials are unchanged. This requires the desktop scheduler and an available signed-in LinkedIn browser session; it is not LinkedIn OAuth or an always-on server integration. If access fails or the list is incomplete, the previous snapshot remains and the user is notified. The first capture and frontend refresh were verified; future scheduled runs depend on that session remaining available. LinkedIn's standard sign-in permissions do not expose certification records: https://learn.microsoft.com/en-us/linkedin/shared/authentication/getting-access.
 
@@ -83,4 +83,6 @@ Use one API writer process for the file-backed store. Production hosting without
 
 ## Hosting
 
-This work preserves the existing GitHub/Replit project. It does not create a second hosted site or change the production audience. The live site URL and deployment configuration still need to be confirmed before publishing changes.
+Vercel deployment uses the repository root, Node 24, pnpm 10.26.1, and the checked-in `vercel.json`. Its build command sets the required frontend build variables, runs workspace typechecks and builds, and publishes `artifacts/portfolio-site/dist/public`. Explicit rewrites preserve direct navigation to each portfolio page. `api/investing.ts` serves the same Express API as the local server.
+
+For owner sync on Vercel, set server-only `DATABASE_URL`, `INVESTING_SYNC_TOKEN`, and `PORTFOLIO_ORIGIN` in the project environment. The PostgreSQL store creates one snapshot table on first use and uses an atomic timestamp comparison to prevent older concurrent writes from replacing newer captures. No database credentials are sent to the frontend. Do not use `INVESTING_DATA_FILE` on Vercel: its function filesystem is not durable storage. Without these settings, the public site retains its saved percentage-only snapshot and owner publishing reports that sync is not configured.
