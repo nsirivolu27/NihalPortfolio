@@ -9,9 +9,7 @@ export const portfolioProfile = {
     'I combine data analysis, mathematical modeling, and software development to build tools that people can understand and use.',
   availability: 'Open to 2027 new grad software roles',
   email: 'sirivolun@gmail.com',
-  resumeLabel: 'Current resume · Supplied October 2026',
   githubLabel: 'github.com/nsirivolu27',
-  resumeUrl: `${import.meta.env.BASE_URL}Nihal-Sirivolu-Resume.pdf`,
   blogUrl: 'https://nihalsblogaboutstuff.blogspot.com/',
   githubUrl: 'https://github.com/nsirivolu27',
   linkedinUrl: 'https://www.linkedin.com/in/nihalsirivolu',
@@ -19,7 +17,6 @@ export const portfolioProfile = {
 };
 
 export const navItems = [
-  { label: 'Resume', href: portfolioProfile.resumeUrl },
   { label: 'Projects', href: '#work' },
   { label: 'Featured', href: 'featured' },
   { label: 'Certifications', href: 'certifications' },

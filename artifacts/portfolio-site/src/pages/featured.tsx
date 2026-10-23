@@ -4,7 +4,6 @@ import { FeaturedProjects } from "@/components/featured-projects";
 import { CmdaBackdrop } from "@/components/cmda-backdrop";
 import type { SceneState } from "@/components/project-scene";
 import { usePortfolioProjects } from "@/hooks/use-project-settings";
-import { portfolioProfile } from "@/lib/portfolio-data";
 import { SourceStatus } from "@/components/page-shell";
 
 export default function Featured() {
@@ -33,9 +32,6 @@ export default function Featured() {
         <nav aria-label="Main navigation">
           <Link href="/">Home</Link>
           <Link href="/projects">All projects</Link>
-          <a href={portfolioProfile.resumeUrl} target="_blank" rel="noreferrer">
-            Resume ↗
-          </a>
         </nav>
       </header>
       <main>

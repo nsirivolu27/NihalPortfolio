@@ -11,12 +11,6 @@ import InvestingSync from "@/pages/investing-sync";
 import Featured from "@/pages/featured";
 import Certifications from "@/pages/certifications";
 import { CertificationsSection } from "@/components/certifications";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
 import { usePortfolioProjects } from "@/hooks/use-project-settings";
 import { ProjectManager } from "@/components/project-manager";
 import { RepositoryGrid } from "@/components/repository-grid";
@@ -32,7 +26,6 @@ import {
   Check,
   ChevronRight,
   CircleArrowOutUpRight,
-  Download,
   Github,
   Linkedin,
   Mail,
@@ -77,17 +70,7 @@ function Home() {
   const repositories = usePortfolioProjects();
   const [featuredScene, setFeaturedScene] = useState<SceneState | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [resumeOpen, setResumeOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    if (!resumeOpen) return;
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setResumeOpen(false);
-    };
-    window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
-  }, [resumeOpen]);
 
   const copyEmail = async () => {
     try {
@@ -141,14 +124,6 @@ function Home() {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => setResumeOpen(true)}
-              data-testid="button-header-resume"
-              className="hidden items-center gap-2 border border-primary bg-primary px-4 py-2.5 text-[12px] font-bold text-primary-foreground transition hover:bg-secondary hover:text-secondary-foreground sm:flex"
-            >
-              Resume <Download size={13} strokeWidth={2.5} />
-            </button>
-            <button
-              type="button"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-expanded={menuOpen}
               data-testid="button-mobile-menu"
@@ -176,17 +151,6 @@ function Home() {
                 <ChevronRight size={16} className="text-muted-foreground" />
               </a>
             ))}
-            <button
-              type="button"
-              onClick={() => {
-                setMenuOpen(false);
-                setResumeOpen(true);
-              }}
-              data-testid="button-mobile-resume"
-              className="mt-4 flex w-full items-center justify-between bg-primary px-4 py-3 text-sm font-bold text-primary-foreground"
-            >
-              Resume <Download size={15} />
-            </button>
           </nav>
         )}
       </header>
@@ -220,14 +184,6 @@ function Home() {
                 {portfolioProfile.intro}
               </p>
               <div className="flex shrink-0 flex-col gap-5">
-                <a
-                  href={portfolioProfile.resumeUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-3 bg-primary px-5 py-3 text-sm font-bold text-primary-foreground"
-                >
-                  Read my resume <Download size={16} />
-                </a>
                 <a
                   href="#work"
                   data-testid="link-scroll-work"
@@ -590,14 +546,6 @@ function Home() {
             © {new Date().getFullYear()} / {portfolioProfile.name}
           </p>
           <div className="flex flex-wrap items-center gap-5 font-mono-ui text-[10px] uppercase tracking-[.13em]">
-            <button
-              type="button"
-              onClick={() => setResumeOpen(true)}
-              data-testid="button-footer-resume"
-              className="text-primary-foreground/65 transition hover:text-secondary"
-            >
-              Resume
-            </button>
             {portfolioProfile.githubUrl ? (
               <a
                 href={portfolioProfile.githubUrl}
@@ -608,16 +556,7 @@ function Home() {
               >
                 <Github size={14} /> GitHub
               </a>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setResumeOpen(true)}
-                data-testid="button-github-slot"
-                className="inline-flex items-center gap-2 text-primary-foreground/65 transition hover:text-secondary"
-              >
-                <Github size={14} /> GitHub slot
-              </button>
-            )}
+            ) : null}
             {portfolioProfile.linkedinUrl ? (
               <a
                 href={portfolioProfile.linkedinUrl}
@@ -640,50 +579,6 @@ function Home() {
         </div>
       </footer>
 
-      <Dialog open={resumeOpen} onOpenChange={setResumeOpen}>
-        <DialogContent className="w-full max-w-[440px] border border-border bg-background p-7 shadow-2xl sm:p-9">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="font-mono-ui text-[10px] uppercase tracking-[.16em] text-accent">
-                Resume
-              </p>
-              <DialogTitle className="mt-3 font-display text-5xl leading-none">
-                The resume.
-                <br />
-                <em>Ready to read.</em>
-              </DialogTitle>
-            </div>
-          </div>
-          <DialogDescription className="mt-7 text-sm leading-relaxed text-muted-foreground">
-            Experience, research, projects, technical skills, and certifications
-            in one downloadable PDF.
-          </DialogDescription>
-          {portfolioProfile.resumeUrl ? (
-            <a
-              href={portfolioProfile.resumeUrl}
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => setResumeOpen(false)}
-              data-testid="link-resume-download"
-              className="mt-7 flex items-center justify-between bg-primary px-4 py-3 text-xs font-bold uppercase tracking-[.1em] text-primary-foreground"
-            >
-              Open resume <Download size={16} />
-            </a>
-          ) : (
-            <a
-              href={`mailto:${portfolioProfile.email}`}
-              onClick={() => setResumeOpen(false)}
-              data-testid="link-resume-contact"
-              className="mt-7 flex items-center justify-between bg-primary px-4 py-3 text-xs font-bold uppercase tracking-[.1em] text-primary-foreground"
-            >
-              Ask for the current version <ArrowUpRight size={16} />
-            </a>
-          )}
-          <p className="mt-4 font-mono-ui text-[9px] uppercase tracking-[.12em] text-muted-foreground">
-            {portfolioProfile.resumeLabel}
-          </p>
-        </DialogContent>
-      </Dialog>
     </main>
   );
 }

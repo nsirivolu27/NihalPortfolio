@@ -41,13 +41,6 @@ export function PageShell({
             aria-label="Main navigation"
             className="flex flex-wrap gap-x-6 gap-y-3 text-sm"
           >
-            <a
-              href={portfolioProfile.resumeUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Resume ↗
-            </a>
             <Link href="/projects">Projects</Link>
             <Link href="/featured">Featured</Link>
             <Link href="/certifications">Certifications</Link>
