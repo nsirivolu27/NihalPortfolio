@@ -1,0 +1,94 @@
+{
+  "capturedAt": "2026-10-23T01:17:20.000Z",
+  "source": "https://www.linkedin.com/in/nihalsirivolu/details/certifications/",
+  "items": [
+    {
+      "id": "aws-ml-engineer",
+      "name": "AWS Certified Machine Learning Engineer - Associate",
+      "issuer": "Amazon Web Services (AWS)",
+      "status": "in-progress"
+    },
+    {
+      "id": "aws-solutions-architect",
+      "name": "AWS Certified Solutions Architect – Associate",
+      "issuer": "Amazon Web Services (AWS)",
+      "status": "earned",
+      "issued": "2026-08",
+      "expires": "2029-08",
+      "credentialUrl": "https://www.credly.com/badges/b0598255-fb47-485e-ac62-630200923a15/linked_in_profile"
+    },
+    {
+      "id": "claude-ai-fluency",
+      "name": "Claude Academy: AI Fluency for builders",
+      "issuer": "Anthropic",
+      "status": "earned",
+      "issued": "2026-09",
+      "credentialUrl": "https://academy.claude.com/verify/2669a41e59da80ead8002e4d9f01334c"
+    },
+    {
+      "id": "claude-capabilities",
+      "name": "Claude Academy: AI capabilities and limitations",
+      "issuer": "Anthropic",
+      "status": "earned",
+      "issued": "2026-09",
+      "credentialUrl": "https://academy.claude.com/verify/189d5061a6e7c54a527fea5aab2aecdc"
+    },
+    {
+      "id": "claude-101",
+      "name": "Claude Academy: Claude 101",
+      "issuer": "Anthropic",
+      "status": "earned",
+      "issued": "2026-09",
+      "credentialUrl": "https://academy.claude.com/verify/c612d2417197b9222109173a4311e9d9"
+    },
+    {
+      "id": "google-ai-essentials",
+      "name": "Google AI Essentials",
+      "issuer": "Google",
+      "status": "earned",
+      "issued": "2026-06",
+      "credentialUrl": "https://www.coursera.org/account/accomplishments/specialization/A5ESJBAP0FO5"
+    },
+    {
+      "id": "google-responsible-ai",
+      "name": "Use AI Responsibly",
+      "issuer": "Google",
+      "status": "earned",
+      "issued": "2026-06",
+      "credentialUrl": "https://www.coursera.org/account/accomplishments/records/X2JBM0IM46B3"
+    },
+    {
+      "id": "google-prompting",
+      "name": "Discover the Art of Prompting",
+      "issuer": "Google",
+      "status": "earned",
+      "issued": "2026-06",
+      "credentialUrl": "https://www.coursera.org/account/accomplishments/records/XPU9HMM4BQ8I"
+    },
+    {
+      "id": "google-ai-productivity",
+      "name": "Maximize Productivity With AI Tools",
+      "issuer": "Google",
+      "status": "earned",
+      "issued": "2026-06",
+      "credentialUrl": "https://www.coursera.org/account/accomplishments/records/CXAAULGVVG66"
+    },
+    {
+      "id": "google-intro-ai",
+      "name": "Introduction to AI",
+      "issuer": "Google",
+      "status": "earned",
+      "issued": "2026-06",
+      "credentialUrl": "https://www.coursera.org/account/accomplishments/records/85Z5HUTVDH8A"
+    },
+    {
+      "id": "aws-cloud-practitioner",
+      "name": "AWS Certified Cloud Practitioner",
+      "issuer": "Amazon Web Services (AWS)",
+      "status": "earned",
+      "issued": "2025-12",
+      "expires": "2028-12",
+      "credentialUrl": "https://www.credly.com/badges/bb410032-44b7-49c9-a2ed-6248eaf8c611/linked_in_profile"
+    }
+  ]
+}

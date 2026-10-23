@@ -1,0 +1,113 @@
+{
+  "updatedAt": "2026-10-23T01:09:12.514Z",
+  "items": [
+    {
+      "name": "edrevel-video-ai",
+      "description": "",
+      "url": "https://github.com/nsirivolu27/edrevel-video-ai",
+      "language": "Python",
+      "archived": false,
+      "fork": false,
+      "pushedAt": "2026-06-09T23:03:51Z"
+    },
+    {
+      "name": "fantasy-copilot",
+      "description": "A free, self-hosted fantasy football companion. Syncs your Sleeper league, and answers questions about it through a chat grounded in your real data — no paid APIs, no API keys.",
+      "url": "https://github.com/nsirivolu27/fantasy-copilot",
+      "language": "TypeScript",
+      "archived": false,
+      "fork": false,
+      "pushedAt": "2026-10-06T00:18:39Z"
+    },
+    {
+      "name": "LLMM",
+      "description": "Consolidated into LNKZ. Continue development at github.com/nsirivolu27/LNKZ; this repository preserves the original LLMM project.",
+      "url": "https://github.com/nsirivolu27/LLMM",
+      "language": "TypeScript",
+      "archived": true,
+      "fork": false,
+      "pushedAt": "2026-09-07T17:32:39Z"
+    },
+    {
+      "name": "LNKZ",
+      "description": "LNKZ (formerly LLMM): move useful conversation context between LLMs, apps, devices, and people. Unified relay, web console, REST and MCP.",
+      "url": "https://github.com/nsirivolu27/LNKZ",
+      "language": "TypeScript",
+      "archived": false,
+      "fork": false,
+      "pushedAt": "2026-09-24T13:58:59Z"
+    },
+    {
+      "name": "Magentic.AI",
+      "description": "In progress. Magentic is a supervised AI workflow workspace: AI drafts a stage, a person reviews it beside the evidence, an independent reviewer signs a content hash, and nothing advances on its own. Built for the Virginia Tech x Accenture Federal Services Build Challenge.",
+      "url": "https://github.com/nsirivolu27/Magentic.AI",
+      "language": "TypeScript",
+      "archived": false,
+      "fork": false,
+      "pushedAt": "2026-10-23T00:11:07Z"
+    },
+    {
+      "name": "NihalPortfolio",
+      "description": "Nihal Sirivolu Portfolio - Senior Year",
+      "url": "https://github.com/nsirivolu27/NihalPortfolio",
+      "language": "TypeScript",
+      "archived": false,
+      "fork": false,
+      "pushedAt": "2026-10-23T01:04:13Z"
+    },
+    {
+      "name": "quantum-datacenter-anomaly",
+      "description": "DataCenter Proj",
+      "url": "https://github.com/nsirivolu27/quantum-datacenter-anomaly",
+      "language": "Python",
+      "archived": false,
+      "fork": false,
+      "pushedAt": "2026-10-23T00:06:58Z"
+    },
+    {
+      "name": "RENO",
+      "description": "",
+      "url": "https://github.com/nsirivolu27/RENO",
+      "language": "TypeScript",
+      "archived": false,
+      "fork": false,
+      "pushedAt": "2026-09-07T17:55:02Z"
+    },
+    {
+      "name": "rsna-knee-abnormality-detection",
+      "description": "",
+      "url": "https://github.com/nsirivolu27/rsna-knee-abnormality-detection",
+      "language": "Python",
+      "archived": false,
+      "fork": false,
+      "pushedAt": "2026-10-01T16:46:06Z"
+    },
+    {
+      "name": "Soupy-Hackathon-PROJ",
+      "description": "",
+      "url": "https://github.com/nsirivolu27/Soupy-Hackathon-PROJ",
+      "language": "TypeScript",
+      "archived": false,
+      "fork": false,
+      "pushedAt": "2026-05-20T21:04:54Z"
+    },
+    {
+      "name": "SpeechSight",
+      "description": "Natural Language Processor Project",
+      "url": "https://github.com/nsirivolu27/SpeechSight",
+      "language": "C++",
+      "archived": false,
+      "fork": false,
+      "pushedAt": "2026-04-02T14:03:22Z"
+    },
+    {
+      "name": "SYMPO",
+      "description": "Real-Time Sponsorship Marketplace",
+      "url": "https://github.com/nsirivolu27/SYMPO",
+      "language": "Java",
+      "archived": false,
+      "fork": false,
+      "pushedAt": "2026-04-13T05:20:06Z"
+    }
+  ]
+}
