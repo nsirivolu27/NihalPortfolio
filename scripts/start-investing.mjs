@@ -32,7 +32,6 @@ const child = spawn(
       HOST: "127.0.0.1",
       PORT: "4175",
       INVESTING_SYNC_TOKEN: key,
-      PROJECTS_DATA_FILE: fileURLToPath(new URL("projects.json", local)),
       INVESTING_DATA_FILE: fileURLToPath(new URL("investing.json", local)),
       PORTFOLIO_ORIGIN: process.env.PORTFOLIO_ORIGIN ?? "http://127.0.0.1:4174",
     },

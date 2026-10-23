@@ -57,18 +57,18 @@ export function PageShell({
           </nav>
         </div>
       </header>
-      <main id="page-content" className="page-width pb-12">
-        <div className="py-8 sm:py-12">
+      <main id="page-content" className="page-width pb-24">
+        <div className="py-16 sm:py-24">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground"
           >
             <ArrowLeft size={14} /> Back to home
           </Link>
-          <p className="mt-6 font-mono-ui text-xs uppercase tracking-widest text-accent">
+          <p className="mt-12 font-mono-ui text-xs uppercase tracking-widest text-accent">
             {eyebrow}
           </p>
-          <h1 className="mt-5 font-display text-5xl leading-none tracking-tight sm:text-6xl">
+          <h1 className="mt-5 font-display text-6xl leading-none tracking-tight sm:text-8xl">
             {title}
           </h1>
           <p className="mt-7 max-w-2xl text-lg leading-relaxed text-muted-foreground">

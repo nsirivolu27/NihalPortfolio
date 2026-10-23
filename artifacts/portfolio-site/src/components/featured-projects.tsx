@@ -93,11 +93,6 @@ export function FeaturedProjects({
         </p>
       </div>
       <div className="featured-stage" data-theme={active.theme}>
-        {active.theme === "workflow" && (
-          <div className="featured-stage-backdrop" aria-hidden="true">
-            <ProjectScene theme={active.theme} progress={progress} />
-          </div>
-        )}
         <div
           className="featured-choices"
           role="group"

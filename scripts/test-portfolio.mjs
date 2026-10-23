@@ -1,8 +1,5 @@
 import assert from "node:assert/strict";
-import {
-  validateCertifications,
-  certificationStatus,
-} from "../artifacts/portfolio-site/src/lib/core/certifications.ts";
+import { validateCertifications, certificationStatus } from "../artifacts/portfolio-site/src/lib/core/certifications.ts";
 import { readFile } from "node:fs/promises";
 import {
   extractYahooPercentages,
@@ -22,82 +19,31 @@ const test = (name, fn) => {
 };
 const summary =
   "All Portfolio Holdings\n$999.00\nDay Change\n-$1.00 (-3.18%)\nUnrealized Gain/Loss\n+$2.00 (+127.58%)\nRealized Gain/Loss\n+$3.00 (+7.43%)";
-const certificationSnapshot = JSON.parse(
-  await readFile(
-    new URL(
-      "../artifacts/portfolio-site/public/certifications.json",
-      import.meta.url,
-    ),
-    "utf8",
-  ),
-);
+const certificationSnapshot = JSON.parse(await readFile(new URL("../artifacts/portfolio-site/public/certifications.json", import.meta.url), "utf8"));
 test("credential feed keeps completed and in-progress entries distinct", () => {
   const snapshot = validateCertifications(certificationSnapshot);
-  assert.ok(
-    snapshot.items.every(
-      (item) => item.status === "earned" || item.status === "in-progress",
-    ),
-  );
-  assert.equal(
-    certificationStatus(
-      { id: "ml", name: "ML", issuer: "AWS", status: "in-progress" },
-      "2026-10",
-    ),
-    "in-progress",
-  );
+  assert.ok(snapshot.items.every(item => item.status === "earned" || item.status === "in-progress"));
+  assert.equal(certificationStatus({ id: "ml", name: "ML", issuer: "AWS", status: "in-progress" }, "2026-10"), "in-progress");
 });
 test("credentials remain current through their expiry month", () => {
-  const cert = {
-    id: "aws",
-    name: "AWS",
-    issuer: "AWS",
-    status: "earned",
-    expires: "2029-08",
-  };
+  const cert = { id: "aws", name: "AWS", issuer: "AWS", status: "earned", expires: "2029-08" };
   assert.equal(certificationStatus(cert, "2029-08"), "earned");
   assert.equal(certificationStatus(cert, "2029-09"), "expired");
 });
 test("malformed credential feeds and unsafe verification links fail before replacing the snapshot", () => {
-  const item = certificationSnapshot.items.find(
-    (item) => item.status === "earned",
-  );
-  for (const patch of [
-    { credentialUrl: "javascript:alert(1)" },
-    { issued: "2026-13" },
-    { status: "verified" },
-    { token: "secret" },
-  ]) {
-    assert.throws(() =>
-      validateCertifications({
-        ...certificationSnapshot,
-        items: [{ ...item, ...patch }],
-      }),
-    );
+  const item = certificationSnapshot.items.find(item => item.status === "earned");
+  for (const patch of [{ credentialUrl: "javascript:alert(1)" }, { issued: "2026-13" }, { status: "verified" }, { token: "secret" }]) {
+    assert.throws(() => validateCertifications({ ...certificationSnapshot, items: [{ ...item, ...patch }] }));
   }
-  assert.throws(() =>
-    validateCertifications({ ...certificationSnapshot, items: [item, item] }),
-  );
+  assert.throws(() => validateCertifications({ ...certificationSnapshot, items: [item, item] }));
 });
 test("GitHub refresh preserves archived status and valid push dates without inventing missing dates", () => {
-  const repo = {
-    name: "Magentic.AI",
-    owner: { login: "nsirivolu27" },
-    private: false,
-    html_url: "https://github.com/nsirivolu27/Magentic.AI",
-    archived: true,
-    pushed_at: "2026-10-23T00:00:00Z",
-  };
+  const repo = { name: "Magentic.AI", owner: { login: "nsirivolu27" }, private: false, html_url: "https://github.com/nsirivolu27/Magentic.AI", archived: true, pushed_at: "2026-10-23T00:00:00Z" };
   const [result] = normalizeRepositories([repo]);
   assert.equal(result.archived, true);
   assert.equal(result.pushedAt, repo.pushed_at);
-  assert.equal(
-    normalizeRepositories([{ ...repo, pushed_at: null }])[0].pushedAt,
-    undefined,
-  );
-  assert.equal(
-    normalizeRepositories([{ ...repo, pushed_at: "not a date" }])[0].pushedAt,
-    undefined,
-  );
+  assert.equal(normalizeRepositories([{ ...repo, pushed_at: null }])[0].pushedAt, undefined);
+  assert.equal(normalizeRepositories([{ ...repo, pushed_at: "not a date" }])[0].pushedAt, undefined);
 });
 test("Yahoo summary exports only three percentages, never amounts", () => {
   assert.deepEqual(extractYahooPercentages(summary), {
@@ -256,108 +202,4 @@ const pdf = await readFile(
 );
 test("the resume download is an actual PDF", () =>
   assert.equal(pdf.subarray(0, 5).toString(), "%PDF-"));
-const { validateAnalytics, holdingLeaders } =
-  await import("../artifacts/portfolio-site/src/lib/core/investing.ts");
-const { validateProjectSettings, curateProjects } =
-  await import("../artifacts/portfolio-site/src/lib/core/projects.ts");
-const analytics = {
-  scope: "Yahoo My Holdings",
-  positions: [
-    { symbol: "A", name: "Alpha", unrealized: -20, dayChange: 2 },
-    { symbol: "B", name: "Beta", unrealized: 100, dayChange: -4 },
-    { symbol: "C", name: "Gamma", unrealized: null, dayChange: 0 },
-  ],
-  sectors: [{ name: "Technology", percent: 100 }],
-};
-test("return leaders use the selected period, never turn missing metrics into zero", () => {
-  validateAnalytics(analytics);
-  const total = holdingLeaders(analytics.positions, "unrealized");
-  assert.equal(total.gainers[0].symbol, "B");
-  assert.equal(total.losers[0].symbol, "A");
-  assert.equal(total.unavailable, 1);
-  assert.equal(total.flat, 0);
-  const day = holdingLeaders(analytics.positions, "dayChange");
-  assert.equal(day.gainers[0].symbol, "A");
-  assert.equal(day.losers[0].symbol, "B");
-  assert.equal(day.flat, 1);
-  assert.deepEqual(
-    holdingLeaders([analytics.positions[1]], "unrealized").losers,
-    [],
-  );
-});
-test("analytics reject nested private data, duplicates, and incomplete allocations", () => {
-  for (const patch of [
-    { positions: [{ ...analytics.positions[0], balance: 123 }] },
-    { positions: [analytics.positions[0], analytics.positions[0]] },
-    { sectors: [{ name: "Technology", percent: 50 }] },
-    { positions: [{ ...analytics.positions[0], dayChange: "--" }] },
-  ])
-    assert.throws(() => validateAnalytics({ ...analytics, ...patch }));
-});
-const curatedRepo = {
-  name: "Demo",
-  description: "Source",
-  url: "https://github.com/nsirivolu27/Demo",
-  language: "Python",
-  archived: false,
-  fork: false,
-};
-test("deleting hides a project across refreshes, adding it back restores current GitHub metadata", () => {
-  const settings = validateProjectSettings({
-    revision: 0,
-    hidden: [curatedRepo.url],
-    additions: [],
-  });
-  assert.equal(
-    curateProjects([{ ...curatedRepo, description: "Updated" }], settings)
-      .length,
-    0,
-  );
-  assert.equal(
-    curateProjects([{ ...curatedRepo, description: "Updated" }], {
-      ...settings,
-      hidden: [],
-    })[0].description,
-    "Updated",
-  );
-  const custom = {
-    name: "Custom",
-    description: "Work",
-    url: "https://example.com/work",
-    language: "Data",
-  };
-  assert.equal(
-    curateProjects([curatedRepo], {
-      ...settings,
-      hidden: [],
-      additions: [custom],
-    }).length,
-    2,
-  );
-  assert.equal(
-    curateProjects([curatedRepo], {
-      ...settings,
-      hidden: [],
-      additions: [{ ...custom, url: curatedRepo.url }],
-    })[0].description,
-    "Source",
-  );
-});
-test("project settings reject unsafe links, duplicate entries, and unknown fields", () => {
-  for (const patch of [
-    { hidden: ["javascript:alert(1)"] },
-    { hidden: ["https://user:secret@example.com"] },
-    { token: "secret" },
-    { revision: -1 },
-    { hidden: [curatedRepo.url, curatedRepo.url] },
-  ])
-    assert.throws(() =>
-      validateProjectSettings({
-        revision: 0,
-        hidden: [],
-        additions: [],
-        ...patch,
-      }),
-    );
-});
 console.log(`\n${passed} passing\n`);

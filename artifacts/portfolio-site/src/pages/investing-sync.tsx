@@ -88,13 +88,6 @@ export default function InvestingSync() {
       eyebrow="Owner / Portfolio update"
       intro="Capture the three gain/loss percentages from your signed-in Yahoo Finance summary, review them, and publish with your owner key."
     >
-      <p className="mb-6 max-w-3xl text-sm leading-relaxed text-muted-foreground">
-        Scheduled captures run on weekdays at 5 PM Eastern through local automation on your
-        computer, using your signed-in Yahoo session. If the computer is
-        unavailable or Yahoo asks you to sign in again, the last successful
-        capture stays visible. The tools below are a manual fallback for summary
-        percentages.
-      </p>
       <section className="archive-card max-w-3xl">
         <h2 className="font-display text-3xl">1. Capture the summary</h2>
         <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -144,11 +137,9 @@ export default function InvestingSync() {
           </button>
         </details>
         <p className="mt-6 text-xs leading-relaxed text-muted-foreground">
-          This manual fallback shares only the three summary percentages and
-          replaces the previous snapshot, including its analytics. Scheduled
-          captures also include named holdings' percentage returns and sector
-          percentages. Yahoo passwords, cookies, balances and position sizes are
-          never sent to this site.
+          This is an update you trigger, not a background Yahoo connection. No
+          Yahoo password, cookies, account balance, or holdings are sent to this
+          site.
         </p>
       </section>
       {snapshot && (

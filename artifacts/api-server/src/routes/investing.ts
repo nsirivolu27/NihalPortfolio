@@ -48,8 +48,7 @@ router.post("/investing", async (req, res) => {
   const parsed = InvestingSnapshot.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({
-      error:
-        "Only a dated percentage snapshot and validated analytics are accepted.",
+      error: "Only a dated snapshot of three percentages is accepted.",
     });
     return;
   }

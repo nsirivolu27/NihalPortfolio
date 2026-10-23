@@ -66,7 +66,7 @@ export function CertificationsSection() {
   return (
     <section
       id="certifications"
-      className="page-width py-12"
+      className="page-width py-24"
       aria-labelledby="certifications-heading"
     >
       <div className="featured-heading">

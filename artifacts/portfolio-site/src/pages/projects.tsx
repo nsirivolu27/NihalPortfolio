@@ -1,12 +1,11 @@
 import { useMemo, useState } from "react";
-import { ProjectManager } from "@/components/project-manager";
 import { Search } from "lucide-react";
 import { PageShell, SourceStatus } from "@/components/page-shell";
-import { usePortfolioProjects } from "@/hooks/use-project-settings";
+import { useRepositories } from "@/hooks/use-public-content";
 import { RepositoryGrid } from "@/components/repository-grid";
 
 export default function Projects() {
-  const query = usePortfolioProjects();
+  const query = useRepositories();
   const [search, setSearch] = useState("");
   const [language, setLanguage] = useState("All");
   const items = query.data.items;
@@ -27,9 +26,8 @@ export default function Projects() {
     <PageShell
       title="Things I’ve built."
       eyebrow="The project archive"
-      intro="From computer vision and AI infrastructure to wearables, renovation tools, and fantasy football. Projects from GitHub, plus selected work."
+      intro="From computer vision and AI infrastructure to wearables, renovation tools, and fantasy football. Every public repository, using its name and description directly from GitHub."
     >
-      <ProjectManager />
       <SourceStatus
         updatedAt={query.data.updatedAt}
         isError={query.isError}
@@ -64,7 +62,7 @@ export default function Projects() {
         </label>
       </div>
       <p className="mb-6 text-sm text-muted-foreground" aria-live="polite">
-        {filtered.length} of {items.length} projects
+        {filtered.length} of {items.length} public repositories
       </p>
       <RepositoryGrid items={filtered} />
       {!filtered.length && (

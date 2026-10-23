@@ -1,4 +1,3 @@
-import { InvestingAnalyticsView } from "@/components/investing-analytics";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { ArrowUpRight } from "lucide-react";
@@ -21,7 +20,6 @@ export default function Investing() {
       return validateSnapshot(await response.json());
     },
     retry: false,
-    refetchInterval: 60_000,
     refetchOnWindowFocus: true,
   });
   const snapshot = query.data ?? validateSnapshot(snapshotData);
@@ -88,23 +86,14 @@ export default function Investing() {
             ? " Live refresh unavailable; showing the last available snapshot."
             : ""}
         </p>
-        {Date.now() - Date.parse(snapshot.capturedAt) >
-          4 * 24 * 60 * 60_000 && (
-          <p role="status" className="mt-3 text-sm text-accent">
-            This snapshot is more than four days old. A new Yahoo capture is
-            pending.
-          </p>
-        )}
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground">
-          Yahoo's reported percentages are separate, not added or annualized.
-          Day change refers to the captured trading day.
+          Percentages are shown separately, as reported by Yahoo. They are not
+          added together or presented as an annualized return. Day change refers
+          to the captured snapshot, not necessarily today.
         </p>
       </section>
-      {snapshot.analytics && (
-        <InvestingAnalyticsView analytics={snapshot.analytics} />
-      )}
       <section
-        className="mt-10 border-t border-border pt-8"
+        className="mt-20 border-t border-border pt-12"
         aria-labelledby="analysis-title"
       >
         <p className="font-mono-ui text-xs uppercase tracking-wider text-accent">

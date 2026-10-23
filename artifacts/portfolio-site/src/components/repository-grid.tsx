@@ -17,12 +17,10 @@ export function RepositoryGrid({ items }: { items: Repository[] }) {
                 ? "Archived"
                 : repo.fork
                   ? "Fork"
-                  : repo.url.startsWith("https://github.com/")
-                    ? "Public repository"
-                    : "Project"}
+                  : "Public repository"}
             </span>
           </div>
-          <h3 className="mt-4 break-words font-display text-3xl">
+          <h3 className="mt-8 break-words font-display text-4xl">
             <a
               href={repo.url}
               target="_blank"
@@ -32,23 +30,19 @@ export function RepositoryGrid({ items }: { items: Repository[] }) {
               {repo.name} <ArrowUpRight className="inline" size={22} />
             </a>
           </h3>
-          {repo.description && (
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              {repo.description}
-            </p>
-          )}
-          {repo.pushedAt && (
-            <p className="mt-4 text-xs text-muted-foreground">
-              Last push{" "}
-              <time dateTime={repo.pushedAt}>
-                {new Date(repo.pushedAt).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </time>
-            </p>
-          )}
+          <p className="mt-5 flex-1 text-sm leading-relaxed text-muted-foreground">
+            {repo.description ||
+              "No description provided on GitHub. Open the repository for its source and README."}
+          </p>
+          <a
+            className="mt-8 text-sm underline underline-offset-4"
+            href={repo.url}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Explore {repo.name}
+          </a>
+          {repo.pushedAt && <p className="mt-4 text-xs text-muted-foreground">Last push <time dateTime={repo.pushedAt}>{new Date(repo.pushedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</time></p>}
         </article>
       ))}
     </div>

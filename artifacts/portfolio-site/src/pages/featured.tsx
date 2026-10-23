@@ -3,12 +3,12 @@ import { Link } from "wouter";
 import { FeaturedProjects } from "@/components/featured-projects";
 import { CmdaBackdrop } from "@/components/cmda-backdrop";
 import type { SceneState } from "@/components/project-scene";
-import { usePortfolioProjects } from "@/hooks/use-project-settings";
+import { useRepositories } from "@/hooks/use-public-content";
 import { portfolioProfile } from "@/lib/portfolio-data";
 import { SourceStatus } from "@/components/page-shell";
 
 export default function Featured() {
-  const repositories = usePortfolioProjects();
+  const repositories = useRepositories();
   const [scene, setScene] = useState<SceneState | null>(null);
   useEffect(() => {
     const previous = document.title;
