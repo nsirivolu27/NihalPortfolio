@@ -8,7 +8,23 @@ export type Repository = {
   pushedAt?: string;
 };
 
-export type BlogPost = { title: string; url: string; published: string };
+export type BlogPost = {
+  title: string;
+  url: string;
+  published: string;
+  labels?: string[];
+};
+
+export function isInvestingPost(post: BlogPost): boolean {
+  return (
+    post.url.endsWith("/canoo-buy-now.html") ||
+    (post.labels ?? []).some((label) =>
+      ["investing", "finance", "stock analysis", "weekly market review"].includes(
+        label.trim().toLowerCase(),
+      ),
+    )
+  );
+}
 
 function record(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value))
@@ -74,7 +90,19 @@ export function normalizeBlog(value: unknown): BlogPost[] {
       ) {
         throw new Error("Invalid blog entry");
       }
-      return { title: title.trim(), published, url };
+      const labels = Array.isArray(entry.category)
+        ? entry.category.flatMap((category) => {
+            if (!category || typeof category !== "object") return [];
+            const term = (category as Record<string, unknown>).term;
+            return typeof term === "string" && term.trim() ? [term.trim()] : [];
+          })
+        : [];
+      return {
+        title: title.trim(),
+        published,
+        url,
+        ...(labels.length ? { labels: [...new Set(labels)] } : {}),
+      };
     })
     .sort((a, b) => Date.parse(b.published) - Date.parse(a.published));
 }

@@ -3,10 +3,11 @@ import { ArrowUpRight } from "lucide-react";
 import { PageShell, SourceStatus } from "@/components/page-shell";
 import { useBlog } from "@/hooks/use-public-content";
 import { blogNotes, portfolioProfile } from "@/lib/portfolio-data";
+import { isInvestingPost } from "@/lib/core/sources";
 
 export default function Writing() {
   const query = useBlog();
-  const posts = query.data.items.filter(post => !post.url.endsWith("/canoo-buy-now.html"));
+  const posts = query.data.items.filter(post => !isInvestingPost(post));
   return (
     <PageShell
       title="Nihal’s Blog About Stuff."

@@ -11,6 +11,7 @@ import {
 } from "../artifacts/portfolio-site/src/lib/core/investing.ts";
 import {
   normalizeBlog,
+  isInvestingPost,
   normalizeRepositories,
 } from "../artifacts/portfolio-site/src/lib/core/sources.ts";
 
@@ -225,6 +226,21 @@ test("blog boundary preserves dates and only links to the actual blog", () => {
     }),
   );
   assert.throws(() => normalizeBlog({ error: "unavailable" }));
+});
+test("new finance posts reach Investing while other writing stays separate", () => {
+  const posts = normalizeBlog({ feed: { entry: [
+    { ...entry, category: [{ term: " Investing " }, { term: "Weekly Market Review" }] },
+    { ...entry, category: [{ term: "Technology" }, null, { term: 12 }] },
+  ] } });
+  assert.deepEqual(posts[0].labels, ["Investing", "Weekly Market Review"]);
+  assert.equal(isInvestingPost(posts[0]), true);
+  assert.equal(isInvestingPost(posts[1]), false);
+  assert.equal(isInvestingPost({ ...posts[1], labels: ["FINANCE"] }), true);
+  assert.equal(isInvestingPost({ ...posts[1], labels: ["Stock Analysis"] }), true);
+  assert.equal(isInvestingPost({ ...posts[1], labels: ["Weekly Market Review"] }), true);
+  assert.equal(isInvestingPost({ ...posts[1], labels: ["financial technology"] }), false);
+  assert.equal(isInvestingPost({ ...posts[1], labels: undefined }), false);
+  assert.equal(isInvestingPost({ ...posts[1], labels: undefined, url: "https://nihalsblogaboutstuff.blogspot.com/2022/07/canoo-buy-now.html" }), true);
 });
 const saved = JSON.parse(
   await readFile(

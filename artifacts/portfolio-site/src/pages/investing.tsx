@@ -7,6 +7,7 @@ import snapshotData from "@/data/investing.json";
 import { formatPercent, validateSnapshot } from "@/lib/core/investing";
 import { useBlog } from "@/hooks/use-public-content";
 import { blogNotes } from "@/lib/portfolio-data";
+import { isInvestingPost } from "@/lib/core/sources";
 
 export default function Investing() {
   const blog = useBlog();
@@ -29,9 +30,7 @@ export default function Investing() {
     snapshot.capturedAt.length === 10
       ? `${snapshot.capturedAt}T12:00:00`
       : snapshot.capturedAt;
-  const essays = blog.data.items.filter((post) =>
-    post.url.endsWith("/canoo-buy-now.html"),
-  );
+  const essays = blog.data.items.filter(isInvestingPost);
   return (
     <PageShell
       title="Investing & analysis."
@@ -127,7 +126,8 @@ export default function Investing() {
               </p>
               <h3 className="mt-4 font-display text-4xl">{post.title}</h3>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                {blogNotes[post.url]}
+                {blogNotes[post.url] ??
+                  "Read my market research and analysis on Nihal’s Blog About Stuff."}
               </p>
               <a
                 href={post.url}
