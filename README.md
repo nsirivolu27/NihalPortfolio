@@ -40,7 +40,7 @@ Refresh the saved GitHub and Blogger snapshots with `npm run sync:content`, then
 
 ## CMDA design and content order
 
-Resume and all public projects lead the navigation and homepage. The background uses decorative coordinate grids, contour lines, regression points, and a model sketch inspired by Computational Modeling & Data Analytics. These illustrations are not financial performance charts. Motion respects reduced-motion preferences. The Canoo stock essay is on Investing; the technology/energy essay remains on Writing.
+Resume and all public projects lead the navigation and homepage. The background uses decorative server racks, animated data packets, supply/demand and signal sketches, a Bloch sphere, and a two-qubit entanglement circuit. The hero illustration connects a server, data signals and a qubit. These illustrations are not financial performance charts. Motion respects reduced-motion preferences. The Canoo stock essay is on Investing; the technology/energy essay remains on Writing.
 
 ## Investing: percentage-only snapshots and owner sync
 
