@@ -6,7 +6,7 @@ export const portfolioProfile = {
   intro:
     'I study Computational Modeling and Data Analytics at Virginia Tech. My work brings together mathematics, statistics, and computing to understand complex systems and solve practical problems.',
   statement:
-    'Applied ML with an engineering spine. A model is only useful when its output can be traced, reviewed, and trusted by the person downstream.',
+    'I combine data analysis, mathematical modeling, and software development to build tools that people can understand and use.',
   availability: 'Open to 2027 new grad software roles',
   email: 'sirivolun@gmail.com',
   resumeLabel: 'Current resume · Supplied October 2026',
@@ -33,18 +33,18 @@ export const navItems = [
 export const strengths = [
   {
     number: '01',
-    title: 'Auditable by default',
-    copy: 'Detections ship with bounding boxes, timestamps, scene assignments, and confidence metadata, so a reviewer can retrace any decision the model made.',
+    title: 'Clear, traceable results',
+    copy: 'Each detection includes its location, timestamp, scene, and confidence score so reviewers can check the result against the original video.',
   },
   {
     number: '02',
-    title: 'Automate the tedious parts',
-    copy: 'Model evaluations and test failures open and update their own Jira issues with evidence attached, which keeps traceability intact without anyone filing tickets by hand.',
+    title: 'Useful automation',
+    copy: 'Model evaluations and test failures create or update Jira issues with the relevant evidence, reducing manual reporting.',
   },
   {
     number: '03',
-    title: 'Test what ships',
-    copy: 'Production data contracts, documentation, and a suite of 600+ automated checks, because a pipeline nobody trusts is a pipeline nobody uses.',
+    title: 'Testing and documentation',
+    copy: 'The pipeline includes data validation, documentation, and more than 600 automated checks to help catch problems before deployment.',
   },
 ];
 
@@ -52,25 +52,25 @@ export const capabilityIndex = [
   {
     number: '01',
     title: 'Computer vision',
-    copy: 'Open vocabulary detection, persistent tracking, segmentation, and keyframe extraction across video, plus DICOM and hyperspectral imagery outside the usual RGB comfort zone.',
+    copy: 'I work on detecting and tracking objects, segmenting images, and extracting key video frames. My projects also include medical imaging and hyperspectral data.',
     proof: 'PyTorch / OpenCV / YOLO / SAM-2 / MediaPipe',
   },
   {
     number: '02',
-    title: 'Backend and serving',
-    copy: 'Wrapping inference in APIs that other teams can actually call, with containers, storage, and reviewer workflows around them.',
+    title: 'Backend development',
+    copy: 'I build APIs for running models and handling their results, along with the storage, deployment, and review tools that support them.',
     proof: 'FastAPI / Docker / AWS / PostgreSQL',
   },
   {
     number: '03',
     title: 'Data and modeling',
-    copy: 'Ingestion, cleaning, and the statistics underneath: cross validation, class imbalance, threshold calibration, and dashboards people read without a translator.',
+    copy: 'I prepare data, evaluate models, and build dashboards. This includes cross-validation, handling class imbalance, and choosing useful decision thresholds.',
     proof: 'Python / R / SQL / Pandas / Power BI',
   },
   {
     number: '04',
     title: 'Mobile and wearables',
-    copy: 'Android apps that capture images, take voice input, and speak back, including camera streaming from Ray-Ban Meta smart glasses.',
+    copy: 'I develop Android apps that use cameras, voice input, and spoken responses, including apps connected to Ray-Ban Meta smart glasses.',
     proof: 'Kotlin / Jetpack Compose / Meta MWDAT',
   },
 ];
@@ -80,25 +80,25 @@ export const notes = [
     number: '01',
     kind: 'Edrevel AI / Jun 2026 to now',
     title: 'AI/ML Engineering Intern',
-    copy: 'End to end computer vision pipeline for a workforce training compliance platform, extracting objects, people, hand interactions, and task evidence from video, served through FastAPI, Docker, and AWS.',
+    copy: 'I build a computer vision pipeline that analyzes workforce training videos, identifying people, objects, hand interactions, and evidence of completed tasks. The system uses FastAPI, Docker, and AWS.',
     location: 'Fairfax, VA · Hybrid',
-    highlights: ['Open-vocabulary detection, tracking, segmentation, and keyframe extraction with auditable evidence.', 'Jira REST automation linking evaluation failures, artifacts, and reviewer decisions; validation across a 600+ test suite.', 'Privacy-aware AWS Rekognition person validation and production data contracts.'],
+    highlights: ['Detect and track objects, segment video frames, and save key frames for review.', 'Connect evaluation results and reviewer feedback to Jira, supported by more than 600 automated checks.', 'Use AWS Rekognition to validate people in video, with privacy checks and data validation.'],
   },
   {
     number: '02',
     kind: 'IDPro, Virginia Tech / Aug 2026 to now',
     title: 'AI Tourism Research',
-    copy: 'Leading Meta Wearables SDK integration for a Kotlin Android tour app: Ray-Ban Meta device registration, camera sessions, photo capture, and a phone-camera fallback.',
+    copy: 'I lead the Meta Wearables SDK integration for an Android tour app built in Kotlin. The app connects to Ray-Ban Meta glasses to capture photos and can also use the phone camera.',
     location: 'Blacksburg, VA · Research Team Member',
-    highlights: ['SDK setup and architecture documentation for permissions, device testing, capture contracts, and data handling.', 'Building a Meta Project Aria pipeline for first-person tour frames, Whisper audio transcription, and location-linked, page-cited documents.'],
+    highlights: ['Document permissions, device setup, testing, image capture, and data handling.', 'Build a Meta Project Aria pipeline that combines tour images, Whisper audio transcripts, and documents linked to locations and source pages.'],
   },
   {
     number: '03',
     kind: '4SightAI / Jun to Aug 2025',
     title: 'Automation and Cloud Engineering Intern',
-    copy: 'Real time ingestion services for health, exercise, and business data behind two AI copilot platforms, cutting processing latency by 45%, plus Lambda, S3, and DynamoDB workflows with vector retrieval.',
+    copy: 'I built services that processed health, exercise, and business data for two AI copilot platforms, reducing processing latency by 45%. I also worked on AWS workflows and vector search.',
     location: 'San Francisco, CA · Remote',
-    highlights: ['Pandas and Power BI dashboards for patient and operational datasets.', 'Python and Jira automation for ingestion failures and data-quality checks.'],
+    highlights: ['Created Pandas and Power BI dashboards for patient and operational data.', 'Used Lambda, S3, and DynamoDB to support data workflows.', 'Automated data-quality checks and failure reporting with Python and Jira.'],
   },
 ];
 
@@ -110,8 +110,8 @@ export const education = {
 };
 
 export const blogNotes: Record<string, string> = {
-  'https://nihalsblogaboutstuff.blogspot.com/2022/08/tevva-and-hydrogen-energy.html': 'Exploring Tevva, hydrogen-powered transport, and the practical questions around energy density, infrastructure, and cost.',
-  'https://nihalsblogaboutstuff.blogspot.com/2022/07/canoo-buy-now.html': 'A 2022 look at Canoo, electric delivery vehicles, and what corporate contracts might mean for an emerging EV company.',
+  'https://nihalsblogaboutstuff.blogspot.com/2022/08/tevva-and-hydrogen-energy.html': 'My thoughts on Tevva and hydrogen-powered transport, including energy storage, infrastructure, and cost.',
+  'https://nihalsblogaboutstuff.blogspot.com/2022/07/canoo-buy-now.html': 'My 2022 analysis of Canoo, its electric delivery vehicles, and the potential value of its corporate contracts.',
 };
 
 export const technicalSkills = [

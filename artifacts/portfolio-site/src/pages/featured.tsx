@@ -52,9 +52,8 @@ export default function Featured() {
             retry={() => void repositories.refetch()}
           />
           <p className="text-xs text-muted-foreground">
-            GitHub metadata refreshes every five minutes while this page is
-            visible. The featured selection is curated; repository details come
-            from GitHub.
+            I’ve selected these projects for a closer look. Their details update
+            from GitHub every five minutes while this page is open.
           </p>
         </div>
       </main>

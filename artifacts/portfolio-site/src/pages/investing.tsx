@@ -35,8 +35,8 @@ export default function Investing() {
   return (
     <PageShell
       title="Investing & analysis."
-      eyebrow="Markets / Ideas and outcomes"
-      intro="My stock analysis and the gain/loss percentages from my manually tracked Yahoo Finance portfolio."
+      eyebrow="Markets / Research and performance"
+      intro="I use this page to share my stock research and the performance of investments I track manually in Yahoo Finance. Each update shows when the data was captured."
     >
       <section aria-labelledby="performance-title">
         <div className="mb-7 flex flex-wrap items-end justify-between gap-5">

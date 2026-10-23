@@ -27,7 +27,7 @@ export default function Projects() {
     <PageShell
       title="Things I’ve built."
       eyebrow="The project archive"
-      intro="From computer vision and AI infrastructure to wearables, renovation tools, and fantasy football. Projects from GitHub, plus selected work."
+      intro="My projects cover computer vision, data analysis, software development, and a few personal interests. Browse the collection or filter by language."
     >
       <ProjectManager />
       <SourceStatus

@@ -71,8 +71,8 @@ export function FeaturedProjects({
         <div>
           <p className="featured-eyebrow">
             {standalone
-              ? "Featured project / Inside the work"
-              : "Selected work / Interactive worlds"}
+              ? "Featured project / Overview"
+              : "Selected projects / Interactive previews"}
           </p>
           <Heading id="featured-heading">
             {standalone ? (
@@ -81,15 +81,15 @@ export function FeaturedProjects({
               <>
                 Featured projects.
                 <br />
-                <em>Step inside.</em>
+                <em>A closer look.</em>
               </>
             )}
           </Heading>
         </div>
         <p>
           {active.theme === "workflow"
-            ? "AI drafts. People decide. Explore a supervised workflow workspace designed around evidence and human review."
-            : "Different problems, different worlds. Select a project to change the scene, then play with its controls."}
+            ? "Magentic.AI is a workspace for reviewing AI-generated work. Explore how a draft moves through review and approval."
+            : "Choose a project to explore its interactive preview and find the code on GitHub."}
         </p>
       </div>
       <div className="featured-stage" data-theme={active.theme}>
@@ -125,7 +125,7 @@ export function FeaturedProjects({
             <h3>{active.repo.name}</h3>
             <p className="featured-description">
               {active.repo.description ||
-                "Explore the source, experiments and documentation on GitHub."}
+                "Find the code and documentation on GitHub."}
             </p>
             <span className="featured-language">
               {active.repo.language}
@@ -188,7 +188,7 @@ export function FeaturedProjects({
           <span>
             0{available.indexOf(active) + 1} / 0{available.length}
           </span>
-          <span>One portfolio. A few different universes.</span>
+          <span>Explore the ideas behind each project.</span>
           <a
             href={
               standalone

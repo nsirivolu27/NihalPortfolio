@@ -199,7 +199,7 @@ function Home() {
         <div className="hero-index reveal" aria-hidden="true">
           <span className="hero-index__label">Portfolio / 01</span>
           <span className="hero-index__line" />
-          <span className="hero-index__label">Make room</span>
+          <span className="hero-index__label">CMDA / Virginia Tech</span>
         </div>
         <div className="relative z-10 grid items-end gap-8 lg:grid-cols-[1.25fr_.75fr] lg:gap-20">
           <div>
@@ -264,12 +264,12 @@ function Home() {
                     <br />
                     Engineer. Researcher. Writer.
                     <br />
-                    Curious about what comes next.
+                    Data, computing, and applied mathematics.
                   </p>
                 </div>
               </div>
               <span className="signal-stamp">
-                Always building / Always learning
+                Projects / Research / Learning
               </span>
             </div>
           </div>
@@ -307,7 +307,7 @@ function Home() {
         />
         <RepositoryGrid items={repositories.data.items} />
         <a href="projects" className="action-link mt-10">
-          View all projects & manage collection <ArrowUpRight size={18} />
+          Browse all projects <ArrowUpRight size={18} />
         </a>
       </section>
 
@@ -321,13 +321,13 @@ function Home() {
               <h2 className="mt-5 max-w-[440px] font-display text-6xl leading-[.88] tracking-[-.04em] sm:text-8xl">
                 Technical
                 <br />
-                <em>range.</em>
+                <em>skills.</em>
               </h2>
             </div>
             <div className="flex items-end">
               <p className="max-w-[520px] text-sm leading-relaxed text-muted-foreground">
-                Tools matter less than what they are pointed at. These are the
-                four areas where I have shipped something a team relied on.
+                My coursework, research, and internships have given me experience
+                in these four areas.
               </p>
             </div>
           </div>
@@ -387,8 +387,8 @@ function Home() {
             </h2>
           </div>
           <p className="max-w-[280px] text-sm leading-relaxed text-muted-foreground">
-            Three roles so far, each one shipping something other people had to
-            rely on.
+            My experience includes computer vision, wearable technology, and
+            cloud-based data systems.
           </p>
         </div>
         <div className="mt-8 grid border-t border-border md:grid-cols-3">
@@ -432,7 +432,7 @@ function Home() {
         <div className="mx-auto grid max-w-[1440px] gap-8 px-5 py-12 sm:px-8 lg:grid-cols-[.7fr_1.3fr] lg:gap-12 lg:px-12 lg:py-16">
           <div className="reveal">
             <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-accent">
-              05 / A little context
+              05 / About me
             </p>
             <div className="mt-8 flex h-24 w-24 items-center justify-center rounded-full border border-primary bg-secondary font-display text-4xl">
               {portfolioProfile.monogram}
@@ -445,10 +445,10 @@ function Home() {
             </p>
             <div className="mt-12 grid gap-7 border-t border-primary/20 pt-7 sm:grid-cols-2">
               <p className="text-sm leading-relaxed text-primary/70">
-                I study Computational Modeling and Data Analytics at Virginia
-                Tech, graduating in May 2027. Most of my time goes to computer
-                vision and the engineering around it, and the rest to fantasy
-                football arguments I am usually right about.
+                I’m graduating from Virginia Tech in May 2027. My current work
+                focuses on computer vision and software development. Outside
+                of that, I enjoy writing, following financial markets, and
+                fantasy football.
               </p>
               <div className="space-y-4 font-mono-ui text-[10px] uppercase tracking-[.12em] text-primary/65">
                 <p>
@@ -523,8 +523,8 @@ function Home() {
                 <ArrowUpRight className="inline" size={24} />
               </h3>
               <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-                Technology, hydrogen energy, and the questions behind the
-                headlines. Read the original essays.
+                My writing on technology, energy, and ideas I want to understand
+                better.
               </p>
             </a>
             <a href="investing" className="archive-card group">
@@ -536,8 +536,8 @@ function Home() {
                 <ArrowUpRight className="inline" size={24} />
               </h3>
               <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-                Stock analysis and dated gain/loss percentages from my manually
-                tracked Yahoo Finance portfolio.
+                My stock research and performance updates from the investments
+                I track in Yahoo Finance.
               </p>
             </a>
           </div>
@@ -549,17 +549,17 @@ function Home() {
           <div className="reveal grid gap-12 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
               <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] opacity-60">
-                06 / Make contact
+                06 / Contact
               </p>
               <h2 className="mt-6 max-w-[850px] font-display text-[clamp(4rem,9vw,9rem)] leading-[.8] tracking-[-.06em]">
-                Have a good
+                Let’s get
                 <br />
-                <em>question?</em>
+                <em>in touch.</em>
               </h2>
             </div>
             <p className="max-w-[260px] text-sm leading-relaxed opacity-70">
-              A hello, a role you think I would fit, or a project that needs
-              another set of hands.
+              Feel free to reach out about a role, a project, or something
+              you’d like to discuss.
             </p>
           </div>
           <div className="reveal reveal-delay-1 mt-8 flex flex-col gap-4 border-t border-accent-foreground/25 pt-6 sm:flex-row sm:items-center">

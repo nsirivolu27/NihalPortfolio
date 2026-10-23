@@ -10,8 +10,8 @@ export default function Writing() {
   return (
     <PageShell
       title="Nihal’s Blog About Stuff."
-      eyebrow="Writing / Curiosity in public"
-      intro="A place for the questions that stick with me. Essays on emerging technology and energy, starting with my original writing from 2022. Stock analysis lives on the Investing page."
+      eyebrow="Writing / Technology and energy"
+      intro="I write about technology, energy, and ideas that interest me. These posts go back to 2022. You can find my stock research on the Investing page."
     >
       <div className="mb-10 flex flex-wrap gap-5 text-sm">
         <a

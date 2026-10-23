@@ -75,15 +75,15 @@ export function CertificationsSection() {
             Certifications & continued learning
           </p>
           <h2 id="certifications-heading">
-            Always learning.
+            Courses &
             <br />
-            <em>With the receipts.</em>
+            <em>certifications.</em>
           </h2>
         </div>
         <p>
-          {earned.length} completed credentials across cloud architecture, AI
-          and responsible technology. Explore the full list and issuer
-          verification links.
+          I’ve completed {earned.length} credentials in cloud computing, AI,
+          and responsible technology. You can view the full list and verify
+          each credential with its issuer.
         </p>
       </div>
       <CertificationCards items={earned.slice(0, 3)} />
