@@ -24,7 +24,7 @@ $env:BASE_PATH = '/'
 npm run build
 ```
 
-Build output: `artifacts/portfolio-site/dist/public`. Existing hosting must rewrite `/featured`, `/projects`, `/writing`, `/investing`, and `/investing/sync` to `index.html` for direct navigation. Set `BASE_PATH` to the deployed prefix with a trailing slash if hosting under a subdirectory. The static portfolio works with saved snapshots. Dynamic investing sync requires the Express API and a persistent data file; no database is required.
+Build output: `artifacts/portfolio-site/dist/public`. Existing hosting must rewrite `/certifications`, `/featured`, `/projects`, `/writing`, `/investing`, and `/investing/sync` to `index.html` for direct navigation. Set `BASE_PATH` to the deployed prefix with a trailing slash if hosting under a subdirectory. The static portfolio works with saved snapshots. Dynamic investing sync requires the Express API and a persistent data file; no database is required.
 
 ## Content and provenance
 
@@ -45,6 +45,14 @@ The homepage now includes an interactive featured section, with a dedicated `/fe
 Edit `artifacts/portfolio-site/src/data/featured-projects.ts` to choose the featured repositories and themes. The first entry is the default feature; repository names must match GitHub exactly. Missing repositories are omitted, while the full public archive remains below. Titles, descriptions, language, archived status and latest push dates come from the shared GitHub feed, which refreshes every five minutes in visible tabs and when stale pages regain focus. Rate limits and network failures retain cached content and show the existing refresh warning. The selected feature and visual theme are curated, not inferred from repository text or build status.
 
 Resume and all public projects lead the navigation and homepage. The background uses decorative server racks, animated data packets, supply/demand and signal sketches, a Bloch sphere, and a two-qubit entanglement circuit. The hero illustration connects a server, data signals and a qubit. These illustrations are not financial performance charts. Motion respects reduced-motion preferences. The Canoo stock essay is on Investing; the technology/energy essay remains on Writing.
+
+## Certifications and LinkedIn updates
+
+The homepage summary and `/certifications` use the complete LinkedIn certifications list captured through the signed-in browser on October 22, 2026: ten completed credentials and one explicitly in-progress AWS Machine Learning Engineer credential. Issuers are AWS, Anthropic and Google. Public issuer verification URLs and listed issue/expiration months are retained; private profile analytics, session credentials and signed LinkedIn redirect parameters are excluded. Expired credentials are labeled by month, and in-progress entries are never treated as earned.
+
+`artifacts/portfolio-site/public/certifications.json` is the single snapshot. The frontend bundles it as fallback and refreshes a validated public GitHub copy every five minutes while visible. Invalid responses or older CDN copies preserve the last good snapshot. `VITE_CERTIFICATIONS_FEED_URL` can override the feed; the current default points to this file on `nsirivolu27/NihalPortfolio`, branch `codex/complete-portfolio`. Move that setting to the permanent branch before deleting this working branch. A snapshot push updates the existing website feed without rebuilding the frontend, subject to GitHub caching and availability.
+
+The desktop heartbeat `sync-linkedin-certifications` checks LinkedIn daily at 9 AM in the app's local timezone, updates only the sanitized snapshot, runs validation and pushes it to the feed branch. It stays quiet when credentials are unchanged. This requires the desktop scheduler and an available signed-in LinkedIn browser session; it is not LinkedIn OAuth or an always-on server integration. If access fails or the list is incomplete, the previous snapshot remains and the user is notified. The first capture and frontend refresh were verified; future scheduled runs depend on that session remaining available. LinkedIn's standard sign-in permissions do not expose certification records: https://learn.microsoft.com/en-us/linkedin/shared/authentication/getting-access.
 
 ## Investing: percentage-only snapshots and owner sync
 

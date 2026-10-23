@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { validateCertifications, certificationStatus } from "../artifacts/portfolio-site/src/lib/core/certifications.ts";
 import { readFile } from "node:fs/promises";
 import {
   extractYahooPercentages,
@@ -18,6 +19,24 @@ const test = (name, fn) => {
 };
 const summary =
   "All Portfolio Holdings\n$999.00\nDay Change\n-$1.00 (-3.18%)\nUnrealized Gain/Loss\n+$2.00 (+127.58%)\nRealized Gain/Loss\n+$3.00 (+7.43%)";
+const certificationSnapshot = JSON.parse(await readFile(new URL("../artifacts/portfolio-site/public/certifications.json", import.meta.url), "utf8"));
+test("credential feed keeps completed and in-progress entries distinct", () => {
+  const snapshot = validateCertifications(certificationSnapshot);
+  assert.ok(snapshot.items.every(item => item.status === "earned" || item.status === "in-progress"));
+  assert.equal(certificationStatus({ id: "ml", name: "ML", issuer: "AWS", status: "in-progress" }, "2026-10"), "in-progress");
+});
+test("credentials remain current through their expiry month", () => {
+  const cert = { id: "aws", name: "AWS", issuer: "AWS", status: "earned", expires: "2029-08" };
+  assert.equal(certificationStatus(cert, "2029-08"), "earned");
+  assert.equal(certificationStatus(cert, "2029-09"), "expired");
+});
+test("malformed credential feeds and unsafe verification links fail before replacing the snapshot", () => {
+  const item = certificationSnapshot.items.find(item => item.status === "earned");
+  for (const patch of [{ credentialUrl: "javascript:alert(1)" }, { issued: "2026-13" }, { status: "verified" }, { token: "secret" }]) {
+    assert.throws(() => validateCertifications({ ...certificationSnapshot, items: [{ ...item, ...patch }] }));
+  }
+  assert.throws(() => validateCertifications({ ...certificationSnapshot, items: [item, item] }));
+});
 test("GitHub refresh preserves archived status and valid push dates without inventing missing dates", () => {
   const repo = { name: "Magentic.AI", owner: { login: "nsirivolu27" }, private: false, html_url: "https://github.com/nsirivolu27/Magentic.AI", archived: true, pushed_at: "2026-10-23T00:00:00Z" };
   const [result] = normalizeRepositories([repo]);

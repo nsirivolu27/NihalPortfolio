@@ -22,6 +22,7 @@ export const navItems = [
   { label: 'Resume', href: portfolioProfile.resumeUrl },
   { label: 'Projects', href: '#work' },
   { label: 'Featured', href: 'featured' },
+  { label: 'Certifications', href: 'certifications' },
   { label: 'Skills', href: '#capabilities' },
   { label: 'Experience', href: '#notes' },
   { label: 'About', href: '#about' },
@@ -106,7 +107,6 @@ export const education = {
   degree: 'B.S. Computational Modeling & Data Analytics',
   date: 'Expected May 2027 · Blacksburg, VA',
   coursework: ['Software Design & Data Structures', 'Intermediate Programming in Python', 'Probability & Distributions', 'Statistical Methods', 'Regression Analysis', 'Linear Algebra', 'Mathematical Modeling', 'Data Analytics & Visualization', 'Modeling with GIS', 'Computational Science Foundations', 'Problem Solving in Computer Science', 'Discrete Mathematics', 'Multivariable Calculus', 'Differential Equations'],
-  certifications: ['AWS Certified Solutions Architect – Associate', 'AWS Certified Cloud Practitioner', 'AWS Certified Machine Learning Engineer – Associate (in progress)'],
 };
 
 export const blogNotes: Record<string, string> = {

@@ -9,6 +9,8 @@ import Writing from '@/pages/writing';
 import Investing from '@/pages/investing';
 import InvestingSync from '@/pages/investing-sync';
 import Featured from '@/pages/featured';
+import Certifications from '@/pages/certifications';
+import { CertificationsSection } from '@/components/certifications';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useRepositories } from '@/hooks/use-public-content';
 import { RepositoryGrid } from '@/components/repository-grid';
@@ -99,7 +101,7 @@ function Home() {
             <span className="flex h-9 w-9 items-center justify-center bg-primary font-mono-ui text-[11px] font-bold tracking-[-.08em] text-primary-foreground transition-transform group-hover:rotate-[-8deg]">{portfolioProfile.monogram}</span>
             <span className="hidden text-sm font-semibold tracking-[-.02em] sm:block">{portfolioProfile.name}</span>
           </a>
-          <nav className="hidden items-center gap-8 md:flex" aria-label="Main navigation">
+          <nav className="hidden items-center gap-5 lg:flex" aria-label="Main navigation">
             {navItems.map((item) => (
               <a key={item.href} href={item.href} data-testid={`link-nav-${item.label.toLowerCase()}`} className="group relative text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">
                 {item.label}
@@ -111,14 +113,14 @@ function Home() {
             <button type="button" onClick={() => setResumeOpen(true)} data-testid="button-header-resume" className="hidden items-center gap-2 border border-primary bg-primary px-4 py-2.5 text-[12px] font-bold text-primary-foreground transition hover:bg-secondary hover:text-secondary-foreground sm:flex">
               Resume <Download size={13} strokeWidth={2.5} />
             </button>
-            <button type="button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} data-testid="button-mobile-menu" className="flex h-10 w-10 items-center justify-center border border-border md:hidden">
+            <button type="button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} data-testid="button-mobile-menu" className="flex h-10 w-10 items-center justify-center border border-border lg:hidden">
               {menuOpen ? <X size={19} /> : <Menu size={19} />}
               <span className="sr-only">Toggle navigation</span>
             </button>
           </div>
         </div>
         {menuOpen && (
-          <nav className="border-t border-border bg-background px-5 py-4 md:hidden" aria-label="Mobile navigation">
+          <nav className="border-t border-border bg-background px-5 py-4 lg:hidden" aria-label="Mobile navigation">
             {navItems.map((item) => (
               <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)} data-testid={`link-mobile-${item.label.toLowerCase()}`} className="flex items-center justify-between border-b border-border py-4 text-sm font-semibold last:border-0">
                 {item.label} <ChevronRight size={16} className="text-muted-foreground" />
@@ -303,8 +305,10 @@ function Home() {
         <h2 id="education-title" className="mt-5 font-display text-5xl">Virginia Tech.</h2>
         <p className="mt-5 text-lg">{education.degree}</p>
         <p className="mt-2 text-sm text-muted-foreground">{education.school} · {education.date}</p>
-        <div className="mt-10 grid gap-10 md:grid-cols-2"><div><h3 className="font-semibold">Coursework</h3><ul className="mt-4 flex flex-wrap gap-2">{education.coursework.map((course) => <li key={course} className="border border-border px-3 py-2 text-xs text-muted-foreground">{course}</li>)}</ul></div><div><h3 className="font-semibold">Certifications</h3><ul className="mt-4 space-y-3 text-sm text-muted-foreground">{education.certifications.map((certification) => <li key={certification}>{certification}</li>)}</ul><a href={portfolioProfile.linkedinUrl} target="_blank" rel="noreferrer" className="action-link mt-6">View LinkedIn profile <ArrowUpRight size={16} /></a></div></div>
+        <div className="mt-10"><h3 className="font-semibold">Coursework</h3><ul className="mt-4 flex flex-wrap gap-2">{education.coursework.map((course) => <li key={course} className="border border-border px-3 py-2 text-xs text-muted-foreground">{course}</li>)}</ul></div>
       </section>
+
+      <CertificationsSection />
 
       <section className="border-t border-border bg-card" aria-labelledby="beyond-title"><div className="page-width py-24"><p className="font-mono-ui text-xs uppercase tracking-wider text-accent">Beyond the code</p><h2 id="beyond-title" className="mt-5 font-display text-5xl sm:text-7xl">A few other things<br /><em>I think about.</em></h2><div className="mt-12 grid gap-6 md:grid-cols-2"><a href="writing" className="archive-card group"><span className="font-mono-ui text-xs uppercase tracking-wider text-accent">Writing / 01</span><h3 className="mt-6 font-display text-4xl">Nihal’s Blog About Stuff <ArrowUpRight className="inline" size={24} /></h3><p className="mt-5 text-sm leading-relaxed text-muted-foreground">Technology, hydrogen energy, and the questions behind the headlines. Read the original essays.</p></a><a href="investing" className="archive-card group"><span className="font-mono-ui text-xs uppercase tracking-wider text-accent">Markets / 02</span><h3 className="mt-6 font-display text-4xl">The investing portfolio <ArrowUpRight className="inline" size={24} /></h3><p className="mt-5 text-sm leading-relaxed text-muted-foreground">Stock analysis and dated gain/loss percentages from my manually tracked Yahoo Finance portfolio.</p></a></div></div></section>
 
@@ -375,6 +379,7 @@ function Router() {
         <Route path="/" component={Home} />
         <Route path="/projects" component={Projects} />
         <Route path="/featured" component={Featured} />
+        <Route path="/certifications" component={Certifications} />
         <Route path="/writing" component={Writing} />
         <Route path="/investing" component={Investing} />
         <Route path="/investing/sync" component={InvestingSync} />
