@@ -14,7 +14,7 @@ export function MusicStage({ preview = false }: { preview?: boolean }) {
       }}
       onPointerLeave={() => setLight({ x: 62, y: 35 })}
     >
-      <span className="music-stage__word" aria-hidden="true">MUSIC</span>
+      <span className="music-stage__word" aria-hidden="true">VOLU</span>
       <div className="music-stage__beam" aria-hidden="true" />
       <div className="music-stage__floor" aria-hidden="true" />
       {preview && (
