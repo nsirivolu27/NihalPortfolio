@@ -15,18 +15,18 @@ export default function Certifications() {
     <PageShell
       title="Courses & certifications."
       eyebrow="Certifications & learning"
-      intro="Courses and certifications I’ve completed in cloud computing and AI, along with what I’m currently studying. Each completed credential links to its verification page."
+      intro="Courses and certifications I’ve completed, along with what I’m currently studying in cloud computing, AI, and cybersecurity. Each completed credential links to its verification page."
     >
       <div className="certification-source">
         <div>
-          <strong>Captured from LinkedIn</strong>
+          <strong>LinkedIn & personal updates</strong>
           <p>
-            Last checked{" "}
+            LinkedIn last checked{" "}
             {new Date(query.data.capturedAt).toLocaleString("en-US", {
               dateStyle: "medium",
               timeStyle: "short",
             })}
-            . Credentials reflect the last successful LinkedIn update.
+            . Includes learning goals I’ve added directly to this portfolio.
           </p>
           {query.isError && (
             <p role="status">
@@ -70,7 +70,7 @@ export default function Certifications() {
             In progress
           </h2>
           <p className="mb-6 text-sm text-muted-foreground">
-            These are the credentials I’m working toward, as listed on LinkedIn.
+            These are the credentials I’m currently working toward.
           </p>
           <CertificationCards items={inProgress} />
         </section>
