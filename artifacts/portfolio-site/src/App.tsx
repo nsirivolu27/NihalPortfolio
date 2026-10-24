@@ -10,6 +10,8 @@ import Investing from "@/pages/investing";
 import InvestingSync from "@/pages/investing-sync";
 import Featured from "@/pages/featured";
 import Certifications from "@/pages/certifications";
+import Music from "@/pages/music";
+import { MicrophoneStand } from "@/components/microphone-stand";
 import { CertificationsSection } from "@/components/certifications";
 import { usePortfolioProjects } from "@/hooks/use-project-settings";
 import { ProjectManager } from "@/components/project-manager";
@@ -500,6 +502,17 @@ function Home() {
         </div>
       </section>
 
+      <section id="music" className="border-t border-border bg-card/80" aria-labelledby="music-title">
+        <a href="music" className="page-width group flex items-center justify-between gap-6 py-8 sm:py-10">
+          <div>
+            <p className="font-mono-ui text-xs uppercase tracking-wider text-accent">Music / 03</p>
+            <h2 id="music-title" className="mt-5 font-display text-5xl sm:text-7xl">Music.</h2>
+            <p className="mt-5 text-sm text-muted-foreground">Coming soon.</p>
+          </div>
+          <MicrophoneStand className="h-48 w-auto shrink-0 text-primary transition-transform duration-300 group-hover:-rotate-3 motion-reduce:transform-none sm:h-72" />
+        </a>
+      </section>
+
       <section id="contact" className="bg-accent text-accent-foreground">
         <div className="mx-auto max-w-[1440px] px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
           <div className="reveal grid gap-12 lg:grid-cols-[1fr_auto] lg:items-end">
@@ -594,6 +607,7 @@ function Router() {
         <Route path="/featured" component={Featured} />
         <Route path="/certifications" component={Certifications} />
         <Route path="/writing" component={Writing} />
+        <Route path="/music" component={Music} />
         <Route path="/investing" component={Investing} />
         <Route path="/investing/sync" component={InvestingSync} />
         <Route component={NotFound} />

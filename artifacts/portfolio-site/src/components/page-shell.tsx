@@ -47,6 +47,7 @@ export function PageShell({
             <Link href="/">Experience & about</Link>
             <Link href="/writing">Writing</Link>
             <Link href="/investing">Investing</Link>
+            <Link href="/music">Music</Link>
           </nav>
         </div>
       </header>
