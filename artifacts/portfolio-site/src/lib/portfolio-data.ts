@@ -94,7 +94,7 @@ export const notes = [
     number: '03',
     kind: '4SightAI / Jun to Aug 2025',
     title: 'Automation and Cloud Engineering Intern',
-    copy: 'I built services that processed health, exercise, and business data for two AI copilot platforms, reducing processing latency by 45%. I also worked on AWS workflows and vector search.',
+    copy: 'I built data-processing services for two AI copilots: one for health and exercise consulting and one for newsroom consulting. This work reduced processing latency by 45%. I also worked on AWS workflows and vector search.',
     location: 'San Francisco, CA · Remote',
     highlights: ['Created Pandas and Power BI dashboards for patient and operational data.', 'Used Lambda, S3, and DynamoDB to support data workflows.', 'Automated data-quality checks and failure reporting with Python and Jira.'],
   },
