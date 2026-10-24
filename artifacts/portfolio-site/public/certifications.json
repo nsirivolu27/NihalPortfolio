@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-23T01:17:20.000Z",
+  "capturedAt": "2026-10-24T20:43:07.000Z",
   "source": "https://www.linkedin.com/in/nihalsirivolu/details/certifications/",
   "items": [
     {
@@ -7,6 +7,14 @@
       "name": "AWS Certified Machine Learning Engineer - Associate",
       "issuer": "Amazon Web Services (AWS)",
       "status": "in-progress"
+    },
+    {
+      "id": "meta-marketing-science",
+      "name": "Meta Marketing Science Certification",
+      "issuer": "Meta",
+      "status": "earned",
+      "issued": "2026-10",
+      "credentialUrl": "https://www.coursera.org/account/accomplishments/records/SBUD8EQID13L"
     },
     {
       "id": "aws-solutions-architect",
