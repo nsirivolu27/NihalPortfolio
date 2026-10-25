@@ -1,6 +1,7 @@
 import { Router, type IRouter } from "express";
 import { createHash, timingSafeEqual } from "node:crypto";
 import { InvestingSnapshot } from "@workspace/api-zod";
+import { isPortfolioOrigin } from "../lib/owner";
 import {
   investingStoreConfigured,
   readInvestingSnapshot,
@@ -36,7 +37,7 @@ router.post("/investing", async (req, res) => {
     res.status(503).json({ error: "Owner sync is not configured." });
     return;
   }
-  if (req.get("origin") !== origin) {
+  if (!isPortfolioOrigin(req.get("origin"))) {
     res.status(403).json({ error: "Unrecognized site origin." });
     return;
   }

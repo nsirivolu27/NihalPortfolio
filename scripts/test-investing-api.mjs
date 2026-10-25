@@ -92,10 +92,12 @@ try {
     assert.equal((await fetch(`${base}/api/investing`)).status, 503));
   await test("wrong publishing key and foreign origins cannot write", async () => {
     assert.equal((await post(snapshot, "incorrect")).status, 401);
+    assert.equal((await post(snapshot, "incorrect", "https://nihalsirivolu.com")).status, 401);
     assert.equal(
       (await post(snapshot, token, "https://other.example")).status,
       403,
     );
+    assert.equal((await post(snapshot, token, "https://nihalsirivolu.com.attacker.example")).status, 403);
   });
   await test("amounts and account data are rejected, not silently retained", async () => {
     for (const extra of ["balance", "holdings", "email", "token"])
@@ -114,7 +116,7 @@ try {
       assert.equal((await post({ ...snapshot, ...patch })).status, 400);
   });
   await test("valid sync persists and public reads contain exactly the approved fields", async () => {
-    assert.equal((await post(snapshot)).status, 200);
+    assert.equal((await post(snapshot, token, "https://nihalsirivolu.com")).status, 200);
     assert.deepEqual(JSON.parse(await readFile(file, "utf8")), snapshot);
     assert.deepEqual(
       await (await fetch(`${base}/api/investing`)).json(),
@@ -192,6 +194,20 @@ try {
         .status,
       403,
     );
+  });
+  await test("custom-domain project controls still require the owner key and exact origin", async () => {
+    for (const [origin, key, expected] of [
+      ["https://nihalsirivolu.com", token, 200],
+      ["https://nihalsirivolu.com", "incorrect", 401],
+      ["https://nihalsirivolu.com.attacker.example", token, 403],
+      ["http://nihalsirivolu.com", token, 403],
+    ]) {
+      const result = await fetch(projectsUrl, {
+        method: "PUT",
+        headers: { Origin: origin, Authorization: `Bearer ${key}` },
+      });
+      assert.equal(result.status, expected);
+    }
   });
   await test("add, hide, and restore persist globally, with stale-edit protection", async () => {
     const project = {
