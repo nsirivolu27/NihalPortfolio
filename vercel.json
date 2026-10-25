@@ -4,6 +4,20 @@
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "node scripts/build-vercel.mjs",
   "outputDirectory": "artifacts/portfolio-site/dist/public",
+  "redirects": [
+    {
+      "source": "/:path((?!api(?:/|$)|\\.well-known(?:/|$)).*)",
+      "has": [{ "type": "host", "value": ".*\\.vercel\\.app" }],
+      "destination": "https://nihalsirivolu.com/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path((?!\\.well-known(?:/|$)).*)",
+      "has": [{ "type": "host", "value": "www.nihalsirivolu.com" }],
+      "destination": "https://nihalsirivolu.com/:path",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/featured", "destination": "/index.html" },
     { "source": "/projects", "destination": "/index.html" },
