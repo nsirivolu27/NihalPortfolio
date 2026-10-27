@@ -5,6 +5,7 @@
   "buildCommand": "node scripts/build-vercel.mjs",
   "outputDirectory": "artifacts/portfolio-site/dist/public",
   "redirects": [
+    { "source": "/featured", "destination": "/projects", "permanent": true },
     {
       "source": "/:path((?!api(?:/|$)|\\.well-known(?:/|$)).*)",
       "has": [{ "type": "host", "value": ".*\\.vercel\\.app" }],
@@ -19,7 +20,6 @@
     }
   ],
   "rewrites": [
-    { "source": "/featured", "destination": "/index.html" },
     { "source": "/projects", "destination": "/index.html" },
     { "source": "/certifications", "destination": "/index.html" },
     { "source": "/writing", "destination": "/index.html" },

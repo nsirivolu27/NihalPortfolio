@@ -42,7 +42,6 @@ export function PageShell({
             className="flex flex-wrap gap-x-6 gap-y-3 text-sm"
           >
             <Link href="/projects">Projects</Link>
-            <Link href="/featured">Featured</Link>
             <Link href="/certifications">Certifications</Link>
             <Link href="/">Experience & about</Link>
             <Link href="/writing">Writing</Link>

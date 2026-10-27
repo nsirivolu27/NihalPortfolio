@@ -8,7 +8,6 @@ import Projects from "@/pages/projects";
 import Writing from "@/pages/writing";
 import Investing from "@/pages/investing";
 import InvestingSync from "@/pages/investing-sync";
-import Featured from "@/pages/featured";
 import Certifications from "@/pages/certifications";
 import Music from "@/pages/music";
 import { MusicStage } from "@/components/music-stage";
@@ -19,8 +18,6 @@ import { RepositoryGrid } from "@/components/repository-grid";
 import { SourceStatus } from "@/components/page-shell";
 import { education, technicalSkills } from "@/lib/portfolio-data";
 import { CmdaBackdrop, ModelSketch } from "@/components/cmda-backdrop";
-import { FeaturedProjects } from "@/components/featured-projects";
-import type { SceneState } from "@/components/project-scene";
 import {
   ArrowDown,
   ArrowUp,
@@ -40,7 +37,7 @@ import {
   notes,
   portfolioProfile,
 } from "@/lib/portfolio-data";
-import { Route, Switch, useLocation, Router as WouterRouter } from "wouter";
+import { Redirect, Route, Switch, useLocation, Router as WouterRouter } from "wouter";
 
 const queryClient = new QueryClient();
 
@@ -70,7 +67,6 @@ function useReveal() {
 function Home() {
   const pageRef = useReveal();
   const repositories = usePortfolioProjects();
-  const [featuredScene, setFeaturedScene] = useState<SceneState | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -89,7 +85,7 @@ function Home() {
       ref={pageRef}
       className="portfolio-shell home-page min-h-[100dvh] bg-background text-foreground grain"
     >
-      <CmdaBackdrop scene={featuredScene} />
+      <CmdaBackdrop />
       <a href="#top" className="skip-link">
         Skip to content
       </a>
@@ -233,11 +229,6 @@ function Home() {
           </div>
         </div>
       </section>
-
-      <FeaturedProjects
-        items={repositories.data.items}
-        onSceneChange={setFeaturedScene}
-      />
 
       <section id="work" className="page-width py-12 sm:py-16">
         <div className="mb-12 flex flex-col justify-between gap-7 md:flex-row md:items-end">
@@ -599,7 +590,9 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/projects" component={Projects} />
-        <Route path="/featured" component={Featured} />
+        <Route path="/featured">
+          <Redirect to="/projects" replace />
+        </Route>
         <Route path="/certifications" component={Certifications} />
         <Route path="/writing" component={Writing} />
         <Route path="/music" component={Music} />

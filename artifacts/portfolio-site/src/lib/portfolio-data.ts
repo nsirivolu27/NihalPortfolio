@@ -18,7 +18,6 @@ export const portfolioProfile = {
 
 export const navItems = [
   { label: 'Projects', href: '#work' },
-  { label: 'Featured', href: 'featured' },
   { label: 'Certifications', href: 'certifications' },
   { label: 'Skills', href: '#capabilities' },
   { label: 'Experience', href: '#notes' },
