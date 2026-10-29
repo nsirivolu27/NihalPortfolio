@@ -24,7 +24,6 @@ export const navItems = [
   { label: 'About', href: '#about' },
   { label: 'Writing', href: 'writing' },
   { label: 'Investing', href: 'investing' },
-  { label: 'Music', href: 'music' },
 ];
 
 export const strengths = [

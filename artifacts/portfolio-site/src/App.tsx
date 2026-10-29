@@ -9,8 +9,6 @@ import Writing from "@/pages/writing";
 import Investing from "@/pages/investing";
 import InvestingSync from "@/pages/investing-sync";
 import Certifications from "@/pages/certifications";
-import Music from "@/pages/music";
-import { MusicStage } from "@/components/music-stage";
 import { CertificationsSection } from "@/components/certifications";
 import { usePortfolioProjects } from "@/hooks/use-project-settings";
 import { ProjectManager } from "@/components/project-manager";
@@ -493,12 +491,6 @@ function Home() {
         </div>
       </section>
 
-      <section id="music" className="border-t border-border bg-card/80" aria-labelledby="music-title">
-        <a href="music" className="block" aria-label="Music — coming soon">
-          <MusicStage preview />
-        </a>
-      </section>
-
       <section id="contact" className="bg-accent text-accent-foreground">
         <div className="mx-auto max-w-[1440px] px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
           <div className="reveal grid gap-12 lg:grid-cols-[1fr_auto] lg:items-end">
@@ -595,7 +587,9 @@ function Router() {
         </Route>
         <Route path="/certifications" component={Certifications} />
         <Route path="/writing" component={Writing} />
-        <Route path="/music" component={Music} />
+        <Route path="/music">
+          <Redirect to="/" replace />
+        </Route>
         <Route path="/investing" component={Investing} />
         <Route path="/investing/sync" component={InvestingSync} />
         <Route component={NotFound} />

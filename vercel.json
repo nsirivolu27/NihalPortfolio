@@ -5,6 +5,7 @@
   "buildCommand": "node scripts/build-vercel.mjs",
   "outputDirectory": "artifacts/portfolio-site/dist/public",
   "redirects": [
+    { "source": "/music", "destination": "/", "permanent": true },
     { "source": "/featured", "destination": "/projects", "permanent": true },
     {
       "source": "/:path((?!api(?:/|$)|\\.well-known(?:/|$)).*)",
@@ -23,7 +24,6 @@
     { "source": "/projects", "destination": "/index.html" },
     { "source": "/certifications", "destination": "/index.html" },
     { "source": "/writing", "destination": "/index.html" },
-    { "source": "/music", "destination": "/index.html" },
     { "source": "/investing", "destination": "/index.html" },
     { "source": "/investing/sync", "destination": "/index.html" }
   ]
