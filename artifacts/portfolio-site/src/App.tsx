@@ -412,12 +412,11 @@ function Home() {
                 Writing / 01
               </span>
               <h3 className="mt-6 font-display text-4xl">
-                Nihal’s Blog About Stuff{" "}
+                Papers &amp; writing{" "}
                 <ArrowUpRight className="inline" size={24} />
               </h3>
               <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-                My writing on technology, energy, and ideas I want to understand
-                better.
+                Research papers, technical guides, and essays on technology, energy, and markets.
               </p>
             </a>
             <a href="investing" className="archive-card group">
