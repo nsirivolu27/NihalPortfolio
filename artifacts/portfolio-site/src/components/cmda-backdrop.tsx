@@ -112,39 +112,3 @@ export function CmdaBackdrop({ scene = null }: { scene?: SceneState | null }) {
     </div>
   );
 }
-
-export function ModelSketch() {
-  return (
-    <svg
-      viewBox="0 0 280 150"
-      className="model-sketch"
-      role="img"
-      aria-label="Illustration linking a server, data signals and a qubit"
-    >
-      <g className="model-sketch__axis">
-        <rect x="10" y="35" width="60" height="82" rx="3" />
-        {[47, 67, 87].map((y) => (
-          <g key={y}>
-            <rect x="18" y={y} width="44" height="16" rx="2" />
-            <path d={`M24 ${y + 8}h18`} />
-          </g>
-        ))}
-        <path d="M70 75h30v-35h34M100 75v40h34M154 40h30v35h13M154 115h30V75" />
-        <rect x="134" y="30" width="20" height="20" />
-        <rect x="134" y="105" width="20" height="20" />
-        <circle cx="232" cy="75" r="35" />
-        <ellipse cx="232" cy="75" rx="35" ry="12" />
-        <ellipse cx="232" cy="75" rx="12" ry="35" />
-        <path d="M232 30v90M190 75h84" />
-      </g>
-      <path
-        className="model-sketch__curve"
-        d="M232 75l22-26M72 137l20-8 12 3 18-14 17 5 20-20"
-      />
-      {[55, 75, 95].map((y) => (
-        <circle className="server-led" key={y} cx="54" cy={y} r="2" />
-      ))}
-      <circle cx="254" cy="49" r="3" />
-    </svg>
-  );
-}

@@ -178,111 +178,6 @@
 .reveal-delay-6 {
   transition-delay: 0.48s;
 }
-.hero-grid {
-  background-image:
-    linear-gradient(hsl(var(--border) / 0.35) 1px, transparent 1px),
-    linear-gradient(90deg, hsl(var(--border) / 0.35) 1px, transparent 1px);
-  background-size: 4.5rem 4.5rem;
-  mask-image: linear-gradient(to bottom, black 20%, transparent 92%);
-}
-.hero-index {
-  position: absolute;
-  left: 1.25rem;
-  top: 10rem;
-  z-index: 10;
-  display: none;
-  align-items: center;
-  gap: 0.75rem;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  color: hsl(var(--muted-foreground));
-  font-family: var(--app-font-mono);
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-.hero-index__line {
-  height: 4.5rem;
-  width: 1px;
-  background: hsl(var(--accent));
-}
-.portrait-slot {
-  position: relative;
-  background:
-    radial-gradient(circle at 62% 28%, hsl(8 77% 61% / 0.72), transparent 22%),
-    linear-gradient(145deg, hsl(281 20% 27%), hsl(var(--primary)));
-  color: hsl(var(--primary-foreground));
-  overflow: hidden;
-}
-.portrait-slot::before,
-.portrait-slot::after {
-  content: "";
-  position: absolute;
-  border-radius: 999px;
-  border: 1px solid hsl(var(--secondary) / 0.62);
-}
-.portrait-slot::before {
-  width: 22rem;
-  height: 22rem;
-  top: -5rem;
-  right: -4rem;
-}
-.portrait-slot::after {
-  width: 14rem;
-  height: 14rem;
-  bottom: -5rem;
-  left: -3rem;
-}
-.portrait-orbit {
-  position: absolute;
-  border: 1px solid hsl(var(--secondary) / 0.5);
-  border-radius: 999px;
-  pointer-events: none;
-}
-.portrait-orbit--outer {
-  inset: 18% -14% 24% 18%;
-  transform: rotate(26deg);
-  animation: orbit-drift 14s ease-in-out infinite alternate;
-}
-.portrait-orbit--inner {
-  inset: 35% 18% 32% 34%;
-  border-color: hsl(var(--accent) / 0.62);
-  transform: rotate(-38deg);
-  animation: orbit-drift-reverse 11s ease-in-out infinite alternate;
-}
-.portrait-orbit__dot {
-  position: absolute;
-  z-index: 2;
-  height: 0.45rem;
-  width: 0.45rem;
-  border-radius: 999px;
-  background: hsl(var(--secondary));
-  box-shadow: 0 0 0 0.3rem hsl(var(--secondary) / 0.12);
-}
-.portrait-orbit__dot--one {
-  top: 27%;
-  right: 18%;
-}
-.portrait-orbit__dot--two {
-  bottom: 30%;
-  left: 25%;
-  background: hsl(var(--accent));
-  box-shadow: 0 0 0 0.3rem hsl(var(--accent) / 0.12);
-}
-.signal-stamp {
-  position: absolute;
-  bottom: 1.75rem;
-  right: 1.75rem;
-  z-index: 3;
-  transform: rotate(-90deg) translateX(100%);
-  transform-origin: bottom right;
-  color: hsl(var(--primary-foreground) / 0.42);
-  font-family: var(--app-font-mono);
-  font-size: 0.54rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
 .manifesto-band {
   border-bottom: 1px solid hsl(var(--primary));
   background: hsl(var(--secondary));
@@ -333,22 +228,6 @@
   line-height: 1.5;
   text-align: right;
   text-transform: uppercase;
-}
-@keyframes orbit-drift {
-  from {
-    transform: rotate(21deg) translate3d(-3%, 1%, 0);
-  }
-  to {
-    transform: rotate(33deg) translate3d(3%, -2%, 0);
-  }
-}
-@keyframes orbit-drift-reverse {
-  from {
-    transform: rotate(-44deg) translate3d(2%, 0, 0);
-  }
-  to {
-    transform: rotate(-30deg) translate3d(-2%, 2%, 0);
-  }
 }
 .project-visual {
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
@@ -403,11 +282,6 @@
   .reveal {
     opacity: 1;
     transform: none;
-  }
-}
-@media (min-width: 1280px) {
-  .hero-index {
-    display: flex;
   }
 }
 @media (max-width: 640px) {
@@ -582,14 +456,6 @@ select:focus-visible {
   60% { stroke-dashoffset: -99; opacity: .6; }
   65%, 100% { stroke-dashoffset: -106; opacity: 0; }
 }
-.hero-grid { display: none; }
-.portrait-slot {
-  --primary-foreground: var(--foreground);
-  background: linear-gradient(145deg, hsl(var(--rack-hue) 28% 12% / .95), hsl(var(--card) / .96) 68%);
-  border: 1px solid hsl(var(--accent) / .35);
-}
-.portrait-slot::before, .portrait-slot::after { display: none; }
-.server-led { fill: hsl(var(--accent)); }
 .home-page footer, .home-page #contact {
   background: hsl(var(--card));
   --primary-foreground: var(--foreground);
@@ -598,20 +464,6 @@ select:focus-visible {
   border-top: 1px solid hsl(var(--border));
 }
 .home-page #contact em { color: hsl(var(--accent)); }
-.model-sketch {
-  width: 100%;
-  margin-block: 1.25rem;
-  fill: hsl(var(--secondary));
-}
-.model-sketch__axis {
-  fill: none;
-  stroke: hsl(var(--primary-foreground) / 0.4);
-}
-.model-sketch__curve {
-  fill: none;
-  stroke: hsl(var(--accent));
-  stroke-width: 2;
-}
 /* Project palettes stay scoped to their scene and never change the portfolio root. */
 [data-theme] {
   --scene-accent: var(--secondary);
@@ -1423,13 +1275,6 @@ select:focus-visible {
 }
 .home-page #top h1 {
   font-size: clamp(4rem, 8vw, 7.5rem);
-}
-.home-page #top .portrait-slot {
-  aspect-ratio: auto;
-  max-width: 300px;
-}
-.home-page #top .model-sketch {
-  max-height: 130px;
 }
 .home-page section h2 {
   font-size: clamp(2.8rem, 5.5vw, 4.5rem);

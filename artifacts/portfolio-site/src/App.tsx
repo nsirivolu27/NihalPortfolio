@@ -15,14 +15,13 @@ import { ProjectManager } from "@/components/project-manager";
 import { RepositoryGrid } from "@/components/repository-grid";
 import { SourceStatus } from "@/components/page-shell";
 import { education, technicalSkills } from "@/lib/portfolio-data";
-import { CmdaBackdrop, ModelSketch } from "@/components/cmda-backdrop";
+import { CmdaBackdrop } from "@/components/cmda-backdrop";
 import {
   ArrowDown,
   ArrowUp,
   ArrowUpRight,
   Check,
   ChevronRight,
-  CircleArrowOutUpRight,
   Github,
   Linkedin,
   Mail,
@@ -151,80 +150,27 @@ function Home() {
         )}
       </header>
 
-      <section
-        id="top"
-        className="relative mx-auto max-w-[1440px] px-5 pb-12 pt-28 sm:px-8 lg:px-12 lg:pt-32"
-      >
-        <div className="hero-grid pointer-events-none absolute inset-0 -z-0" />
-        <div className="hero-index reveal" aria-hidden="true">
-          <span className="hero-index__label">Portfolio / 01</span>
-          <span className="hero-index__line" />
-          <span className="hero-index__label">CMDA / Virginia Tech</span>
-        </div>
-        <div className="relative z-10 grid items-end gap-8 lg:grid-cols-[1.25fr_.75fr] lg:gap-20">
-          <div>
-            <div className="reveal flex items-center gap-3 font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-muted-foreground">
-              <span className="h-2 w-2 rounded-full bg-secondary" />
-              {portfolioProfile.availability}
-            </div>
-            <h1 className="reveal reveal-delay-1 mt-8 max-w-[900px] font-display text-[clamp(4.5rem,11vw,10.75rem)] leading-[.82] tracking-[-.055em]">
-              Data to models.
-              <br />
-              <em className="text-accent">Models</em> to impact.
-            </h1>
-            <div className="reveal reveal-delay-2 mt-10 flex max-w-[680px] flex-col gap-8 sm:flex-row sm:items-end">
-              <p
-                data-testid="text-hero-intro"
-                className="max-w-[380px] text-lg leading-[1.35] text-muted-foreground sm:text-xl"
-              >
-                {portfolioProfile.intro}
-              </p>
-              <div className="flex shrink-0 flex-col gap-5">
-                <a
-                  href="#work"
-                  data-testid="link-scroll-work"
-                  className="magnetic-link inline-flex w-fit items-center gap-2 border-b border-primary pb-2 text-[12px] font-bold uppercase tracking-[.13em]"
-                >
-                  Explore projects <ArrowDown size={14} />
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="reveal reveal-delay-3 lg:pb-1">
-            <div className="portrait-slot aspect-[4/5] max-w-[330px] ml-auto p-6 sm:p-8">
-              <div className="relative z-10 flex h-full flex-col justify-between">
-                <div className="flex items-start justify-between">
-                  <span className="font-mono-ui text-[10px] uppercase tracking-[.16em] text-primary-foreground/65">
-                    CMDA / Virginia Tech
-                  </span>
-                  <CircleArrowOutUpRight
-                    size={18}
-                    strokeWidth={1.5}
-                    className="text-secondary"
-                  />
-                </div>
-                <ModelSketch />
-                <div>
-                  <div className="mb-4 h-px w-12 bg-secondary" />
-                  <p className="max-w-[230px] font-display text-4xl leading-[.95]">
-                    Observe.
-                    <br />
-                    Model. Validate.
-                  </p>
-                  <p className="mt-4 max-w-[230px] text-xs leading-relaxed text-primary-foreground/65">
-                    Virginia Tech · Class of 2027
-                    <br />
-                    Engineer. Researcher. Writer.
-                    <br />
-                    Data, computing, and applied mathematics.
-                  </p>
-                </div>
-              </div>
-              <span className="signal-stamp">
-                Projects / Research / Learning
-              </span>
-            </div>
-          </div>
+      <section id="top" className="page-width pb-6 pt-28 sm:pb-8 lg:pt-32">
+        <p className="reveal flex items-center gap-3 font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-muted-foreground">
+          <span aria-hidden="true" className="h-2 w-2 rounded-full bg-secondary" />
+          {portfolioProfile.availability}
+        </p>
+        <h1 className="reveal reveal-delay-1 mt-6 font-display leading-[.88] tracking-[-.055em]">
+          Data to models.
+          <br />
+          <em className="text-accent">Models</em> to impact.
+        </h1>
+        <div className="reveal reveal-delay-2 mt-6">
+          <p data-testid="text-hero-intro" className="max-w-[48ch] text-lg leading-relaxed text-muted-foreground">
+            {portfolioProfile.intro}
+          </p>
+          <a
+            href="#work"
+            data-testid="link-scroll-work"
+            className="magnetic-link mt-5 inline-flex items-center gap-2 border-b border-primary pb-1 text-xs font-bold uppercase tracking-[.13em]"
+          >
+            Explore projects <ArrowDown size={14} />
+          </a>
         </div>
       </section>
 
