@@ -21,7 +21,7 @@ function RackActivity({ bank }: { bank: number }) {
         const row = (bank * 3 + channel * 4) % units.length;
         const y = units[row] + 22;
         return (
-          <polygon key={channel} className="rack-activity-led"
+          <polygon key={channel} className="rack-activity-led" fill="var(--rack-green)"
             points={panel(y, y + 5, .789, .782)}
             style={{ animationDelay: `-${(bank * 1.73 + channel * 2.41).toFixed(2)}s`,
               animationDuration: `${7 + (bank + channel * 2) % 5}s` }} />
@@ -52,28 +52,34 @@ export function CmdaBackdrop({ scene = null }: { scene?: SceneState | null }) {
             <stop offset=".7" stopColor="#121d21" />
             <stop offset="1" stopColor="#060b0d" />
           </linearGradient>
+          <linearGradient id="rack-strip">
+            <stop stopColor="var(--rack-blue)" />
+            <stop offset=".5" stopColor="hsl(var(--accent))" />
+            <stop offset="1" stopColor="var(--rack-green)" />
+          </linearGradient>
           <radialGradient id="aisle-light">
-            <stop stopColor="currentColor" stopOpacity=".23" />
+            <stop stopColor="var(--rack-green)" stopOpacity=".23" />
+            <stop offset=".55" stopColor="var(--rack-blue)" stopOpacity=".12" />
             <stop offset="1" stopColor="currentColor" stopOpacity="0" />
           </radialGradient>
           <linearGradient id="floor-reflection" x2="0%" y2="100%">
             <stop stopColor="currentColor" stopOpacity=".7" />
-            <stop offset=".14" stopColor="currentColor" stopOpacity=".24" />
+            <stop offset=".45" stopColor="var(--rack-green)" stopOpacity=".24" />
             <stop offset="1" stopColor="currentColor" stopOpacity="0" />
           </linearGradient>
           <g id="rack-bay">
             <polygon points={panel(-406, 462, 1, bayDepth)} fill="url(#rack-metal)" stroke="currentColor" strokeOpacity=".26" />
-            <polygon points={panel(-393, -386)} fill="currentColor" opacity=".69" />
+            <polygon points={panel(-393, -386)} fill="url(#rack-strip)" opacity=".69" />
             {units.map((y, i) => (
               <g key={y}>
                 <polygon points={panel(y, y + 44)} fill="#091114" stroke="currentColor" strokeOpacity=".18" />
                 <polygon points={panel(y + 8, y + 35, .949, .813)} fill="#172226" />
                 <path d={`M-828 ${(y + 15) * .94}l112 ${-(y + 15) * .127} M-828 ${(y + 24) * .94}l112 ${-(y + 24) * .127}`} stroke="#020709" strokeWidth="3" strokeDasharray="7 3" />
-                <polygon points={panel(y + 12, y + 17, .789, .782)} fill="currentColor" opacity={i % 4 === 0 ? ".2" : ".92"} />
+                <polygon points={panel(y + 12, y + 17, .789, .782)} fill={i % 3 === 0 ? "var(--rack-blue)" : "var(--rack-green)"} opacity={i % 4 === 0 ? ".2" : ".92"} />
                 <polygon points={panel(y + 22, y + 26, .789, .782)} fill="currentColor" opacity=".38" />
               </g>
             ))}
-            <polygon points={panel(439, 444)} fill="currentColor" opacity=".36" />
+            <polygon points={panel(439, 444)} fill="url(#rack-strip)" opacity=".36" />
           </g>
         </defs>
         <rect width="1440" height="900" fill="#04090b" />
@@ -93,7 +99,7 @@ export function CmdaBackdrop({ scene = null }: { scene?: SceneState | null }) {
           {bays.map((depth, index) => [-1, 1].map(side => (
             <g key={`${index}-${side}`} transform={`scale(${side * depth} ${depth})`}>
               <use href="#rack-bay" />
-              <g className="rack-bank-load" fill="currentColor"
+              <g className="rack-bank-load" fill="url(#rack-strip)"
                 style={{ animationDelay: `${index * .42 + (side === 1 ? -5.2 : -1.9)}s` }}>
                 <polygon points={panel(-393, -386)} />
                 {[2, 6, 10].map(row => (
@@ -103,7 +109,7 @@ export function CmdaBackdrop({ scene = null }: { scene?: SceneState | null }) {
               {index < 4 && <RackActivity bank={index * 2 + (side === 1 ? 1 : 0)} />}
             </g>
           )))}
-          <g className="rack-link-traffic" fill="none" stroke="currentColor" strokeLinecap="round">
+          <g className="rack-link-traffic" fill="none" stroke="url(#rack-strip)" strokeLinecap="round">
             <path pathLength="100" d="M-880 -406 L-70.4 -32.48" />
             <path pathLength="100" d="M70.4 36.8 L880 460" />
           </g>

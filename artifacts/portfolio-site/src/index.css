@@ -51,7 +51,6 @@
 
 :root {
   color-scheme: dark;
-  --rack-hue: 151;
   --background: 204 28% 3%;
   --foreground: 185 15% 93%;
   --card: 202 22% 8%;
@@ -61,7 +60,7 @@
   --input: var(--border);
   --primary: 185 16% 88%;
   --primary-foreground: var(--background);
-  --accent: var(--rack-hue) 78% 69%;
+  --accent: 173 72% 70%;
   --secondary: var(--accent);
   --ring: var(--accent);
   --secondary-foreground: var(--background);
@@ -105,8 +104,6 @@
   --accent-border: hsl(var(--accent));
   --destructive-border: hsl(var(--destructive));
 }
-
-:root[data-rack-light="blue"] { --rack-hue: 203; }
 
 @layer base {
   * {
@@ -399,7 +396,9 @@ select:focus-visible {
   overflow: hidden;
 }
 .server-room {
-  color: hsl(var(--accent));
+  --rack-blue: hsl(207 91% 68%);
+  --rack-green: hsl(151 79% 64%);
+  color: var(--rack-blue);
   background: hsl(var(--background));
 }
 .server-room svg {
