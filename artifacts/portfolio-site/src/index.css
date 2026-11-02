@@ -50,42 +50,44 @@
 }
 
 :root {
-  --ochre: 37 59% 61%;
-  --sand: 39 47% 82%;
-  --background: 40 43% 93%;
-  --foreground: 275 28% 17%;
-  --border: 34 18% 79%;
-  --input: 34 18% 79%;
-  --ring: 275 28% 17%;
-  --card: 38 45% 96%;
-  --card-foreground: 275 28% 17%;
-  --card-border: 34 18% 79%;
-  --sidebar: 40 43% 93%;
-  --sidebar-foreground: 275 28% 17%;
-  --sidebar-border: 34 18% 79%;
-  --sidebar-primary: 275 28% 17%;
-  --sidebar-primary-foreground: 40 43% 93%;
-  --sidebar-accent: 76 81% 58%;
-  --sidebar-accent-foreground: 275 28% 17%;
-  --sidebar-ring: 275 28% 17%;
-  --popover: 38 45% 96%;
-  --popover-foreground: 275 28% 17%;
-  --popover-border: 34 18% 79%;
-  --primary: 275 28% 17%;
-  --primary-foreground: 40 43% 93%;
-  --secondary: 76 81% 58%;
-  --secondary-foreground: 275 28% 17%;
-  --muted: 35 19% 86%;
-  --muted-foreground: 275 12% 42%;
-  --accent: 8 77% 61%;
-  --accent-foreground: 38 45% 96%;
-  --destructive: 8 77% 61%;
-  --destructive-foreground: 38 45% 96%;
-  --chart-1: 275 28% 17%;
-  --chart-2: 76 81% 58%;
-  --chart-3: 8 77% 61%;
-  --chart-4: 39 78% 63%;
-  --chart-5: 185 38% 38%;
+  color-scheme: dark;
+  --rack-hue: 151;
+  --background: 204 28% 3%;
+  --foreground: 185 15% 93%;
+  --card: 202 22% 8%;
+  --muted: 202 18% 14%;
+  --muted-foreground: 191 12% 73%;
+  --border: 198 15% 24%;
+  --input: var(--border);
+  --primary: 185 16% 88%;
+  --primary-foreground: var(--background);
+  --accent: var(--rack-hue) 78% 69%;
+  --secondary: var(--accent);
+  --ring: var(--accent);
+  --secondary-foreground: var(--background);
+  --accent-foreground: var(--background);
+  --ochre: 200 18% 10%;
+  --sand: 205 22% 7%;
+  --card-foreground: var(--foreground);
+  --card-border: var(--border);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
+  --popover-border: var(--border);
+  --sidebar: var(--background);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-border: var(--border);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--secondary);
+  --sidebar-accent-foreground: var(--secondary-foreground);
+  --sidebar-ring: var(--ring);
+  --destructive: 4 82% 68%;
+  --destructive-foreground: var(--background);
+  --chart-1: var(--accent);
+  --chart-2: 195 70% 65%;
+  --chart-3: 42 76% 64%;
+  --chart-4: 262 66% 74%;
+  --chart-5: 4 74% 70%;
   --app-font-sans: "DM Sans", sans-serif;
   --app-font-serif: "Instrument Serif", Georgia, serif;
   --app-font-mono: "Space Mono", monospace;
@@ -104,49 +106,7 @@
   --destructive-border: hsl(var(--destructive));
 }
 
-.dark {
-  --ochre: 37 40% 28%;
-  --sand: 39 18% 22%;
-  --background: 275 28% 17%;
-  --foreground: 40 43% 93%;
-  --border: 275 18% 30%;
-  --input: 275 18% 30%;
-  --ring: 40 43% 93%;
-  --card: 275 25% 21%;
-  --card-foreground: 40 43% 93%;
-  --card-border: 275 18% 30%;
-  --primary: 76 81% 58%;
-  --primary-foreground: 275 28% 17%;
-  --secondary: 275 18% 30%;
-  --secondary-foreground: 40 43% 93%;
-  --muted: 275 18% 26%;
-  --muted-foreground: 35 18% 70%;
-  --accent: 8 77% 61%;
-  --accent-foreground: 40 43% 93%;
-  --destructive: 8 77% 61%;
-  --destructive-foreground: 40 43% 93%;
-  --popover: 275 25% 21%;
-  --popover-foreground: 40 43% 93%;
-  --popover-border: 275 18% 30%;
-  --sidebar: 275 28% 17%;
-  --sidebar-foreground: 40 43% 93%;
-  --sidebar-border: 275 18% 30%;
-  --sidebar-primary: 76 81% 58%;
-  --sidebar-primary-foreground: 275 28% 17%;
-  --sidebar-accent: 275 18% 30%;
-  --sidebar-accent-foreground: 40 43% 93%;
-  --sidebar-ring: 40 43% 93%;
-  --chart-1: 76 81% 58%;
-  --chart-2: 8 77% 61%;
-  --chart-3: 40 43% 93%;
-  --chart-4: 39 78% 63%;
-  --chart-5: 185 38% 38%;
-  --primary-border: hsl(var(--primary));
-  --secondary-border: hsl(var(--secondary));
-  --muted-border: hsl(var(--muted));
-  --accent-border: hsl(var(--accent));
-  --destructive-border: hsl(var(--destructive));
-}
+:root[data-rack-light="blue"] { --rack-hue: 203; }
 
 @layer base {
   * {
@@ -160,7 +120,7 @@
   }
   ::selection {
     background: hsl(var(--secondary));
-    color: hsl(var(--foreground));
+    color: hsl(var(--secondary-foreground));
   }
 }
 
@@ -563,92 +523,38 @@ select:focus-visible {
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
-  color: hsl(var(--primary) / 0.2);
-  background:
-    radial-gradient(
-      ellipse at 100% 15%,
-      hsl(var(--secondary) / 0.13),
-      transparent 45%
-    ),
-    radial-gradient(
-      ellipse at 0% 90%,
-      hsl(var(--accent) / 0.06),
-      transparent 42%
-    );
 }
-.cmda-backdrop svg {
+.server-room {
+  color: hsl(var(--accent));
+  background: hsl(var(--background));
+}
+.server-room svg {
   width: 100%;
   height: 100%;
 }
-.cmda-notations {
-  font-family: var(--app-font-mono);
-  opacity: 0.8;
+.server-room::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(2 6 8 / .72), rgb(2 6 8 / .43) 54%, transparent),
+    linear-gradient(0deg, rgb(2 6 8 / .4), transparent 30%);
 }
-.server-field {
-  stroke-width: 1.2;
-}
-.server-led {
-  fill: hsl(var(--accent));
-  stroke: none;
-  animation: server-pulse 5s ease-in-out infinite;
-}
-.data-packets {
-  stroke: url(#data-stream);
-  stroke-width: 2.5;
-  stroke-dasharray: 8 110;
-  animation: packet-flow 12s linear infinite;
-}
-.stream-start {
-  stop-color: hsl(var(--accent) / 0.4);
-}
-.stream-end {
-  stop-color: hsl(var(--primary) / 0.35);
-}
-.econ-field {
-  opacity: 0.8;
-}
-.economic-signal {
-  stroke: hsl(var(--accent) / 0.28);
-  stroke-width: 1.7;
-}
-.qubit-field {
-  color: hsl(var(--primary) / 0.16);
-}
-.qubit-state {
-  fill: hsl(var(--accent) / 0.4);
-  stroke: none;
-}
-.qubit-meridian {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: qubit-turn 24s ease-in-out infinite alternate;
-}
-@keyframes packet-flow {
-  to {
-    stroke-dashoffset: -472;
-  }
-}
-@keyframes server-pulse {
-  0%,
-  100% {
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 0.85;
-  }
-}
-@keyframes qubit-turn {
-  to {
-    transform: rotate(25deg);
-  }
-}
+.hero-grid { display: none; }
 .portrait-slot {
-  background: hsl(var(--primary));
+  --primary-foreground: var(--foreground);
+  background: linear-gradient(145deg, hsl(var(--rack-hue) 28% 12% / .95), hsl(var(--card) / .96) 68%);
+  border: 1px solid hsl(var(--accent) / .35);
 }
-.portrait-slot::before,
-.portrait-slot::after {
-  display: none;
+.portrait-slot::before, .portrait-slot::after { display: none; }
+.server-led { fill: hsl(var(--accent)); }
+.home-page footer, .home-page #contact {
+  background: hsl(var(--card));
+  --primary-foreground: var(--foreground);
+  --accent-foreground: var(--foreground);
+  color: hsl(var(--foreground));
+  border-top: 1px solid hsl(var(--border));
 }
+.home-page #contact em { color: hsl(var(--accent)); }
 .model-sketch {
   width: 100%;
   margin-block: 1.25rem;
@@ -663,23 +569,6 @@ select:focus-visible {
   stroke: hsl(var(--accent));
   stroke-width: 2;
 }
-@media (prefers-reduced-motion: reduce) {
-  .data-packets,
-  .server-led,
-  .qubit-meridian {
-    animation: none;
-  }
-}
-@media (max-width: 640px) {
-  .cmda-backdrop {
-    opacity: 0.65;
-  }
-  .cmda-backdrop svg {
-    width: 180%;
-    margin-left: -40%;
-  }
-}
-
 /* Project palettes stay scoped to their scene and never change the portfolio root. */
 [data-theme] {
   --scene-accent: var(--secondary);

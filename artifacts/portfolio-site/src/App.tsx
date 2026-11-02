@@ -381,7 +381,7 @@ function Home() {
             <p className="font-mono-ui text-[10px] font-bold uppercase tracking-[.18em] text-accent">
               05 / About me
             </p>
-            <div className="mt-8 flex h-24 w-24 items-center justify-center rounded-full border border-primary bg-secondary font-display text-4xl">
+            <div className="mt-8 flex h-24 w-24 items-center justify-center rounded-full border border-primary bg-secondary text-secondary-foreground font-display text-4xl">
               {portfolioProfile.monogram}
             </div>
           </div>
