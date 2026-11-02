@@ -56,6 +56,11 @@ export function CmdaBackdrop({ scene = null }: { scene?: SceneState | null }) {
             <stop stopColor="currentColor" stopOpacity=".23" />
             <stop offset="1" stopColor="currentColor" stopOpacity="0" />
           </radialGradient>
+          <linearGradient id="floor-reflection" x2="0%" y2="100%">
+            <stop stopColor="currentColor" stopOpacity=".7" />
+            <stop offset=".14" stopColor="currentColor" stopOpacity=".24" />
+            <stop offset="1" stopColor="currentColor" stopOpacity="0" />
+          </linearGradient>
           <g id="rack-bay">
             <polygon points={panel(-406, 462, 1, bayDepth)} fill="url(#rack-metal)" stroke="currentColor" strokeOpacity=".26" />
             <polygon points={panel(-393, -386)} fill="currentColor" opacity=".69" />
@@ -78,9 +83,23 @@ export function CmdaBackdrop({ scene = null }: { scene?: SceneState | null }) {
             {[-880, -420, 420, 880].map(x => <path key={x} d={`M${x} -510 L${x * .1} -51 M${x} 570 L${x * .1} 57`} />)}
             {bays.map(d => <path key={d} d={`M${-880*d} ${460*d}h${1760*d} M${-880*d} ${-406*d}h${1760*d}`} />)}
           </g>
+          <g fill="url(#floor-reflection)">
+            {[0, 1, 2].map(i => (
+              <path key={i} className="aisle-floor-wave"
+                style={{ animationDelay: `-${i * 2.4}s` }}
+                d="M-880 460H880l32 17H-912Z" />
+            ))}
+          </g>
           {bays.map((depth, index) => [-1, 1].map(side => (
             <g key={`${index}-${side}`} transform={`scale(${side * depth} ${depth})`}>
               <use href="#rack-bay" />
+              <g className="rack-bank-load" fill="currentColor"
+                style={{ animationDelay: `${index * .42 + (side === 1 ? -5.2 : -1.9)}s` }}>
+                <polygon points={panel(-393, -386)} />
+                {[2, 6, 10].map(row => (
+                  <polygon key={row} points={panel(units[row] + 7, units[row] + 12, .94, .82)} />
+                ))}
+              </g>
               {index < 4 && <RackActivity bank={index * 2 + (side === 1 ? 1 : 0)} />}
             </g>
           )))}

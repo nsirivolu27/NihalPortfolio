@@ -539,16 +539,35 @@ select:focus-visible {
   background: linear-gradient(90deg, rgb(2 6 8 / .72), rgb(2 6 8 / .43) 54%, transparent),
     linear-gradient(0deg, rgb(2 6 8 / .4), transparent 30%);
 }
+.aisle-floor-wave, .rack-bank-load { opacity: 0; }
 .rack-activity-led { opacity: .22; }
 .rack-link-traffic { opacity: 0; stroke-width: 2; stroke-dasharray: 3 109; }
 
 @media (prefers-reduced-motion: no-preference) {
+  .server-room svg { animation: aisle-drift 18s ease-in-out infinite alternate; }
+  .aisle-floor-wave { animation: floor-travel 7.2s cubic-bezier(.46,.1,.83,.65) infinite; }
+  .rack-bank-load { animation: rack-relay 6.8s ease-in-out infinite; }
   .rack-activity-led { animation: rack-io 9s ease-in-out infinite; }
   .rack-impeller { animation: rack-cooling 3s linear infinite; transform-origin: 0 0; }
   .rack-aisle-glow { animation: rack-ambient 14s ease-in-out infinite alternate; }
   .rack-link-traffic { opacity: .52; }
   .rack-link-traffic path { animation: rack-packet 6.7s linear infinite; }
   .rack-link-traffic path + path { animation-duration: 9.1s; animation-delay: -4s; }
+}
+@keyframes aisle-drift {
+  from { transform: scale(1.035) translate(-.8%, -.4%); }
+  to { transform: scale(1.065) translate(.8%, .4%); }
+}
+@keyframes floor-travel {
+  0% { transform: scale(.1); opacity: 0; }
+  18% { opacity: .65; }
+  78% { opacity: .48; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+@keyframes rack-relay {
+  0%, 48%, 100% { opacity: 0; }
+  14% { opacity: .78; }
+  30% { opacity: .28; }
 }
 @keyframes rack-io {
   0%, 28%, 58%, 100% { opacity: .16; }
