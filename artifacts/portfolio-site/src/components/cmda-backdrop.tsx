@@ -12,6 +12,35 @@ function panel(top: number, bottom: number, near = 0.98, far = 0.75) {
   ].map((point) => point.join(",")).join(" ");
 }
 
+// Only the nearest cabinets need moving detail. The static chassis is shared.
+function RackActivity({ bank }: { bank: number }) {
+  const fanY = units[7] + 22;
+  return (
+    <g fill="currentColor">
+      {[0, 1, 2, 3].map(channel => {
+        const row = (bank * 3 + channel * 4) % units.length;
+        const y = units[row] + 22;
+        return (
+          <polygon key={channel} className="rack-activity-led"
+            points={panel(y, y + 5, .789, .782)}
+            style={{ animationDelay: `-${(bank * 1.73 + channel * 2.41).toFixed(2)}s`,
+              animationDuration: `${7 + (bank + channel * 2) % 5}s` }} />
+        );
+      })}
+      <g transform={`translate(-775 ${fanY * .88}) scale(.78 1)`}>
+        <circle r="17" fill="#080e10" stroke="currentColor" strokeOpacity=".26" />
+        <g className="rack-impeller" opacity=".38"
+          style={{ animationDuration: `${2.8 + (bank % 3) * .41}s` }}>
+          {[0, 90, 180, 270].map(angle => (
+            <path key={angle} transform={`rotate(${angle})`} d="M2-2 Q4-15 14-8 Q13-2 5 1Z" />
+          ))}
+        </g>
+        <circle r="3" fill="#162329" />
+      </g>
+    </g>
+  );
+}
+
 export function CmdaBackdrop({ scene = null }: { scene?: SceneState | null }) {
   if (scene) return <div className="cmda-backdrop featured-ambient" data-theme={scene.theme} aria-hidden="true"><ProjectScene {...scene} /></div>;
   return (
@@ -44,12 +73,21 @@ export function CmdaBackdrop({ scene = null }: { scene?: SceneState | null }) {
         </defs>
         <rect width="1440" height="900" fill="#04090b" />
         <g transform="translate(842 380)">
-          <ellipse cy="18" rx="620" ry="360" fill="url(#aisle-light)" />
+          <ellipse className="rack-aisle-glow" cy="18" rx="620" ry="360" fill="url(#aisle-light)" />
           <g stroke="currentColor" fill="none" opacity=".2">
             {[-880, -420, 420, 880].map(x => <path key={x} d={`M${x} -510 L${x * .1} -51 M${x} 570 L${x * .1} 57`} />)}
             {bays.map(d => <path key={d} d={`M${-880*d} ${460*d}h${1760*d} M${-880*d} ${-406*d}h${1760*d}`} />)}
           </g>
-          {bays.map(d => <g key={d}><use href="#rack-bay" transform={`scale(${d})`} /><use href="#rack-bay" transform={`scale(${-d} ${d})`} /></g>)}
+          {bays.map((depth, index) => [-1, 1].map(side => (
+            <g key={`${index}-${side}`} transform={`scale(${side * depth} ${depth})`}>
+              <use href="#rack-bay" />
+              {index < 4 && <RackActivity bank={index * 2 + (side === 1 ? 1 : 0)} />}
+            </g>
+          )))}
+          <g className="rack-link-traffic" fill="none" stroke="currentColor" strokeLinecap="round">
+            <path pathLength="100" d="M-880 -406 L-70.4 -32.48" />
+            <path pathLength="100" d="M70.4 36.8 L880 460" />
+          </g>
         </g>
       </svg>
     </div>

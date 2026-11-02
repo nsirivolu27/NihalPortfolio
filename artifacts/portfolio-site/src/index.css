@@ -539,6 +539,30 @@ select:focus-visible {
   background: linear-gradient(90deg, rgb(2 6 8 / .72), rgb(2 6 8 / .43) 54%, transparent),
     linear-gradient(0deg, rgb(2 6 8 / .4), transparent 30%);
 }
+.rack-activity-led { opacity: .22; }
+.rack-link-traffic { opacity: 0; stroke-width: 2; stroke-dasharray: 3 109; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .rack-activity-led { animation: rack-io 9s ease-in-out infinite; }
+  .rack-impeller { animation: rack-cooling 3s linear infinite; transform-origin: 0 0; }
+  .rack-aisle-glow { animation: rack-ambient 14s ease-in-out infinite alternate; }
+  .rack-link-traffic { opacity: .52; }
+  .rack-link-traffic path { animation: rack-packet 6.7s linear infinite; }
+  .rack-link-traffic path + path { animation-duration: 9.1s; animation-delay: -4s; }
+}
+@keyframes rack-io {
+  0%, 28%, 58%, 100% { opacity: .16; }
+  35%, 49% { opacity: .98; }
+  42%, 80% { opacity: .4; }
+}
+@keyframes rack-cooling { to { transform: rotate(360deg); } }
+@keyframes rack-ambient { from { opacity: .55; } to { opacity: .95; } }
+@keyframes rack-packet {
+  0% { stroke-dashoffset: 4; opacity: 0; }
+  8% { opacity: .85; }
+  60% { stroke-dashoffset: -99; opacity: .6; }
+  65%, 100% { stroke-dashoffset: -106; opacity: 0; }
+}
 .hero-grid { display: none; }
 .portrait-slot {
   --primary-foreground: var(--foreground);
