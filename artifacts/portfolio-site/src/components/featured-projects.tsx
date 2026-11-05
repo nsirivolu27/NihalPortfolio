@@ -131,18 +131,6 @@ export function FeaturedProjects({
               {active.repo.language}
               {active.repo.archived ? " / Archived" : " / Public repository"}
             </span>
-            {active.repo.pushedAt && (
-              <p className="featured-language">
-                Last push{" "}
-                <time dateTime={active.repo.pushedAt}>
-                  {new Date(active.repo.pushedAt).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </time>
-              </p>
-            )}
             <a
               className="featured-source"
               href={active.repo.url}
