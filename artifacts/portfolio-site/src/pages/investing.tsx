@@ -1,4 +1,3 @@
-import { InvestingAnalyticsView } from "@/components/investing-analytics";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { ArrowUpRight } from "lucide-react";
@@ -7,7 +6,6 @@ import snapshotData from "@/data/investing.json";
 import { formatPercent, validateSnapshot } from "@/lib/core/investing";
 import { useBlog } from "@/hooks/use-public-content";
 import { blogNotes } from "@/lib/portfolio-data";
-import { isInvestingPost } from "@/lib/core/sources";
 
 export default function Investing() {
   const blog = useBlog();
@@ -22,7 +20,6 @@ export default function Investing() {
       return validateSnapshot(await response.json());
     },
     retry: false,
-    refetchInterval: 60_000,
     refetchOnWindowFocus: true,
   });
   const snapshot = query.data ?? validateSnapshot(snapshotData);
@@ -30,12 +27,14 @@ export default function Investing() {
     snapshot.capturedAt.length === 10
       ? `${snapshot.capturedAt}T12:00:00`
       : snapshot.capturedAt;
-  const essays = blog.data.items.filter(isInvestingPost);
+  const essays = blog.data.items.filter((post) =>
+    post.url.endsWith("/canoo-buy-now.html"),
+  );
   return (
     <PageShell
       title="Investing & analysis."
-      eyebrow="Markets / Research and performance"
-      intro="I use this page to share my stock research and the performance of investments I track manually in Yahoo Finance. Each update shows when the data was captured."
+      eyebrow="Markets / Ideas and outcomes"
+      intro="My stock analysis and the gain/loss percentages from my manually tracked Yahoo Finance portfolio."
     >
       <section aria-labelledby="performance-title">
         <div className="mb-7 flex flex-wrap items-end justify-between gap-5">
@@ -87,23 +86,14 @@ export default function Investing() {
             ? " Live refresh unavailable; showing the last available snapshot."
             : ""}
         </p>
-        {Date.now() - Date.parse(snapshot.capturedAt) >
-          4 * 24 * 60 * 60_000 && (
-          <p role="status" className="mt-3 text-sm text-accent">
-            This snapshot is more than four days old. A new Yahoo capture is
-            pending.
-          </p>
-        )}
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground">
-          Yahoo's reported percentages are separate, not added or annualized.
-          Day change refers to the captured trading day.
+          Percentages are shown separately, as reported by Yahoo. They are not
+          added together or presented as an annualized return. Day change refers
+          to the captured snapshot, not necessarily today.
         </p>
       </section>
-      {snapshot.analytics && (
-        <InvestingAnalyticsView analytics={snapshot.analytics} />
-      )}
       <section
-        className="mt-10 border-t border-border pt-8"
+        className="mt-20 border-t border-border pt-12"
         aria-labelledby="analysis-title"
       >
         <p className="font-mono-ui text-xs uppercase tracking-wider text-accent">
@@ -126,8 +116,7 @@ export default function Investing() {
               </p>
               <h3 className="mt-4 font-display text-4xl">{post.title}</h3>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                {blogNotes[post.url] ??
-                  "Read my market research and analysis on Nihal’s Blog About Stuff."}
+                {blogNotes[post.url]}
               </p>
               <a
                 href={post.url}

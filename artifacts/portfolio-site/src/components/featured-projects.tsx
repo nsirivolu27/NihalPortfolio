@@ -71,8 +71,8 @@ export function FeaturedProjects({
         <div>
           <p className="featured-eyebrow">
             {standalone
-              ? "Featured project / Overview"
-              : "Selected projects / Interactive previews"}
+              ? "Featured project / Inside the work"
+              : "Selected work / Interactive worlds"}
           </p>
           <Heading id="featured-heading">
             {standalone ? (
@@ -81,23 +81,18 @@ export function FeaturedProjects({
               <>
                 Featured projects.
                 <br />
-                <em>A closer look.</em>
+                <em>Step inside.</em>
               </>
             )}
           </Heading>
         </div>
         <p>
           {active.theme === "workflow"
-            ? "Magentic.AI is a workspace for reviewing AI-generated work. Explore how a draft moves through review and approval."
-            : "Choose a project to explore its interactive preview and find the code on GitHub."}
+            ? "AI drafts. People decide. Explore a supervised workflow workspace designed around evidence and human review."
+            : "Different problems, different worlds. Select a project to change the scene, then play with its controls."}
         </p>
       </div>
       <div className="featured-stage" data-theme={active.theme}>
-        {active.theme === "workflow" && (
-          <div className="featured-stage-backdrop" aria-hidden="true">
-            <ProjectScene theme={active.theme} progress={progress} />
-          </div>
-        )}
         <div
           className="featured-choices"
           role="group"
@@ -125,12 +120,24 @@ export function FeaturedProjects({
             <h3>{active.repo.name}</h3>
             <p className="featured-description">
               {active.repo.description ||
-                "Find the code and documentation on GitHub."}
+                "Explore the source, experiments and documentation on GitHub."}
             </p>
             <span className="featured-language">
               {active.repo.language}
               {active.repo.archived ? " / Archived" : " / Public repository"}
             </span>
+            {active.repo.pushedAt && (
+              <p className="featured-language">
+                Last push{" "}
+                <time dateTime={active.repo.pushedAt}>
+                  {new Date(active.repo.pushedAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </time>
+              </p>
+            )}
             <a
               className="featured-source"
               href={active.repo.url}
@@ -176,7 +183,7 @@ export function FeaturedProjects({
           <span>
             0{available.indexOf(active) + 1} / 0{available.length}
           </span>
-          <span>Explore the ideas behind each project.</span>
+          <span>One portfolio. A few different universes.</span>
           <a
             href={
               standalone

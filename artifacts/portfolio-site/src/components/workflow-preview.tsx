@@ -1,33 +1,33 @@
 const stages = [
   {
     name: "Draft",
-    title: "Start with a draft.",
+    title: "An AI draft starts the conversation.",
     detail:
-      "AI prepares a draft for a person to review before the work moves forward.",
+      "A proposed stage is ready for a person to inspect. Generated output is a starting point, not an approval.",
     note: "AI proposes",
     icon: "01",
   },
   {
     name: "Human review",
-    title: "Check the draft and its sources.",
+    title: "Evidence, beside the decision.",
     detail:
-      "A reviewer checks the draft against its supporting evidence before deciding whether it is ready for the next stage.",
+      "A person reviews the draft alongside its supporting evidence. The next stage waits for deliberate review.",
     note: "Human judgment",
     icon: "02",
   },
   {
     name: "Sign-off",
-    title: "Sign off on the reviewed version.",
+    title: "Review the exact version.",
     detail:
-      "An independent reviewer signs off using a content hash, which records the exact version they approved.",
+      "An independent reviewer signs a content hash, tying sign-off to the version that was actually reviewed.",
     note: "Independent review",
     icon: "03",
   },
   {
     name: "Next stage",
-    title: "Move forward after approval.",
+    title: "Nothing advances on its own.",
     detail:
-      "Each stage needs human approval. This preview illustrates the process; it does not run or approve real tasks.",
+      "Progress stays supervised. This illustration shows the workflow concept; it does not run or approve a real task.",
     note: "Supervised progress",
     icon: "04",
   },
@@ -85,8 +85,8 @@ export function WorkflowPreview({
             <span>Review principle</span>
             <strong>
               {index === 2
-                ? "Approval linked to a specific version"
-                : "Check the evidence before proceeding"}
+                ? "Version-bound sign-off"
+                : "Evidence before advancement"}
             </strong>
             <div aria-hidden="true">
               <i />

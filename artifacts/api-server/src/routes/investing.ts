@@ -1,7 +1,6 @@
 import { Router, type IRouter } from "express";
 import { createHash, timingSafeEqual } from "node:crypto";
 import { InvestingSnapshot } from "@workspace/api-zod";
-import { isPortfolioOrigin } from "../lib/owner";
 import {
   investingStoreConfigured,
   readInvestingSnapshot,
@@ -37,7 +36,7 @@ router.post("/investing", async (req, res) => {
     res.status(503).json({ error: "Owner sync is not configured." });
     return;
   }
-  if (!isPortfolioOrigin(req.get("origin"))) {
+  if (req.get("origin") !== origin) {
     res.status(403).json({ error: "Unrecognized site origin." });
     return;
   }
@@ -49,8 +48,7 @@ router.post("/investing", async (req, res) => {
   const parsed = InvestingSnapshot.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({
-      error:
-        "Only a dated percentage snapshot and validated analytics are accepted.",
+      error: "Only a dated snapshot of three percentages is accepted.",
     });
     return;
   }

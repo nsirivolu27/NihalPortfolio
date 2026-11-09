@@ -1,120 +1,209 @@
 import { ProjectScene, type SceneState } from "./project-scene";
 
-const bayDepth = 0.73;
-const bays = Array.from({ length: 7 }, (_, i) => bayDepth ** i);
-const units = Array.from({ length: 15 }, (_, i) => -358 + i * 52);
-
-// Project a rack face onto one wall of the aisle. The opposite wall reuses it.
-function panel(top: number, bottom: number, near = 0.98, far = 0.75) {
-  return [
-    [-880 * near, top * near], [-880 * far, top * far],
-    [-880 * far, bottom * far], [-880 * near, bottom * near],
-  ].map((point) => point.join(",")).join(" ");
-}
-
-// Only the nearest cabinets need moving detail. The static chassis is shared.
-function RackActivity({ bank }: { bank: number }) {
-  const fanY = units[7] + 22;
-  return (
-    <g fill="currentColor">
-      {[0, 1, 2, 3].map(channel => {
-        const row = (bank * 3 + channel * 4) % units.length;
-        const y = units[row] + 22;
-        return (
-          <polygon key={channel} className="rack-activity-led" fill="var(--rack-green)"
-            points={panel(y, y + 5, .789, .782)}
-            style={{ animationDelay: `-${(bank * 1.73 + channel * 2.41).toFixed(2)}s`,
-              animationDuration: `${7 + (bank + channel * 2) % 5}s` }} />
-        );
-      })}
-      <g transform={`translate(-775 ${fanY * .88}) scale(.78 1)`}>
-        <circle r="17" fill="#080e10" stroke="currentColor" strokeOpacity=".26" />
-        <g className="rack-impeller" opacity=".38"
-          style={{ animationDuration: `${2.8 + (bank % 3) * .41}s` }}>
-          {[0, 90, 180, 270].map(angle => (
-            <path key={angle} transform={`rotate(${angle})`} d="M2-2 Q4-15 14-8 Q13-2 5 1Z" />
-          ))}
-        </g>
-        <circle r="3" fill="#162329" />
-      </g>
-    </g>
-  );
-}
-
+/** Decorative computing/economics diagrams; no live market or account data. */
 export function CmdaBackdrop({ scene = null }: { scene?: SceneState | null }) {
   if (scene) return <div className="cmda-backdrop featured-ambient" data-theme={scene.theme} aria-hidden="true"><ProjectScene {...scene} /></div>;
   return (
-    <div className="cmda-backdrop server-room" aria-hidden="true">
-      <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false">
+    <div className="cmda-backdrop" aria-hidden="true">
+      <svg viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice">
         <defs>
-          <linearGradient id="rack-metal">
-            <stop stopColor="#071015" />
-            <stop offset=".7" stopColor="#121d21" />
-            <stop offset="1" stopColor="#060b0d" />
+          <pattern
+            id="cmda-grid"
+            width="40"
+            height="40"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M40 0H0V40"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth=".5"
+            />
+            <circle r="1.2" fill="currentColor" />
+          </pattern>
+          <linearGradient id="data-stream" x1="0" x2="1">
+            <stop className="stream-start" offset="0" />
+            <stop className="stream-end" offset="1" />
           </linearGradient>
-          <linearGradient id="rack-strip">
-            <stop stopColor="var(--rack-blue)" />
-            <stop offset=".5" stopColor="hsl(var(--accent))" />
-            <stop offset="1" stopColor="var(--rack-green)" />
-          </linearGradient>
-          <radialGradient id="aisle-light">
-            <stop stopColor="var(--rack-green)" stopOpacity=".23" />
-            <stop offset=".55" stopColor="var(--rack-blue)" stopOpacity=".12" />
-            <stop offset="1" stopColor="currentColor" stopOpacity="0" />
-          </radialGradient>
-          <linearGradient id="floor-reflection" x2="0%" y2="100%">
-            <stop stopColor="currentColor" stopOpacity=".7" />
-            <stop offset=".45" stopColor="var(--rack-green)" stopOpacity=".24" />
-            <stop offset="1" stopColor="currentColor" stopOpacity="0" />
-          </linearGradient>
-          <g id="rack-bay">
-            <polygon points={panel(-406, 462, 1, bayDepth)} fill="url(#rack-metal)" stroke="currentColor" strokeOpacity=".26" />
-            <polygon points={panel(-393, -386)} fill="url(#rack-strip)" opacity=".69" />
-            {units.map((y, i) => (
-              <g key={y}>
-                <polygon points={panel(y, y + 44)} fill="#091114" stroke="currentColor" strokeOpacity=".18" />
-                <polygon points={panel(y + 8, y + 35, .949, .813)} fill="#172226" />
-                <path d={`M-828 ${(y + 15) * .94}l112 ${-(y + 15) * .127} M-828 ${(y + 24) * .94}l112 ${-(y + 24) * .127}`} stroke="#020709" strokeWidth="3" strokeDasharray="7 3" />
-                <polygon points={panel(y + 12, y + 17, .789, .782)} fill={i % 3 === 0 ? "var(--rack-blue)" : "var(--rack-green)"} opacity={i % 4 === 0 ? ".2" : ".92"} />
-                <polygon points={panel(y + 22, y + 26, .789, .782)} fill="currentColor" opacity=".38" />
-              </g>
-            ))}
-            <polygon points={panel(439, 444)} fill="url(#rack-strip)" opacity=".36" />
-          </g>
         </defs>
-        <rect width="1440" height="900" fill="#04090b" />
-        <g transform="translate(842 380)">
-          <ellipse className="rack-aisle-glow" cy="18" rx="620" ry="360" fill="url(#aisle-light)" />
-          <g stroke="currentColor" fill="none" opacity=".2">
-            {[-880, -420, 420, 880].map(x => <path key={x} d={`M${x} -510 L${x * .1} -51 M${x} 570 L${x * .1} 57`} />)}
-            {bays.map(d => <path key={d} d={`M${-880*d} ${460*d}h${1760*d} M${-880*d} ${-406*d}h${1760*d}`} />)}
-          </g>
-          <g fill="url(#floor-reflection)">
-            {[0, 1, 2].map(i => (
-              <path key={i} className="aisle-floor-wave"
-                style={{ animationDelay: `-${i * 2.4}s` }}
-                d="M-880 460H880l32 17H-912Z" />
-            ))}
-          </g>
-          {bays.map((depth, index) => [-1, 1].map(side => (
-            <g key={`${index}-${side}`} transform={`scale(${side * depth} ${depth})`}>
-              <use href="#rack-bay" />
-              <g className="rack-bank-load" fill="url(#rack-strip)"
-                style={{ animationDelay: `${index * .42 + (side === 1 ? -5.2 : -1.9)}s` }}>
-                <polygon points={panel(-393, -386)} />
-                {[2, 6, 10].map(row => (
-                  <polygon key={row} points={panel(units[row] + 7, units[row] + 12, .94, .82)} />
-                ))}
-              </g>
-              {index < 4 && <RackActivity bank={index * 2 + (side === 1 ? 1 : 0)} />}
+        <rect width="1440" height="1000" fill="url(#cmda-grid)" opacity=".3" />
+
+        {/* Server cabinets, patch cables and moving packets. */}
+        <g className="server-field" fill="none" stroke="currentColor">
+          {[1010, 1170, 1330].map((x, rack) => (
+            <g key={x}>
+              <rect x={x} y="100" width="126" height="310" rx="5" />
+              <path
+                d={`M${x + 10} 410v20h106v-20M${x + 18} 430v12M${x + 108} 430v12`}
+              />
+              {[0, 1, 2, 3, 4, 5, 6].map((row) => (
+                <g key={row}>
+                  <rect
+                    x={x + 10}
+                    y={115 + row * 40}
+                    width="106"
+                    height="30"
+                    rx="2"
+                  />
+                  <path d={`M${x + 24} ${125 + row * 40}h44m-44 9h44`} />
+                  <circle
+                    className="server-led"
+                    cx={x + 92}
+                    cy={130 + row * 40}
+                    r="2.6"
+                    style={{ animationDelay: `${(row + rack) * -0.6}s` }}
+                  />
+                  <circle cx={x + 103} cy={130 + row * 40} r="2" />
+                </g>
+              ))}
             </g>
-          )))}
-          <g className="rack-link-traffic" fill="none" stroke="url(#rack-strip)" strokeLinecap="round">
-            <path pathLength="100" d="M-880 -406 L-70.4 -32.48" />
-            <path pathLength="100" d="M70.4 36.8 L880 460" />
-          </g>
+          ))}
+          <path d="M1073 442v35h-140v65H740M1233 442v55H960v115H680M1393 442v85h-280v70h-100" />
+          <path
+            className="data-packets"
+            d="M1073 442v35h-140v65H740M1233 442v55H960v115H680M1393 442v85h-280v70h-100"
+          />
+        </g>
+        <g
+          className="cmda-notations"
+          fill="currentColor"
+          fontSize="11"
+          letterSpacing="2"
+        >
+          <text x="1010" y="78">
+            DISTRIBUTED COMPUTE / DATA FLOW
+          </text>
+          <text x="1010" y="465">
+            01
+          </text>
+          <text x="1170" y="465">
+            02
+          </text>
+          <text x="1330" y="465">
+            03
+          </text>
+        </g>
+
+        {/* A supply/demand sketch and an abstract time series. */}
+        <g className="econ-field" fill="none" stroke="currentColor">
+          <path d="M65 785H440M90 810V545M100 580C205 590 310 700 420 750M100 750C200 720 310 610 420 570" />
+          <path strokeDasharray="3 7" d="M90 663H255V785" />
+          <circle cx="255" cy="663" r="7" />
+          <path
+            className="economic-signal"
+            d="M65 890l30-10 22 6 27-32 24 12 30-42 24 7 22-16 28 22 23-35 26 11 25-34 30 8 22-24"
+          />
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+            <path
+              key={i}
+              opacity=".4"
+              d={`M${80 + i * 40} 940v-${24 + ((i * 37) % 75)}`}
+              strokeWidth="12"
+            />
+          ))}
+        </g>
+        <g className="cmda-notations" fill="currentColor" fontSize="12">
+          <text x="65" y="530">
+            ECONOMICS / EQUILIBRIUM
+          </text>
+          <text x="72" y="565">
+            P
+          </text>
+          <text x="435" y="805">
+            Q
+          </text>
+          <text x="422" y="572">
+            S
+          </text>
+          <text x="422" y="756">
+            D
+          </text>
+          <text x="70" y="975">
+            SIGNAL → MODEL → INSIGHT
+          </text>
+        </g>
+
+        {/* Bloch sphere and a two-qubit entanglement circuit. */}
+        <g className="qubit-field" fill="none" stroke="currentColor">
+          <circle cx="1200" cy="800" r="124" />
+          <ellipse cx="1200" cy="800" rx="124" ry="39" />
+          <ellipse
+            className="qubit-meridian"
+            cx="1200"
+            cy="800"
+            rx="45"
+            ry="124"
+          />
+          <path d="M1200 645v310M1045 800h310M1105 890l190-180M1200 800l70-90m-70 90h-8m8 0v8" />
+          <circle className="qubit-state" cx="1270" cy="710" r="6" />
+          <path d="M565 785h55m32 0h198M565 850h285M760 785v65" />
+          <rect x="620" y="769" width="32" height="32" />
+          <circle cx="760" cy="785" r="4" fill="currentColor" />
+          <circle cx="760" cy="850" r="13" />
+        </g>
+        <g className="cmda-notations" fill="currentColor" fontSize="14">
+          <text x="1188" y="635">
+            |0⟩
+          </text>
+          <text x="1188" y="979">
+            |1⟩
+          </text>
+          <text x="1280" y="700">
+            |ψ⟩
+          </text>
+          <text x="630" y="791">
+            H
+          </text>
+          <text x="525" y="790">
+            |0⟩
+          </text>
+          <text x="525" y="855">
+            |0⟩
+          </text>
+          <text x="565" y="910">
+            (|00⟩ + |11⟩) / √2
+          </text>
+          <text x="565" y="730" fontSize="11" letterSpacing="2">
+            QUANTUM / ENTANGLEMENT
+          </text>
         </g>
       </svg>
     </div>
+  );
+}
+
+export function ModelSketch() {
+  return (
+    <svg
+      viewBox="0 0 280 150"
+      className="model-sketch"
+      role="img"
+      aria-label="Illustration linking a server, data signals and a qubit"
+    >
+      <g className="model-sketch__axis">
+        <rect x="10" y="35" width="60" height="82" rx="3" />
+        {[47, 67, 87].map((y) => (
+          <g key={y}>
+            <rect x="18" y={y} width="44" height="16" rx="2" />
+            <path d={`M24 ${y + 8}h18`} />
+          </g>
+        ))}
+        <path d="M70 75h30v-35h34M100 75v40h34M154 40h30v35h13M154 115h30V75" />
+        <rect x="134" y="30" width="20" height="20" />
+        <rect x="134" y="105" width="20" height="20" />
+        <circle cx="232" cy="75" r="35" />
+        <ellipse cx="232" cy="75" rx="35" ry="12" />
+        <ellipse cx="232" cy="75" rx="12" ry="35" />
+        <path d="M232 30v90M190 75h84" />
+      </g>
+      <path
+        className="model-sketch__curve"
+        d="M232 75l22-26M72 137l20-8 12 3 18-14 17 5 20-20"
+      />
+      {[55, 75, 95].map((y) => (
+        <circle className="server-led" key={y} cx="54" cy={y} r="2" />
+      ))}
+      <circle cx="254" cy="49" r="3" />
+    </svg>
   );
 }

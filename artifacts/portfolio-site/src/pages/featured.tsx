@@ -3,11 +3,12 @@ import { Link } from "wouter";
 import { FeaturedProjects } from "@/components/featured-projects";
 import { CmdaBackdrop } from "@/components/cmda-backdrop";
 import type { SceneState } from "@/components/project-scene";
-import { usePortfolioProjects } from "@/hooks/use-project-settings";
+import { useRepositories } from "@/hooks/use-public-content";
+import { portfolioProfile } from "@/lib/portfolio-data";
 import { SourceStatus } from "@/components/page-shell";
 
 export default function Featured() {
-  const repositories = usePortfolioProjects();
+  const repositories = useRepositories();
   const [scene, setScene] = useState<SceneState | null>(null);
   useEffect(() => {
     const previous = document.title;
@@ -32,6 +33,9 @@ export default function Featured() {
         <nav aria-label="Main navigation">
           <Link href="/">Home</Link>
           <Link href="/projects">All projects</Link>
+          <a href={portfolioProfile.resumeUrl} target="_blank" rel="noreferrer">
+            Resume ↗
+          </a>
         </nav>
       </header>
       <main>
@@ -48,8 +52,9 @@ export default function Featured() {
             retry={() => void repositories.refetch()}
           />
           <p className="text-xs text-muted-foreground">
-            I’ve selected these projects for a closer look. Their details update
-            from GitHub every five minutes while this page is open.
+            GitHub metadata refreshes every five minutes while this page is
+            visible. The featured selection is curated; repository details come
+            from GitHub.
           </p>
         </div>
       </main>

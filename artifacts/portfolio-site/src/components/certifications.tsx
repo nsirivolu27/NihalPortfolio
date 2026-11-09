@@ -66,7 +66,7 @@ export function CertificationsSection() {
   return (
     <section
       id="certifications"
-      className="page-width py-12"
+      className="page-width py-24"
       aria-labelledby="certifications-heading"
     >
       <div className="featured-heading">
@@ -75,15 +75,15 @@ export function CertificationsSection() {
             Certifications & continued learning
           </p>
           <h2 id="certifications-heading">
-            Courses &
+            Always learning.
             <br />
-            <em>certifications.</em>
+            <em>With the receipts.</em>
           </h2>
         </div>
         <p>
-          I’ve completed {earned.length} credentials in cloud computing, AI,
-          and responsible technology. You can view the full list and verify
-          each credential with its issuer.
+          {earned.length} completed credentials across cloud architecture, AI
+          and responsible technology. Explore the full list and issuer
+          verification links.
         </p>
       </div>
       <CertificationCards items={earned.slice(0, 3)} />

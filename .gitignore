@@ -54,12 +54,3 @@ Thumbs.db
 quotes*.csv
 *.yahoo.csv
 blog-source.json
-.vercel
-.env*
-
-# Local integration tooling installed by the hosting CLI.
-.agents/
-skills-lock.json
-
-# Local visual review captures.
-/screenshots/

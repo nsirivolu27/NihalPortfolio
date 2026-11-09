@@ -13,20 +13,20 @@ export default function Certifications() {
   const inProgress = items.filter((item) => item.status === "in-progress");
   return (
     <PageShell
-      title="Courses & certifications."
+      title="Learning, documented."
       eyebrow="Certifications & learning"
-      intro="Courses and certifications I’ve completed, along with what I’m currently studying in cloud computing, AI, and cybersecurity. Each completed credential links to its verification page."
+      intro="Cloud credentials and AI coursework, with issuer verification links. Completed credentials and work in progress are kept separate."
     >
       <div className="certification-source">
         <div>
-          <strong>LinkedIn & personal updates</strong>
+          <strong>Captured from LinkedIn</strong>
           <p>
-            LinkedIn last checked{" "}
+            Last checked{" "}
             {new Date(query.data.capturedAt).toLocaleString("en-US", {
               dateStyle: "medium",
               timeStyle: "short",
             })}
-            . Includes learning goals I’ve added directly to this portfolio.
+            . Credentials reflect the last successful LinkedIn update.
           </p>
           {query.isError && (
             <p role="status">
@@ -70,7 +70,8 @@ export default function Certifications() {
             In progress
           </h2>
           <p className="mb-6 text-sm text-muted-foreground">
-            These are the credentials I’m currently working toward.
+            Listed on LinkedIn as currently in progress. These have not been
+            earned.
           </p>
           <CertificationCards items={inProgress} />
         </section>
